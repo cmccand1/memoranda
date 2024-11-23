@@ -65,24 +65,23 @@ import memoranda.ui.miscDialogs.TdDialog;
 import memoranda.ui.htmleditor.util.Local;
 
 /**
- *
+ *  
  */
 public class HTMLEditor extends JPanel {
+	public HTMLEditorPane editor = new HTMLEditorPane("");
 
-  public HTMLEditorPane editor = new HTMLEditorPane("");
 
+    JScrollPane jScrollPane1 = new JScrollPane();
+    public HTMLEditorKit editorKit = new HTMLEditorKit();
+    public HTMLDocument document = null;
 
-  JScrollPane jScrollPane1 = new JScrollPane();
-  public HTMLEditorKit editorKit = new HTMLEditorKit();
-  public HTMLDocument document = null;
+	boolean bold = false;
+	boolean italic = false;
+	boolean under = false;
+	boolean list = false;
 
-  boolean bold = false;
-  boolean italic = false;
-  boolean under = false;
-  boolean list = false;
-
-  String currentTagName = "BODY";
-  Element currentParaElement = null;
+	String currentTagName = "BODY";
+	Element currentParaElement = null;
 
   Border border1, border2;
 

@@ -21,44 +21,42 @@ import memoranda.ui.htmleditor.util.Local;
  */
 public class Finder extends Thread {
 
-  Pattern pattern;
-  String _find = null;
-  String dispText = "";
-  String _replace = null;
-  HTMLEditor editor;
+    Pattern pattern;
+    String _find = null;
+    String dispText = "";
+    String _replace = null;
+    HTMLEditor editor;
 
-  /**
-   * Constructor for Finder.
-   */
-  public Finder(
-      HTMLEditor theEditor,
-      String find,
-      boolean wholeWord,
-      boolean matchCase,
-      boolean regexp,
-      String replace) {
-    super();
-    editor = theEditor;
-    dispText = find;
-    int flags = Pattern.DOTALL;
-    if (!matchCase) {
-      flags = flags + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE;
+    /**
+     * Constructor for Finder.
+     */
+    public Finder(
+        HTMLEditor theEditor,
+        String find,
+        boolean wholeWord,
+        boolean matchCase,
+        boolean regexp,
+        String replace) {
+        super();
+        editor = theEditor;
+        dispText = find;
+        int flags = Pattern.DOTALL;
+        if (!matchCase)
+            flags = flags + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE;
+        _find = find;
+        if (!regexp)
+            _find = "\\Q" + _find + "\\E";
+        if (wholeWord)
+            _find = "[\\s\\p{Punct}]" + _find + "[\\s\\p{Punct}]";
+        try {
+            pattern = Pattern.compile(_find, flags);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            pattern = null;
+        }
+        _replace = replace;
     }
-    _find = find;
-    if (!regexp) {
-      _find = "\\Q" + _find + "\\E";
-    }
-    if (wholeWord) {
-      _find = "[\\s\\p{Punct}]" + _find + "[\\s\\p{Punct}]";
-    }
-    try {
-      pattern = Pattern.compile(_find, flags);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      pattern = null;
-    }
-    _replace = replace;
-  }
 
   public Finder(HTMLEditor theEditor, String find, boolean wholeWord, boolean matchCase,
       boolean regexp) {
