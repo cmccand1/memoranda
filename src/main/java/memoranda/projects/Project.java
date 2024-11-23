@@ -7,6 +7,9 @@
 package memoranda.projects;
 
 import memoranda.date.CalendarDate;
+import memoranda.notes.NoteList;
+import memoranda.resources.ResourcesList;
+import memoranda.tasks.TaskList;
 
 /**
  *
@@ -45,13 +48,13 @@ public interface Project {
 
   int getStatus();
 
-  //int getProgress();
+//  int getProgress();
 
-  //TaskList getTaskList();
+  TaskList getTaskList();
 
-  //NoteList getNoteList();
+  NoteList getNoteList();
 
-  //ResourcesList getResourcesList();
+  ResourcesList getResourcesList();
 
   void freeze();
 

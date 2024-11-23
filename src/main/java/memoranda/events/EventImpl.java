@@ -21,7 +21,7 @@ import nu.xom.Element;
 /*$Id: EventImpl.java,v 1.9 2004/10/06 16:00:11 ivanrise Exp $*/
 public class EventImpl implements Event, Comparable {
 
-  private Element _elem = null;
+  private Element _elem;
 
   /**
    * Constructor for EventImpl.
@@ -156,10 +156,7 @@ public class EventImpl implements Event, Comparable {
    */
   public boolean getWorkingDays() {
     Attribute a = _elem.getAttribute("workingDays");
-    if (a != null && a.getValue().equals("true")) {
-      return true;
-    }
-    return false;
+    return a != null && a.getValue().equals("true");
   }
 
   public int compareTo(Object o) {

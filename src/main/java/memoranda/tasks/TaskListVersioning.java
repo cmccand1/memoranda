@@ -6,6 +6,7 @@ package memoranda.tasks;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import memoranda.projects.Project;
@@ -59,13 +60,11 @@ public class TaskListVersioning {
       Util.debug("Version " + publicId + " is the latest version, skipping upgrade");
       return false;
     } else {
-      // get all projects
-      Vector projects = ProjectManager.getAllProjects();
+      List<Project> projects = ProjectManager.getAllProjects();
       String[] projectIds = new String[projects.size()];
-      int c = 0;
-      for (Iterator iter = projects.iterator(); iter.hasNext(); ) {
-        Project prj = (Project) iter.next();
-        projectIds[c++] = prj.getID();
+      int count = 0;
+      for (Project project : projects) {
+        projectIds[count++] = project.getID();
       }
 
       // keep upgrading until it's the current version

@@ -44,8 +44,8 @@ public class LinkDialog extends JDialog {
   JLabel lblTitle = new JLabel();
   public JTextField txtTitle = new JTextField();
   JLabel lblDesc = new JLabel();
-  JTextField txtDesc = new JTextField();
-  JCheckBox chkNewWin = new JCheckBox();
+  public JTextField txtDesc = new JTextField();
+  public JCheckBox chkNewWin = new JCheckBox();
   JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
   JButton okB = new JButton();
   JButton cancelB = new JButton();

@@ -8,7 +8,9 @@ package memoranda.projects;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 import memoranda.storage.CurrentStorage;
@@ -23,14 +25,13 @@ import memoranda.tasks.TaskList;
 /**
  *
  */
-/*$Id: CurrentProject.java,v 1.6 2005/12/01 08:12:26 alexeya Exp $*/
 public class CurrentProject {
 
   private static Project _project = null;
   private static TaskList _tasklist = null;
   private static NoteList _notelist = null;
   private static ResourcesList _resources = null;
-  private static Vector projectListeners = new Vector();
+  private static List<ProjectListener> projectListeners = new ArrayList<>();
 
 
   static {
@@ -47,7 +48,7 @@ public class CurrentProject {
       // references to missing project
       _project = ProjectManager.getProject("__default");
       if (_project == null) {
-        _project = (Project) ProjectManager.getActiveProjects().get(0);
+        _project = ProjectManager.getActiveProjects().get(0);
       }
       memoranda.util.Context.put("LAST_OPENED_PROJECT_ID", _project.getID());
 
@@ -56,11 +57,7 @@ public class CurrentProject {
     _tasklist = CurrentStorage.get().openTaskList(_project);
     _notelist = CurrentStorage.get().openNoteList(_project);
     _resources = CurrentStorage.get().openResourcesList(_project);
-    memoranda.ui.AppFrame.addExitListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        save();
-      }
-    });
+    memoranda.ui.AppFrame.addExitListener(e -> save());
   }
 
 
@@ -106,15 +103,15 @@ public class CurrentProject {
 
   private static void notifyListenersBefore(Project project, NoteList nl, TaskList tl,
       ResourcesList rl) {
-    for (int i = 0; i < projectListeners.size(); i++) {
-      ((ProjectListener) projectListeners.get(i)).projectChange(project, nl, tl, rl);
+    for (ProjectListener projectListener : projectListeners) {
+      projectListener.projectChange(project, nl, tl, rl);
       /*DEBUGSystem.out.println(projectListeners.get(i));*/
     }
   }
 
   private static void notifyListenersAfter() {
-    for (int i = 0; i < projectListeners.size(); i++) {
-      ((ProjectListener) projectListeners.get(i)).projectWasChanged();
+    for (ProjectListener projectListener : projectListeners) {
+      projectListener.projectWasChanged();
     }
   }
 

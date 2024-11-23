@@ -156,19 +156,19 @@ public class ProjectsTablePanel extends JPanel {
       if (row == -1) {
         return "";
       }
-      Project pr;
+      Project project;
       if (activeOnly) {
-        pr = (Project) ProjectManager.getActiveProjects().get(row);
+        project = ProjectManager.getActiveProjects().get(row);
       } else {
-        pr = (Project) ProjectManager.getAllProjects().get(row);
+        project = ProjectManager.getAllProjects().get(row);
       }
       switch (col) {
         case 0:
-          return pr.getTitle();
+          return project.getTitle();
         case 1:
-          return pr.getStartDate().getShortDateString();
+          return project.getStartDate().getShortDateString();
         case 2:
-          CalendarDate d = pr.getEndDate();
+          CalendarDate d = project.getEndDate();
           if (d == null) {
             return "-";
           } else {
@@ -176,11 +176,11 @@ public class ProjectsTablePanel extends JPanel {
           }
           //case 3 :   return pr.getProgress() + "%";
         case 3:
-          return getStatusString(pr.getStatus());
+          return getStatusString(project.getStatus());
         case 100:
-          return pr.getID();
+          return project.getID();
         case 101:
-          return pr;
+          return project;
       }
       return "";
     }

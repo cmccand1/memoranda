@@ -8,7 +8,10 @@ package memoranda.ui.events;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JTable;
@@ -31,7 +34,7 @@ public class EventsTable extends JTable {
   public static final int EVENT = 100;
   public static final int EVENT_ID = 101;
 
-  Vector events = new Vector();
+  List<Event> events = new ArrayList<>();
 
   /**
    * Constructor for EventsTable.
@@ -50,7 +53,7 @@ public class EventsTable extends JTable {
   }
 
   public void initTable(CalendarDate d) {
-    events = (Vector) EventsManager.getEventsForDate(d);
+    events = (ArrayList<Event>) EventsManager.getEventsForDate(d);
     getColumnModel().getColumn(0).setPreferredWidth(60);
     getColumnModel().getColumn(0).setMaxWidth(60);
     clearSelection();
@@ -120,7 +123,7 @@ public class EventsTable extends JTable {
     }
 
     public Object getValueAt(int row, int col) {
-      Event ev = (Event) events.get(row);
+      Event ev = events.get(row);
       if (col == 0)
       //return ev.getHour()+":"+ev.getMinute();
       {

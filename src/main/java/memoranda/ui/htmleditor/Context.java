@@ -12,7 +12,7 @@ import java.util.Hashtable;
  * @version 1.0
  */
 
-class Context {
+public class Context {
 
   static java.util.Hashtable hash = new Hashtable();
 

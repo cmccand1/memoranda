@@ -6,6 +6,8 @@
  */
 package memoranda.projects;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import memoranda.date.CalendarDate;
@@ -21,7 +23,6 @@ import nu.xom.Elements;
 /**
  *
  */
-/*$Id: ProjectManager.java,v 1.9 2005/12/01 08:12:26 alexeya Exp $*/
 public class ProjectManager {
 //    public static final String NS_JNPROJECT = "http://www.openmechanics.org/2003/jnotes-projects-file";
 
@@ -48,51 +49,51 @@ public class ProjectManager {
   public static Project getProject(String id) {
     Elements prjs = _root.getChildElements("project");
     for (int i = 0; i < prjs.size(); i++) {
-      String pid = ((Element) prjs.get(i)).getAttribute("id").getValue();
+      String pid = (prjs.get(i)).getAttribute("id").getValue();
       if (pid.equals(id)) {
-        return new ProjectImpl((Element) prjs.get(i));
+        return new ProjectImpl( prjs.get(i));
       }
     }
     return null;
   }
 
-  public static Vector getAllProjects() {
+  public static List<Project> getAllProjects() {
     Elements prjs = _root.getChildElements("project");
-    Vector v = new Vector();
+    List<Project> projectList = new ArrayList<>();
     for (int i = 0; i < prjs.size(); i++) {
-      v.add(new ProjectImpl((Element) prjs.get(i)));
+      projectList.add(new ProjectImpl(prjs.get(i)));
     }
-    return v;
+    return projectList;
   }
 
   public static int getAllProjectsNumber() {
     int i;
     try {
-      i = ((Elements) _root.getChildElements("project")).size();
+      i = (_root.getChildElements("project")).size();
     } catch (NullPointerException e) {
       i = 1;
     }
     return i;
   }
 
-  public static Vector getActiveProjects() {
+  public static List<Project> getActiveProjects() {
     Elements prjs = _root.getChildElements("project");
-    Vector v = new Vector();
+    List<Project> projectList = new ArrayList<>();
     for (int i = 0; i < prjs.size(); i++) {
-      Project prj = new ProjectImpl((Element) prjs.get(i));
+      Project prj = new ProjectImpl(prjs.get(i));
       if (prj.getStatus() == Project.ACTIVE) {
-        v.add(prj);
+        projectList.add(prj);
       }
     }
-    return v;
+    return projectList;
   }
 
   public static int getActiveProjectsNumber() {
     Elements prjs = _root.getChildElements("project");
     int count = 0;
     for (int i = 0; i < prjs.size(); i++) {
-      Project prj = new ProjectImpl((Element) prjs.get(i));
-      if (prj.getStatus() == Project.ACTIVE) {
+      Project project = new ProjectImpl(prjs.get(i));
+      if (project.getStatus() == Project.ACTIVE) {
         count++;
       }
     }
@@ -104,12 +105,12 @@ public class ProjectManager {
     Element el = new Element("project");
     el.addAttribute(new Attribute("id", id));
     _root.appendChild(el);
-    Project prj = new ProjectImpl(el);
-    prj.setTitle(title);
-    prj.setStartDate(startDate);
-    prj.setEndDate(endDate);
-    CurrentStorage.get().createProjectStorage(prj);
-    return prj;
+    Project newProject = new ProjectImpl(el);
+    newProject.setTitle(title);
+    newProject.setStartDate(startDate);
+    newProject.setEndDate(endDate);
+    CurrentStorage.get().createProjectStorage(newProject);
+    return newProject;
   }
 
   public static Project createProject(String title, CalendarDate startDate, CalendarDate endDate) {
@@ -117,20 +118,19 @@ public class ProjectManager {
   }
 
   public static void removeProject(String id) {
-    Project prj = getProject(id);
-    if (prj == null) {
+    Project projectToRemove = getProject(id);
+    if (projectToRemove == null) {
       return;
     }
-    History.removeProjectHistory(prj);
-    CurrentStorage.get().removeProjectStorage(prj);
+    History.removeProjectHistory(projectToRemove);
+    CurrentStorage.get().removeProjectStorage(projectToRemove);
     Elements prjs = _root.getChildElements("project");
     for (int i = 0; i < prjs.size(); i++) {
-      String pid = ((Element) prjs.get(i)).getAttribute("id").getValue();
+      String pid = (prjs.get(i)).getAttribute("id").getValue();
       if (pid.equals(id)) {
         _root.removeChild(prjs.get(i));
         return;
       }
     }
   }
-
 }

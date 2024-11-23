@@ -6,8 +6,10 @@
  */
 package memoranda.events;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -15,11 +17,10 @@ import java.util.Vector;
 /**
  *
  */
-/*$Id: EventsScheduler.java,v 1.4 2004/01/30 12:17:41 alexeya Exp $*/
 public class EventsScheduler {
 
-  static Vector _timers = new Vector();
-  static Vector _listeners = new Vector();
+  static List<EventTimer> _timers = new ArrayList<>();
+  static List<EventNotificationListener> _listeners = new ArrayList<>();
 
   static Timer changeDateTimer = new Timer();
 
@@ -30,12 +31,12 @@ public class EventsScheduler {
   public static void init() {
     cancelAll();
     //changeDateTimer.cancel();
-    Vector events = (Vector) EventsManager.getActiveEvents();
-    _timers = new Vector();
+    List<Event> events = (ArrayList<Event>) EventsManager.getActiveEvents();
+    _timers = new ArrayList<>();
     /*DEBUG*/
     System.out.println("----------");
-    for (int i = 0; i < events.size(); i++) {
-      Event ev = (Event) events.get(i);
+    for (Event event : events) {
+      Event ev = event;
       Date evTime = ev.getTime();
       /*DEBUG*/
       System.out.println((Calendar.getInstance()).getTime());
@@ -61,16 +62,16 @@ public class EventsScheduler {
   }
 
   public static void cancelAll() {
-    for (int i = 0; i < _timers.size(); i++) {
-      EventTimer t = (EventTimer) _timers.get(i);
+    for (EventTimer timer : _timers) {
+      EventTimer t = timer;
       t.cancel();
     }
   }
 
   public static Vector getScheduledEvents() {
     Vector v = new Vector();
-    for (int i = 0; i < _timers.size(); i++) {
-      v.add(((EventTimer) _timers.get(i)).getEvent());
+    for (EventTimer timer : _timers) {
+      v.add(timer.getEvent());
     }
     return v;
   }
@@ -79,9 +80,9 @@ public class EventsScheduler {
     if (!isEventScheduled()) {
       return null;
     }
-    Event e1 = ((EventTimer) _timers.get(0)).getEvent();
+    Event e1 = _timers.get(0).getEvent();
     for (int i = 1; i < _timers.size(); i++) {
-      Event ev = ((EventTimer) _timers.get(i)).getEvent();
+      Event ev = _timers.get(i).getEvent();
       if (ev.getTime().before(e1.getTime())) {
         e1 = ev;
       }
@@ -95,18 +96,18 @@ public class EventsScheduler {
   }
 
   public static boolean isEventScheduled() {
-    return _timers.size() > 0;
+    return !_timers.isEmpty();
   }
 
   private static void notifyListeners(Event ev) {
-    for (int i = 0; i < _listeners.size(); i++) {
-      ((EventNotificationListener) _listeners.get(i)).eventIsOccured(ev);
+    for (EventNotificationListener listener : _listeners) {
+      listener.eventIsOccured(ev);
     }
   }
 
   private static void notifyChanged() {
-    for (int i = 0; i < _listeners.size(); i++) {
-      ((EventNotificationListener) _listeners.get(i)).eventsChanged();
+    for (EventNotificationListener listener : _listeners) {
+      listener.eventsChanged();
     }
   }
 
@@ -150,6 +151,4 @@ public class EventsScheduler {
       return _event;
     }
   }
-
-
 }

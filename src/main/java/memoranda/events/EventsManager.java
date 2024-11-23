@@ -6,9 +6,11 @@
  */
 package memoranda.events;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import memoranda.date.CalendarDate;
@@ -65,7 +67,6 @@ public class EventsManager {
     _root.appendChild(el);
   }
 
-  @SuppressWarnings("unchecked")
   public static Map getStickers() {
     Map m = new HashMap();
     Elements els = _root.getChildElements("sticker");
@@ -99,21 +100,21 @@ public class EventsManager {
   }
 
   public static Collection getEventsForDate(CalendarDate date) {
-    Vector v = new Vector();
-    Day d = getDay(date);
-    if (d != null) {
-      Elements els = d.getElement().getChildElements("event");
-      for (int i = 0; i < els.size(); i++) {
-        v.add(new EventImpl(els.get(i)));
+    List<Event> events = new ArrayList<>();
+    Day day = getDay(date);
+    if (day != null) {
+      Elements elements = day.getElement().getChildElements("event");
+      for (int i = 0; i < elements.size(); i++) {
+        events.add(new EventImpl(elements.get(i)));
       }
     }
-    Collection r = getRepeatableEventsForDate(date);
-    if (r.size() > 0) {
-      v.addAll(r);
+    Collection repeatableEvents = getRepeatableEventsForDate(date);
+    if (!repeatableEvents.isEmpty()) {
+      events.addAll(repeatableEvents);
     }
     //EventsVectorSorter.sort(v);
-    Collections.sort(v);
-    return v;
+    Collections.sort((ArrayList) events);
+    return events;
   }
 
   public static Event createEvent(

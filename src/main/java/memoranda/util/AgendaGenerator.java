@@ -4,11 +4,13 @@
  */
 package memoranda.util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -63,7 +65,7 @@ public class AgendaGenerator {
     s += "</td></tr></table>\n";
 
     Vector tasks = (Vector) tl.getActiveSubTasks(null, date);
-    if (tasks.size() == 0) {
+    if (tasks.isEmpty()) {
       s += "<p>" + Local.getString("No actual tasks") + ".</p>\n";
     } else {
       s += Local.getString("Actual tasks") + ":<br>\n<ul>\n";
@@ -242,7 +244,7 @@ public class AgendaGenerator {
 
   static int getProgress(TaskList tl) {
     Vector v = (Vector) tl.getAllSubTasks(null);
-    if (v.size() == 0) {
+    if (v.isEmpty()) {
       return -1;
     }
     int p = 0;
@@ -292,10 +294,8 @@ public class AgendaGenerator {
             + Local.getString("Projects and tasks")
             + "</h1>\n";
     s += generateProjectInfo(CurrentProject.get(), date, expandedTasks);
-    for (Iterator i = ProjectManager.getActiveProjects().iterator();
-        i.hasNext();
-    ) {
-      Project p = (Project) i.next();
+    for (Project activeProject : ProjectManager.getActiveProjects()) {
+      Project p = activeProject;
       if (!p.getID().equals(CurrentProject.get().getID())) {
         s += generateProjectInfo(p, date, expandedTasks);
       }
@@ -310,10 +310,9 @@ public class AgendaGenerator {
             + Local.getString("Events")
             + "</h1></a>\n"
             + "<table width=\"100%\" valign=\"top\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#FFFFF6\">\n";
-    Vector v = (Vector) EventsManager.getEventsForDate(date);
-    int n = 0;
-    for (Iterator i = v.iterator(); i.hasNext(); ) {
-      Event e = (Event) i.next();
+
+    List<Event> eventsForDate = (ArrayList<Event>) EventsManager.getEventsForDate(date);
+    for (Event e : eventsForDate) {
       String txt = e.getText();
       String iurl =
           memoranda.ui

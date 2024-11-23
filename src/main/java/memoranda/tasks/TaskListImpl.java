@@ -7,6 +7,7 @@
 package memoranda.tasks;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
@@ -26,18 +27,17 @@ import nu.xom.Node;
 /**
  *
  */
-/*$Id: TaskListImpl.java,v 1.14 2006/07/03 11:59:19 alexeya Exp $*/
 public class TaskListImpl implements TaskList {
 
-  private Project _project = null;
-  private Document _doc = null;
-  private Element _root = null;
+  private Project _project;
+  private Document _doc;
+  private Element _root;
 
   /*
    * Hastable of "task" XOM elements for quick searching them by ID's
    * (ID => element)
    */
-  private Hashtable elements = new Hashtable();
+  private HashMap<String, Element> elements = new HashMap<>();
 
   /**
    * Constructor for TaskListImpl.
@@ -76,7 +76,7 @@ public class TaskListImpl implements TaskList {
    * If a root task is required, just send a null taskId
    */
   public Collection getAllSubTasks(String taskId) {
-    if ((taskId == null) || (taskId.length() == 0)) {
+    if ((taskId == null) || (taskId.isEmpty())) {
       return getAllRootTasks();
     } else {
       Element task = getTaskElement(taskId);
@@ -154,11 +154,7 @@ public class TaskListImpl implements TaskList {
     if (task == null) {
       return false;
     }
-    if (task.getChildElements("task").size() > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return task.getChildElements("task").size() > 0;
   }
 
   public Task getTask(String id) {
@@ -172,11 +168,7 @@ public class TaskListImpl implements TaskList {
     Node parentNode = t.getParent();
     if (parentNode instanceof Element) {
       Element parent = (Element) parentNode;
-      if (parent.getLocalName().equalsIgnoreCase("task")) {
-        return true;
-      } else {
-        return false;
-      }
+      return parent.getLocalName().equalsIgnoreCase("task");
     } else {
       return false;
     }
@@ -316,7 +308,7 @@ public class TaskListImpl implements TaskList {
             Util.debug("Task " + id + " cannot be found in project " + _project.getTitle());
             return null;
         } */
-    Element el = (Element) elements.get(id);
+    Element el = elements.get(id);
     if (el == null) {
       Util.debug("Task " + id + " cannot be found in project " + _project.getTitle());
     }

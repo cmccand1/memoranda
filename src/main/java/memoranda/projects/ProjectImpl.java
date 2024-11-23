@@ -8,6 +8,10 @@ package memoranda.projects;
 
 import memoranda.date.CalendarDate;
 import memoranda.date.CurrentDate;
+import memoranda.notes.NoteList;
+import memoranda.resources.ResourcesList;
+import memoranda.storage.CurrentStorage;
+import memoranda.tasks.TaskList;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -108,7 +112,7 @@ public class ProjectImpl implements Project {
     return _root.getAttribute("frozen") != null;
   }
 
-   
+
     /*public int getProgress() {
         Vector v = getAllTasks();
         if (v.size() == 0) return 0;
@@ -192,21 +196,21 @@ public class ProjectImpl implements Project {
   /**
    * @see net.sf.memoranda.Project#getTaskList()
    */
-    /*public TaskList getTaskList() {
+    public TaskList getTaskList() {
         return CurrentStorage.get().openTaskList(this);
-    }*/
+    }
   /**
    * @see net.sf.memoranda.Project#getNoteList()
    */
-    /*public NoteList getNoteList() {
+    public NoteList getNoteList() {
         return CurrentStorage.get().openNoteList(this);
-    }*/
+    }
   /**
    * @see net.sf.memoranda.Project#getResourcesList()
    */
-    /*public ResourcesList getResourcesList() {
+    public ResourcesList getResourcesList() {
         return CurrentStorage.get().openResourcesList(this);
-    }*/
+    }
 
   @Override
   public String toString() {

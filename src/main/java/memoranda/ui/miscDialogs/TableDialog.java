@@ -58,11 +58,11 @@ public class TableDialog extends JDialog {
   public boolean CANCELLED = false;
   JLabel lblColumns = new JLabel();
   JLabel lblRows = new JLabel();
-  JComboBox vAlignCB = new JComboBox(valigns);
+  public JComboBox vAlignCB = new JComboBox(valigns);
   JLabel lblOutline = new JLabel();
-  JComboBox alignCB = new JComboBox(aligns);
+  public JComboBox alignCB = new JComboBox(aligns);
   JLabel lblVertOutline = new JLabel();
-  JTextField bgcolorField = new JTextField();
+  public JTextField bgcolorField = new JTextField();
   JLabel lblFillColor = new JLabel();
   JButton bgColorB = new JButton();
   JLabel lblBorder = new JLabel();
