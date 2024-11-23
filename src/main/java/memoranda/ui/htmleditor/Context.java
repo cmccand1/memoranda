@@ -1,4 +1,5 @@
-package main.java.memoranda.ui.htmleditor;
+package memoranda.ui.htmleditor;
+
 import java.util.Hashtable;
 
 /**
@@ -6,6 +7,7 @@ import java.util.Hashtable;
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2002</p>
  * <p>Company: </p>
+ *
  * @author unascribed
  * @version 1.0
  */

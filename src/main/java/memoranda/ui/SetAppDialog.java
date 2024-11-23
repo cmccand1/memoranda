@@ -1,4 +1,4 @@
-package main.java.memoranda.ui;
+package memoranda.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,10 +13,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.CaretEvent;
 
-import main.java.memoranda.util.Local;
+import memoranda.util.Local;
 
 /*$Id: SetAppDialog.java,v 1.6 2004/04/05 10:05:44 alexeya Exp $*/
 public class SetAppDialog extends JDialog {
+
   FlowLayout flowLayout1 = new FlowLayout();
   JButton cancelB = new JButton();
   BorderLayout borderLayout2 = new BorderLayout();
@@ -32,8 +33,7 @@ public class SetAppDialog extends JDialog {
     try {
       jbInit();
       pack();
-    }
-    catch(Exception ex) {
+    } catch (Exception ex) {
       new ExceptionDialog(ex);
     }
   }
@@ -46,10 +46,10 @@ public class SetAppDialog extends JDialog {
     cancelB.setPreferredSize(new Dimension(100, 26));
     cancelB.setText(Local.getString("Cancel"));
     cancelB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cancelB_actionPerformed(e);
-            }
-        });
+      public void actionPerformed(ActionEvent e) {
+        cancelB_actionPerformed(e);
+      }
+    });
     flowLayout1.setAlignment(FlowLayout.RIGHT);
     borderLayout3.setHgap(5);
     buttonsPanel.setLayout(flowLayout1);
@@ -66,16 +66,16 @@ public class SetAppDialog extends JDialog {
     okB.setPreferredSize(new Dimension(100, 26));
     okB.setText(Local.getString("Ok"));
     okB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                okB_actionPerformed(e);
-            }
-        });
+      public void actionPerformed(ActionEvent e) {
+        okB_actionPerformed(e);
+      }
+    });
     this.getRootPane().setDefaultButton(okB);
     buttonsPanel.add(okB, null);
     buttonsPanel.add(cancelB, null);
-    mPanel.add(appPanel,  BorderLayout.NORTH);
+    mPanel.add(appPanel, BorderLayout.NORTH);
     mPanel.add(buttonsPanel, BorderLayout.SOUTH);
-    this.getContentPane().add(mPanel,  BorderLayout.CENTER);
+    this.getContentPane().add(mPanel, BorderLayout.CENTER);
   }
 
   public void setDirectory(File dir) {
@@ -91,9 +91,9 @@ public class SetAppDialog extends JDialog {
     if (f.isFile()) {
       CANCELLED = false;
       this.dispose();
-    }
-    else {
-      JOptionPane.showMessageDialog(App.getFrame(), Local.getString("File not found!"), "", JOptionPane.ERROR_MESSAGE);
+    } else {
+      JOptionPane.showMessageDialog(App.getFrame(), Local.getString("File not found!"), "",
+          JOptionPane.ERROR_MESSAGE);
       this.appPanel.applicationField.setText("");
       checkOkEnabled();
     }

@@ -1,4 +1,5 @@
-package main.java.memoranda.ui.htmleditor;
+package memoranda.ui.htmleditor;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -24,18 +25,20 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 
-import main.java.memoranda.ui.htmleditor.util.Local;
+import memoranda.ui.htmleditor.util.Local;
 
 /**
  * <p>Title: </p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2002</p>
  * <p>Company: </p>
+ *
  * @author unascribed
  * @version 1.0
  */
 
 public class TdDialog extends JDialog {
+
   JPanel panel1 = new JPanel();
   BorderLayout borderLayout1 = new BorderLayout();
   JPanel buttonsPanel = new JPanel();
@@ -98,25 +101,25 @@ public class TdDialog extends JDialog {
   JPanel jPanel15 = new JPanel();
   FlowLayout flowLayout13 = new FlowLayout();
   JButton trBgcolorB = new JButton();
-  JSpinner tdColspan = new JSpinner(new SpinnerNumberModel(0,0,999,1));
-  JSpinner tdRowspan = new JSpinner(new SpinnerNumberModel(0,0,999,1));
+  JSpinner tdColspan = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
+  JSpinner tdRowspan = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
   JLabel jLabel8 = new JLabel();
   JLabel jLabel12 = new JLabel();
-  JSpinner cellpadding = new JSpinner(new SpinnerNumberModel(0,0,999,1));
+  JSpinner cellpadding = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
   FlowLayout flowLayout8 = new FlowLayout();
   FlowLayout flowLayout4 = new FlowLayout();
   Component component3;
   JLabel jLabel24 = new JLabel();
   JPanel tablePanel = new JPanel();
   GridLayout gridLayout3 = new GridLayout();
-  JSpinner border = new JSpinner(new SpinnerNumberModel(1,0,999,1));
+  JSpinner border = new JSpinner(new SpinnerNumberModel(1, 0, 999, 1));
   JPanel jPanel10 = new JPanel();
   JPanel jPanel12 = new JPanel();
   JComboBox vAlignCB = new JComboBox(valigns);
   JTextField bgcolorField = new JTextField();
   JTextField heightField = new JTextField();
   JLabel jLabel13 = new JLabel();
-  JSpinner cellspacing = new JSpinner(new SpinnerNumberModel(0,0,999,1));
+  JSpinner cellspacing = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
   JLabel jLabel17 = new JLabel();
   JLabel jLabel25 = new JLabel();
   JButton bgColorB = new JButton();
@@ -137,8 +140,7 @@ public class TdDialog extends JDialog {
     try {
       jbInit();
       pack();
-    }
-    catch(Exception ex) {
+    } catch (Exception ex) {
       ex.printStackTrace();
     }
   }
@@ -149,10 +151,10 @@ public class TdDialog extends JDialog {
 
 
   void jbInit() throws Exception {
-    border1 = BorderFactory.createEmptyBorder(5,5,5,5);
-    border2 = BorderFactory.createEtchedBorder(Color.white,new Color(142, 142, 142));
-    border3 = BorderFactory.createEmptyBorder(0,0,10,0);
-    border4 = BorderFactory.createEmptyBorder(0,5,0,5);
+    border1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+    border2 = BorderFactory.createEtchedBorder(Color.white, new Color(142, 142, 142));
+    border3 = BorderFactory.createEmptyBorder(0, 0, 10, 0);
+    border4 = BorderFactory.createEmptyBorder(0, 5, 0, 5);
     component1 = Box.createHorizontalStrut(8);
     component2 = Box.createHorizontalStrut(8);
     component11 = Box.createHorizontalStrut(8);
@@ -193,7 +195,8 @@ public class TdDialog extends JDialog {
     header.setFont(new java.awt.Font("Dialog", 0, 20));
     header.setForeground(new Color(0, 0, 124));
     header.setText(Local.getString("Table properties"));
-    header.setIcon(new ImageIcon(main.java.memoranda.ui.htmleditor.ImageDialog.class.getResource("/htmleditor/icons/tablebig.png")));
+    header.setIcon(new ImageIcon(memoranda.ui.htmleditor.ImageDialog.class.getResource(
+        "/htmleditor/icons/tablebig.png")));
     flowLayout7.setAlignment(FlowLayout.LEFT);
     flowLayout7.setHgap(2);
     flowLayout7.setVgap(2);
@@ -255,7 +258,9 @@ public class TdDialog extends JDialog {
     jLabel21.setMaximumSize(new Dimension(70, 16));
     tdBgcolorB.setMinimumSize(new Dimension(25, 25));
     tdBgcolorB.setPreferredSize(new Dimension(25, 25));
-    tdBgcolorB.setIcon(new ImageIcon(main.java.memoranda.ui.htmleditor.ImageDialog.class.getResource("/htmleditor/icons/color.png")));
+    tdBgcolorB.setIcon(new ImageIcon(
+        memoranda.ui.htmleditor.ImageDialog.class.getResource(
+            "/htmleditor/icons/color.png")));
     tdBgcolorB.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         tdBgcolorB_actionPerformed(e);
@@ -288,7 +293,9 @@ public class TdDialog extends JDialog {
     flowLayout13.setAlignment(FlowLayout.LEFT);
     trBgcolorB.setMinimumSize(new Dimension(25, 25));
     trBgcolorB.setPreferredSize(new Dimension(25, 25));
-    trBgcolorB.setIcon(new ImageIcon(main.java.memoranda.ui.htmleditor.ImageDialog.class.getResource("/htmleditor/icons/color.png")));
+    trBgcolorB.setIcon(new ImageIcon(
+        memoranda.ui.htmleditor.ImageDialog.class.getResource(
+            "/htmleditor/icons/color.png")));
     trBgcolorB.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         trBgcolorB_actionPerformed(e);
@@ -348,7 +355,8 @@ public class TdDialog extends JDialog {
         bgColorB_actionPerformed(e);
       }
     });
-    bgColorB.setIcon(new ImageIcon(main.java.memoranda.ui.htmleditor.ImageDialog.class.getResource("/htmleditor/icons/color.png")));
+    bgColorB.setIcon(new ImageIcon(memoranda.ui.htmleditor.ImageDialog.class.getResource(
+        "/htmleditor/icons/color.png")));
     bgColorB.setPreferredSize(new Dimension(25, 25));
     bgColorB.setMinimumSize(new Dimension(25, 25));
     widthField.setPreferredSize(new Dimension(50, 25));
@@ -374,7 +382,7 @@ public class TdDialog extends JDialog {
     jPanel14.add(component11, null);
     jPanel14.add(tdNowrapChB, null);
     getContentPane().add(panel1);
-    panel1.add(buttonsPanel,  BorderLayout.SOUTH);
+    panel1.add(buttonsPanel, BorderLayout.SOUTH);
     buttonsPanel.add(okB, null);
     buttonsPanel.add(cancelB, null);
     panel1.add(jTabbedPane1, BorderLayout.NORTH);
@@ -397,8 +405,8 @@ public class TdDialog extends JDialog {
     jPanel7.add(tdAlignCB, null);
     jPanel7.add(jLabel9, null);
     jPanel7.add(tdValignCB, null);
-    jTabbedPane1.add(tdPanel,  Local.getString("Table cell"));
-    jTabbedPane1.add(trPanel,  Local.getString("Table row"));
+    jTabbedPane1.add(tdPanel, Local.getString("Table cell"));
+    jTabbedPane1.add(trPanel, Local.getString("Table row"));
     tdPanel.add(jPanel14, null);
     jPanel11.add(jLabel22, null);
     jPanel11.add(trAlignCB, null);
@@ -437,7 +445,7 @@ public class TdDialog extends JDialog {
     jPanel12.add(alignCB, null);
     jPanel12.add(jLabel17, null);
     jPanel12.add(vAlignCB, null);
-    jTabbedPane1.add(tablePanel,  Local.getString("Table"));
+    jTabbedPane1.add(tablePanel, Local.getString("Table"));
   }
 
   void okB_actionPerformed(ActionEvent e) {
@@ -451,24 +459,33 @@ public class TdDialog extends JDialog {
 
 
   void tdBgcolorB_actionPerformed(ActionEvent e) {
-     Color c = JColorChooser.showDialog(this, Local.getString("Table cell background color"), Util.decodeColor(tdBgcolorField.getText()));
-     if (c == null) return;
-     tdBgcolorField.setText(Util.encodeColor(c));
-     Util.setBgcolorField(tdBgcolorField);
+    Color c = JColorChooser.showDialog(this, Local.getString("Table cell background color"),
+        Util.decodeColor(tdBgcolorField.getText()));
+    if (c == null) {
+      return;
+    }
+    tdBgcolorField.setText(Util.encodeColor(c));
+    Util.setBgcolorField(tdBgcolorField);
   }
 
   void trBgcolorB_actionPerformed(ActionEvent e) {
-     Color c = JColorChooser.showDialog(this, Local.getString("Table row background color"), Util.decodeColor(trBgcolorField.getText()));
-     if (c == null) return;
-     trBgcolorField.setText(Util.encodeColor(c));
-     Util.setBgcolorField(trBgcolorField);
+    Color c = JColorChooser.showDialog(this, Local.getString("Table row background color"),
+        Util.decodeColor(trBgcolorField.getText()));
+    if (c == null) {
+      return;
+    }
+    trBgcolorField.setText(Util.encodeColor(c));
+    Util.setBgcolorField(trBgcolorField);
   }
 
   void bgColorB_actionPerformed(ActionEvent e) {
-    Color c = JColorChooser.showDialog(this, Local.getString("Table background color"), Util.decodeColor(bgcolorField.getText()));
-     if (c == null) return;
-     bgcolorField.setText(Util.encodeColor(c));
-     Util.setBgcolorField(bgcolorField);
+    Color c = JColorChooser.showDialog(this, Local.getString("Table background color"),
+        Util.decodeColor(bgcolorField.getText()));
+    if (c == null) {
+      return;
+    }
+    bgcolorField.setText(Util.encodeColor(c));
+    Util.setBgcolorField(bgcolorField);
   }
 
 }

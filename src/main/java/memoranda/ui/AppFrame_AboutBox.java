@@ -1,4 +1,4 @@
-package main.java.memoranda.ui;
+package memoranda.ui;
 
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -14,10 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
-import main.java.memoranda.util.Local;
+import memoranda.util.Local;
 
 /**
- * 
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
@@ -27,60 +26,62 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
   JButton button1 = new JButton();
   JLabel imageLabel = new JLabel();
   JLabel lblText = new JLabel();
-  
-  String product = "Version "+App.VERSION_INFO + " (Build " + App.BUILD_INFO + ")";
+
+  String product = "Version " + App.VERSION_INFO + " (Build " + App.BUILD_INFO + ")";
   String copyright = "Copyright (c) 2003, 2004 Memoranda team";
   String url = App.WEBSITE_URL;
   String developersHead = Local.getString("Developers") + ":";
   String[] developers = {
-              "Alex Alishevskikh (alexeya@users.sourceforge.net)",
-              "Patrick Bielen (bielen@stafa.nl)",
-              "Ryan Ho (rawsushi@users.sourceforge.net)",
-              "Ivan Ribas (ivanrise@users.sourceforge.net)",
-              "Jyrki Velhonoja (velhonoja@kapsi.fi>)",
-  			  "Jeremy Whitlock (jwhitlock@starprecision.com)"              
+      "Alex Alishevskikh (alexeya@users.sourceforge.net)",
+      "Patrick Bielen (bielen@stafa.nl)",
+      "Ryan Ho (rawsushi@users.sourceforge.net)",
+      "Ivan Ribas (ivanrise@users.sourceforge.net)",
+      "Jyrki Velhonoja (velhonoja@kapsi.fi>)",
+      "Jeremy Whitlock (jwhitlock@starprecision.com)"
   };
   String othersHead = Local.getString("Other contributors") + ":";
   String[] others = {
-              "Thomas Chuffart (informatique@pierrelouiscarlier.fr)",
-              "Willy Dobe (wdobe@gmx.de)",
-              "Yunjie Liu (liu-610@163.com)",
-              "Kenneth J. Pouncey (kjpou@pt.lu)",
-              "Michael Radtke (mradtke@abigale.de)",
-              "Carel-J Rischmuller (carel-j.rischmuller@epiuse.com)",
-              "Milena Vitali-Charewicz (milo22370@yahoo.com)",
-              "Toru Watanabe (t-wata@cablenet.ne.jp)"                            
- };
-    
+      "Thomas Chuffart (informatique@pierrelouiscarlier.fr)",
+      "Willy Dobe (wdobe@gmx.de)",
+      "Yunjie Liu (liu-610@163.com)",
+      "Kenneth J. Pouncey (kjpou@pt.lu)",
+      "Michael Radtke (mradtke@abigale.de)",
+      "Carel-J Rischmuller (carel-j.rischmuller@epiuse.com)",
+      "Milena Vitali-Charewicz (milo22370@yahoo.com)",
+      "Toru Watanabe (t-wata@cablenet.ne.jp)"
+  };
+
   JLayeredPane layeredPane;
   ImageIcon image;
   JLabel imgLabel;
-                                   
+
   public AppFrame_AboutBox(Frame parent) {
     super(parent);
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     try {
       jbInit();
-    }
-    catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     setSize(400, 500);
   }
+
   //Component initialization
-  private void jbInit() throws Exception  {    
+  private void jbInit() throws Exception {
     String text = "<html>";
-    text += "<b>"+product+"</b><br><br>";
+    text += "<b>" + product + "</b><br><br>";
     text += copyright + "<br>" + url + "<br><br>";
-    text += "<b>" + developersHead + "</b><br>";    
-    for (int i = 0; i < developers.length; i++)
-        text += developers[i]+"<br>";    
-    text += "<br><b>" + othersHead + "</b><br>";    
-    for (int i = 0; i < others.length; i++)
-        text += others[i]+"<br>"; 
-    
+    text += "<b>" + developersHead + "</b><br>";
+    for (int i = 0; i < developers.length; i++) {
+      text += developers[i] + "<br>";
+    }
+    text += "<br><b>" + othersHead + "</b><br>";
+    for (int i = 0; i < others.length; i++) {
+      text += others[i] + "<br>";
+    }
+
     text += "</html>";
-    
+
     image = new ImageIcon(AppFrame_AboutBox.class.getResource("/ui/memoranda.png"));
     this.setTitle(Local.getString("About Memoranda"));
     setResizable(false);
@@ -89,7 +90,6 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
     lblText.setText(text);
     lblText.setBounds(10, 55, 300, 400);
 
-    
     button1.setText(Local.getString("Ok"));
     button1.setBounds(150, 415, 95, 30);
     button1.addActionListener(this);
@@ -101,10 +101,11 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
     imgLabel = new JLabel(image);
     imgLabel.setBounds(0, 0, image.getIconWidth(), image.getIconHeight());
     layeredPane.add(imgLabel, new Integer(1));
-    layeredPane.add(lblText, new Integer(2));    
+    layeredPane.add(lblText, new Integer(2));
     layeredPane.add(button1, new Integer(2));
     this.getContentPane().setBackground(new Color(251, 197, 63));
   }
+
   //Overridden so we can exit when window is closed
   protected void processWindowEvent(WindowEvent e) {
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -112,10 +113,12 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
     }
     super.processWindowEvent(e);
   }
+
   //Close the dialog
   void cancel() {
     dispose();
   }
+
   //Close the dialog on a button event
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == button1) {
