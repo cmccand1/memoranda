@@ -1,4 +1,4 @@
-package main.java.memoranda.ui;
+package memoranda.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,18 +25,17 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import main.java.memoranda.CurrentProject;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
-import main.java.memoranda.date.CalendarDate;
-import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.util.Local;
+import memoranda.projects.CurrentProject;
+import memoranda.notes.NoteList;
+import memoranda.projects.Project;
+import memoranda.projects.ProjectListener;
+import memoranda.resources.ResourcesList;
+import memoranda.tasks.TaskList;
+import memoranda.date.CalendarDate;
+import memoranda.date.CurrentDate;
+import memoranda.util.Local;
 
 /**
- * 
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
@@ -55,10 +54,11 @@ public class JNCalendarPanel extends JPanel {
   JButton dayBackB = new JButton();
   JComboBox monthsCB = new JComboBox(Local.getMonthNames());
   BorderLayout borderLayout4 = new BorderLayout();
-  JNCalendar jnCalendar = new JNCalendar(CurrentDate.get());
+  public JNCalendar jnCalendar = new JNCalendar(CurrentDate.get());
   JPanel jnCalendarPanel = new JPanel();
   BorderLayout borderLayout5 = new BorderLayout();
-  JSpinner yearSpin = new JSpinner(new SpinnerNumberModel(jnCalendar.get().getYear(), 1980, 2999, 1));
+  JSpinner yearSpin = new JSpinner(
+      new SpinnerNumberModel(jnCalendar.get().getYear(), 1980, 2999, 1));
   JSpinner.NumberEditor yearSpinner = new JSpinner.NumberEditor(yearSpin, "####");
 
   boolean ignoreChange = false;
@@ -71,48 +71,51 @@ public class JNCalendarPanel extends JPanel {
   public JNCalendarPanel() {
     try {
       jbInit();
-    }
-    catch(Exception ex) {
+    } catch (Exception ex) {
       new ExceptionDialog(ex);
     }
   }
 
   public Action dayBackAction =
-        new AbstractAction(
-            "Go one day back",
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/back16.png"))) {
+      new AbstractAction(
+          "Go one day back",
+          new ImageIcon(
+              memoranda.ui.AppFrame.class.getResource("/ui/icons/back16.png"))) {
         public void actionPerformed(ActionEvent e) {
-            dayBackB_actionPerformed(e);
+          dayBackB_actionPerformed(e);
         }
-  };
-  
+      };
+
   public Action dayForwardAction =
-        new AbstractAction(
-            "Go one day forward",
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/forward16.png"))) {
+      new AbstractAction(
+          "Go one day forward",
+          new ImageIcon(
+              memoranda.ui.AppFrame.class.getResource("/ui/icons/forward16.png"))) {
         public void actionPerformed(ActionEvent e) {
-            dayForwardB_actionPerformed(e);
+          dayForwardB_actionPerformed(e);
         }
-  };
-  
+      };
+
   public Action todayAction =
-        new AbstractAction(
-            "Go to today",
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/today16.png"))) {
+      new AbstractAction(
+          "Go to today",
+          new ImageIcon(
+              memoranda.ui.AppFrame.class.getResource("/ui/icons/today16.png"))) {
         public void actionPerformed(ActionEvent e) {
-            todayB_actionPerformed(e);
+          todayB_actionPerformed(e);
         }
-  };
-      
+      };
+
   void jbInit() throws Exception {
     //dayBackAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, KeyEvent.ALT_MASK));
     //dayForwardAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, KeyEvent.ALT_MASK));
-    todayAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_MASK));
-    
+    todayAction.putValue(Action.ACCELERATOR_KEY,
+        KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_MASK));
+
     monthsCB.setRequestFocusEnabled(false);
     monthsCB.setMaximumRowCount(12);
-    monthsCB.setPreferredSize(new Dimension(50 , 20));
-    border1 = BorderFactory.createEmptyBorder(0,0,5,0);
+    monthsCB.setPreferredSize(new Dimension(50, 20));
+    border1 = BorderFactory.createEmptyBorder(0, 0, 5, 0);
     border2 = BorderFactory.createEmptyBorder();
     this.setLayout(new BorderLayout());
     navigationBar.setFloatable(false);
@@ -123,15 +126,16 @@ public class JNCalendarPanel extends JPanel {
     dayForwardB.setRequestFocusEnabled(false);
     dayForwardB.setBorderPainted(false);
     dayForwardB.setFocusPainted(false);
-    dayForwardB.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/forward.png")));
+    dayForwardB.setIcon(
+        new ImageIcon(memoranda.ui.AppFrame.class.getResource("/ui/icons/forward.png")));
     dayForwardB.setText("");
     dayForwardB.setToolTipText(Local.getString("One day forward"));
-    
+
     dayForwardBPanel.setAlignmentX((float) 0.0);
     dayForwardBPanel.setMinimumSize(new Dimension(40, 24));
     dayForwardBPanel.setOpaque(false);
     dayForwardBPanel.setPreferredSize(new Dimension(40, 24));
-    
+
     todayB.setAction(todayAction);
     todayB.setMinimumSize(new Dimension(24, 24));
     todayB.setOpaque(false);
@@ -139,15 +143,16 @@ public class JNCalendarPanel extends JPanel {
     todayB.setRequestFocusEnabled(false);
     todayB.setBorderPainted(false);
     todayB.setFocusPainted(false);
-    todayB.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/today.png")));
+    todayB.setIcon(
+        new ImageIcon(memoranda.ui.AppFrame.class.getResource("/ui/icons/today.png")));
     todayB.setText("");
     todayB.setToolTipText(Local.getString("To today"));
-    
+
     dayBackBPanel.setAlignmentX((float) 1.5);
     dayBackBPanel.setMinimumSize(new Dimension(40, 24));
     dayBackBPanel.setOpaque(false);
     dayBackBPanel.setPreferredSize(new Dimension(40, 24));
-    
+
     dayBackB.setAction(dayBackAction);
     dayBackB.setMinimumSize(new Dimension(24, 24));
     dayBackB.setOpaque(false);
@@ -156,13 +161,14 @@ public class JNCalendarPanel extends JPanel {
     dayBackB.setToolTipText("");
     dayBackB.setBorderPainted(false);
     dayBackB.setFocusPainted(false);
-    dayBackB.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/back.png")));
+    dayBackB.setIcon(
+        new ImageIcon(memoranda.ui.AppFrame.class.getResource("/ui/icons/back.png")));
     dayBackB.setText("");
     dayBackB.setToolTipText(Local.getString("One day back"));
-    
+
     yearSpin.setPreferredSize(new Dimension(70, 20));
     yearSpin.setRequestFocusEnabled(false);
-        yearSpin.setEditor(yearSpinner);
+    yearSpin.setEditor(yearSpinner);
     navbPanel.setMinimumSize(new Dimension(202, 30));
     navbPanel.setOpaque(false);
     navbPanel.setPreferredSize(new Dimension(155, 30));
@@ -181,14 +187,14 @@ public class JNCalendarPanel extends JPanel {
     todayBPanel.add(todayB, null);
     navbPanel.add(dayForwardBPanel, BorderLayout.EAST);
     dayForwardBPanel.add(dayForwardB, null);
-    this.add(mntyPanel,  BorderLayout.SOUTH);
+    this.add(mntyPanel, BorderLayout.SOUTH);
     mntyPanel.add(monthsCB, BorderLayout.CENTER);
-    mntyPanel.add(yearSpin,  BorderLayout.EAST);
-    this.add(jnCalendarPanel,  BorderLayout.CENTER);
+    mntyPanel.add(yearSpin, BorderLayout.EAST);
+    this.add(jnCalendarPanel, BorderLayout.CENTER);
     jnCalendar.getTableHeader().setPreferredSize(new Dimension(200, 15));
     jnCalendarPanel.add(jnCalendar.getTableHeader(), BorderLayout.NORTH);
     jnCalendarPanel.add(jnCalendar, BorderLayout.CENTER);
-    jnCalendar.addSelectionListener(new ActionListener()  {
+    jnCalendar.addSelectionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         setCurrentDateDay(jnCalendar.get(), jnCalendar.get().getDay());
       }
@@ -213,16 +219,17 @@ public class JNCalendarPanel extends JPanel {
       }
     });
     CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {}
-            public void projectWasChanged() {
-                jnCalendar.updateUI();
-            }
-        });
+      public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {
+      }
 
+      public void projectWasChanged() {
+        jnCalendar.updateUI();
+      }
+    });
 
     refreshView();
     yearSpin.setBorder(border2);
-    
+
   }
 
   public void set(CalendarDate date) {
@@ -235,17 +242,23 @@ public class JNCalendarPanel extends JPanel {
   }
 
   public void addSelectionListener(ActionListener al) {
-        selectionListeners.add(al);
-    }
+    selectionListeners.add(al);
+  }
 
   private void notifyListeners() {
-        for (Enumeration en = selectionListeners.elements(); en.hasMoreElements();)
-             ((ActionListener) en.nextElement()).actionPerformed(new ActionEvent(this, 0, "Calendar event"));
+    for (Enumeration en = selectionListeners.elements(); en.hasMoreElements(); ) {
+      ((ActionListener) en.nextElement()).actionPerformed(
+          new ActionEvent(this, 0, "Calendar event"));
+    }
   }
 
   private void setCurrentDateDay(CalendarDate dt, int d) {
-    if (ignoreChange) return;
-    if (_date.equals(dt)) return;
+    if (ignoreChange) {
+      return;
+    }
+    if (_date.equals(dt)) {
+      return;
+    }
     _date = new CalendarDate(d, _date.getMonth(), _date.getYear());
     notifyListeners();
   }
@@ -259,22 +272,28 @@ public class JNCalendarPanel extends JPanel {
   }
 
   void monthsCB_actionPerformed(ActionEvent e) {
-    if (ignoreChange) return;
+    if (ignoreChange) {
+      return;
+    }
     _date = new CalendarDate(_date.getDay(), monthsCB.getSelectedIndex(), _date.getYear());
     jnCalendar.set(_date);
     notifyListeners();
   }
 
   void yearSpin_actionPerformed() {
-    if (ignoreChange) return;
-    _date = new CalendarDate(_date.getDay(), _date.getMonth(), ((Integer)yearSpin.getValue()).intValue());
+    if (ignoreChange) {
+      return;
+    }
+    _date = new CalendarDate(_date.getDay(), _date.getMonth(),
+        ((Integer) yearSpin.getValue()).intValue());
     jnCalendar.set(_date);
     notifyListeners();
   }
 
   void dayBackB_actionPerformed(ActionEvent e) {
     Calendar cal = _date.getCalendar();
-    cal.add(Calendar.DATE, -1); cal.getTime();
+    cal.add(Calendar.DATE, -1);
+    cal.getTime();
     _date = new CalendarDate(cal);
     refreshView();
     notifyListeners();
@@ -288,12 +307,12 @@ public class JNCalendarPanel extends JPanel {
 
   void dayForwardB_actionPerformed(ActionEvent e) {
     Calendar cal = _date.getCalendar();
-    cal.add(Calendar.DATE, 1); cal.getTime();
+    cal.add(Calendar.DATE, 1);
+    cal.getTime();
     _date = new CalendarDate(cal);
     refreshView();
     notifyListeners();
   }
-
 
 
 }
