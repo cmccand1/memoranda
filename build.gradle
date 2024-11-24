@@ -4,15 +4,11 @@ plugins {
     id "com.github.spotbugs" version "6.0.26"
 }
 
-mainClassName = 'memoranda.Start'
-compileJava.options.encoding = 'UTF-8'
-
-tasks.test {
-    useJUnitPlatform() // Use JUnit 5
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
+application {
+    mainClassName = 'memoranda.Start'
+    compileJava.options.encoding = 'UTF-8'
 }
+
 
 spotbugs {
     toolVersion = "4.8.6"
@@ -32,3 +28,9 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
 }
 
+test {
+    useJUnitPlatform() // Use JUnit 5
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
