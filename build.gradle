@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id "com.github.spotbugs" version "6.0.26"
 }
 
 mainClassName = 'memoranda.Start'
@@ -12,6 +13,10 @@ tasks.test {
     testLogging {
         events "passed", "skipped", "failed"
     }
+}
+
+spotbugs {
+    toolVersion = "4.8.6"
 }
 
 // Repositories and dependencies for code go here
