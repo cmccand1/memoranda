@@ -9,12 +9,15 @@ import java.util.Locale;
 import memoranda.date.CalendarDate;
 
 import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides locale info
  */
-/*$Id: Local.java,v 1.6 2004/10/11 08:48:21 alexeya Exp $*/
 public class Local {
+
+  private static final Logger logger = LoggerFactory.getLogger(Local.class);
 
   static Locale currentLocale = Locale.getDefault();
   static LoadableProperties messages = new LoadableProperties();
@@ -48,25 +51,19 @@ public class Local {
       }
     } else {
       currentLocale = new Locale("en", "US");
-      /*DEBUG*/
-      System.out.println("* DEBUG: Locales are disabled");
+      logger.debug("Locales are disabled");
     }
     if (messages.size() == 0) {
       messages = null;
     }
 
     /*** DEBUG PURPOSES ***/
-    System.out.println("Default locale: " + currentLocale.getDisplayName());
+    logger.debug("Default locale: {}", currentLocale.getDisplayName());
     if (messages != null) {
-      System.out.println(
-          "Use local messages: messages_"
-              + currentLocale.getLanguage()
-              + ".properties");
+      logger.debug("Use local messages: messages_{}.properties", currentLocale.getLanguage());
     } else {
-      System.out.println(
-          "* DEBUG: Locales are disabled or not found: messages_"
-              + currentLocale.getLanguage()
-              + ".properties");
+      logger.debug("Locales are disabled or not found: messages_{}.properties",
+          currentLocale.getLanguage());
     }
     /**********************/
   }
