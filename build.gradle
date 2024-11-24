@@ -21,10 +21,16 @@ repositories {
 }
 
 dependencies {
+    // Legacy dependencies for XML/HTML utilities
     implementation 'com.io7m.xom:xom:1.2.+'
     implementation 'net.sourceforge.nekohtml:nekohtml:1.9.+'
+    // Logging dependencies
+    implementation 'org.slf4j:slf4j-api:1.7.36' // Logging interface
+    implementation 'ch.qos.logback:logback-classic:1.4.14' // Logging implementation
+    // JUnit 5 dependencies
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.0')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.7.0') // Engine to run tests
+    // Mockito dependencies
     testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
 }
 
