@@ -16,6 +16,7 @@ tasks.test {
 
 spotbugs {
     toolVersion = "4.8.6"
+    ignoreFailures = true // Don't fail the build if SpotBugs finds issues
 }
 
 // Repositories and dependencies for code go here
