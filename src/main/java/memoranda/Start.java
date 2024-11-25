@@ -40,13 +40,16 @@ public class Start {
     // Select the port number to use
     String desiredPortString = Configuration.get("PORT_NUMBER").toString().trim();
     if (!desiredPortString.isEmpty()) {
-      int desiredPort = Integer.parseInt(desiredPortString);
-      if (isValidPortNo(desiredPort)) {
-        port = desiredPort;
-        logger.debug("Port {} used.", port);
-      } else {
-        port = DEFAULT_PORT;
-        logger.debug("Invalid port number {}. Using default port {}.", desiredPort, port);
+      try {
+        int desiredPort = Integer.parseInt(desiredPortString);
+        if (isValidPortNo(desiredPort)) {
+          port = desiredPort;
+          logger.debug("Port {} used.", port);
+        } else {
+          logger.debug("Invalid port number {}. Using default port {}.", desiredPort, port);
+        }
+      } catch (NumberFormatException e) {
+        logger.error("Invalid port number {}. Using default port {}.", desiredPortString, port);
       }
     }
 
