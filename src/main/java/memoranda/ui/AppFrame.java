@@ -267,30 +267,18 @@ public class AppFrame extends JFrame {
 
     jMenuFile.setText(Local.getString("File"));
     jMenuFileExit.setText(Local.getString("Exit"));
-    jMenuFileExit.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        doExit();
-      }
-    });
+    jMenuFileExit.addActionListener(e -> doExit());
     jMenuHelp.setText(Local.getString("Help"));
 
     jMenuHelpGuide.setText(Local.getString("Online user's guide"));
     jMenuHelpGuide.setIcon(new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(
         "/ui/icons/help.png"))));
-    jMenuHelpGuide.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        jMenuHelpGuide_actionPerformed(e);
-      }
-    });
+    jMenuHelpGuide.addActionListener(this::jMenuHelpGuide_actionPerformed);
 
     jMenuHelpWeb.setText(Local.getString("Memoranda web site"));
     jMenuHelpWeb.setIcon(new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(
         "/ui/icons/web.png"))));
-    jMenuHelpWeb.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        jMenuHelpWeb_actionPerformed(e);
-      }
-    });
+    jMenuHelpWeb.addActionListener(this::jMenuHelpWeb_actionPerformed);
 
     jMenuHelpBug.setText(Local.getString("Report a bug"));
     jMenuHelpBug.addActionListener(new ActionListener() {
@@ -300,11 +288,7 @@ public class AppFrame extends JFrame {
     });
 
     jMenuHelpAbout.setText(Local.getString("About Memoranda"));
-    jMenuHelpAbout.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        jMenuHelpAbout_actionPerformed(e);
-      }
-    });
+    jMenuHelpAbout.addActionListener(this::jMenuHelpAbout_actionPerformed);
     //jButton3.setIcon(image3);
     jButton3.setToolTipText(Local.getString("Help"));
     splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -569,11 +553,7 @@ public class AppFrame extends JFrame {
       }
     });
 
-    java.awt.event.ActionListener setMenusDisabled = new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        setEnabledEditorMenus(false);
-      }
-    };
+    java.awt.event.ActionListener setMenusDisabled = e -> setEnabledEditorMenus(false);
 
     this.workPanel.dailyItemsPanel.taskB
         .addActionListener(setMenusDisabled);
@@ -586,11 +566,7 @@ public class AppFrame extends JFrame {
     this.workPanel.agendaB.addActionListener(setMenusDisabled);
 
     this.workPanel.notesB.addActionListener(
-        new java.awt.event.ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            setEnabledEditorMenus(true);
-          }
-        });
+        e -> setEnabledEditorMenus(true));
 
     Object fwo = Context.get("FRAME_WIDTH");
     Object fho = Context.get("FRAME_HEIGHT");
@@ -706,8 +682,8 @@ public class AppFrame extends JFrame {
   }
 
   private static void exitNotify() {
-    for (int i = 0; i < exitListeners.size(); i++) {
-      ((ActionListener) exitListeners.get(i)).actionPerformed(null);
+    for (Object exitListener : exitListeners) {
+      ((ActionListener) exitListener).actionPerformed(null);
     }
   }
 
@@ -933,7 +909,7 @@ public class AppFrame extends JFrame {
     boolean nument = (ei == 2);
     File f = chooser.getSelectedFile();
     boolean xhtml =
-        chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
+        chooser.getFileFilter().getDescription().contains("XHTML");
     CurrentProject.save();
     ProjectExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml,
         dlg.splitChB.isSelected(), true, nument, dlg.titlesAsHeadersChB.isSelected(), false);
@@ -1084,8 +1060,8 @@ public class AppFrame extends JFrame {
     }
     Context.put("LAST_SELECTED_NOTE_FILE", chooser.getSelectedFile());
     java.io.File f = chooser.getSelectedFile();
-    HashMap<String, String> notesName = new HashMap<String, String>();
-    HashMap<String, String> notesContent = new HashMap<String, String>();
+    HashMap<String, String> notesName = new HashMap<>();
+    HashMap<String, String> notesContent = new HashMap<>();
     Builder parser = new Builder();
     String id = "", name = "", content = "";
     try {
