@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
@@ -19,13 +20,12 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import memoranda.projects.CurrentProject;
 import memoranda.resources.Resource;
 import memoranda.ui.AddResourceDialog;
 import memoranda.ui.App;
+import memoranda.ui.AppFrame;
 import memoranda.ui.ExceptionDialog;
 import memoranda.ui.SetAppDialog;
 import memoranda.util.AppList;
@@ -37,16 +37,15 @@ import memoranda.util.Util;
 
 import java.io.*;
 
-/*$Id: ResourcesPanel.java,v 1.13 2007/03/20 08:22:41 alexeya Exp $*/
 public class ResourcesPanel extends JPanel {
 
   BorderLayout borderLayout1 = new BorderLayout();
   JToolBar toolBar = new JToolBar();
-  JButton newResB = new JButton();
+  JButton newResourceButton = new JButton();
   ResourcesTable resourcesTable = new ResourcesTable();
-  JButton removeResB = new JButton();
+  JButton removeResourceButton = new JButton();
   JScrollPane scrollPane = new JScrollPane();
-  JButton refreshB = new JButton();
+  JButton refreshButton = new JButton();
   JPopupMenu resPPMenu = new JPopupMenu();
   JMenuItem ppRun = new JMenuItem();
   JMenuItem ppRemoveRes = new JMenuItem();
@@ -64,40 +63,32 @@ public class ResourcesPanel extends JPanel {
   void jbInit() throws Exception {
     toolBar.setFloatable(false);
     this.setLayout(borderLayout1);
-    newResB.setIcon(
+    newResourceButton.setIcon(
         new ImageIcon(
-            memoranda.ui.AppFrame.class.getResource("/ui/icons/addresource.png")));
-    newResB.setEnabled(true);
-    newResB.setMaximumSize(new Dimension(24, 24));
-    newResB.setMinimumSize(new Dimension(24, 24));
-    newResB.setToolTipText(Local.getString("New resource"));
-    newResB.setRequestFocusEnabled(false);
-    newResB.setPreferredSize(new Dimension(24, 24));
-    newResB.setFocusable(false);
-    newResB.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        newResB_actionPerformed(e);
-      }
-    });
-    newResB.setBorderPainted(false);
+            Objects.requireNonNull(AppFrame.class.getResource("/ui/icons/addresource.png"))));
+    newResourceButton.setEnabled(true);
+    newResourceButton.setMaximumSize(new Dimension(24, 24));
+    newResourceButton.setMinimumSize(new Dimension(24, 24));
+    newResourceButton.setToolTipText(Local.getString("New resource"));
+    newResourceButton.setRequestFocusEnabled(false);
+    newResourceButton.setPreferredSize(new Dimension(24, 24));
+    newResourceButton.setFocusable(false);
+    newResourceButton.addActionListener(this::newResourceButton_actionPerformed);
+    newResourceButton.setBorderPainted(false);
     resourcesTable.setMaximumSize(new Dimension(32767, 32767));
     resourcesTable.setRowHeight(24);
-    removeResB.setBorderPainted(false);
-    removeResB.setFocusable(false);
-    removeResB.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        removeResB_actionPerformed(e);
-      }
-    });
-    removeResB.setPreferredSize(new Dimension(24, 24));
-    removeResB.setRequestFocusEnabled(false);
-    removeResB.setToolTipText(Local.getString("Remove resource"));
-    removeResB.setMinimumSize(new Dimension(24, 24));
-    removeResB.setMaximumSize(new Dimension(24, 24));
-    removeResB.setIcon(
+    removeResourceButton.setBorderPainted(false);
+    removeResourceButton.setFocusable(false);
+    removeResourceButton.addActionListener(this::removeResourceButton_actionPerformed);
+    removeResourceButton.setPreferredSize(new Dimension(24, 24));
+    removeResourceButton.setRequestFocusEnabled(false);
+    removeResourceButton.setToolTipText(Local.getString("Remove resource"));
+    removeResourceButton.setMinimumSize(new Dimension(24, 24));
+    removeResourceButton.setMaximumSize(new Dimension(24, 24));
+    removeResourceButton.setIcon(
         new ImageIcon(
-            memoranda.ui.AppFrame.class.getResource("/ui/icons/removeresource.png")));
-    removeResB.setEnabled(false);
+            Objects.requireNonNull(AppFrame.class.getResource("/ui/icons/removeresource.png"))));
+    removeResourceButton.setEnabled(false);
     scrollPane.getViewport().setBackground(Color.white);
     toolBar.addSeparator(new Dimension(8, 24));
     toolBar.addSeparator(new Dimension(8, 24));
@@ -106,75 +97,53 @@ public class ResourcesPanel extends JPanel {
     scrollPane.addMouseListener(ppListener);
     resourcesTable.addMouseListener(ppListener);
 
-    resourcesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-      public void valueChanged(ListSelectionEvent e) {
-        boolean enbl = (resourcesTable.getRowCount() > 0) && (resourcesTable.getSelectedRow() > -1);
+    resourcesTable.getSelectionModel().addListSelectionListener(e -> {
+      boolean enbl = (resourcesTable.getRowCount() > 0) && (resourcesTable.getSelectedRow() > -1);
 
-        removeResB.setEnabled(enbl);
-        ppRemoveRes.setEnabled(enbl);
-        ppRun.setEnabled(enbl);
-      }
+      removeResourceButton.setEnabled(enbl);
+      ppRemoveRes.setEnabled(enbl);
+      ppRun.setEnabled(enbl);
     });
-    refreshB.setBorderPainted(false);
-    refreshB.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        refreshB_actionPerformed(e);
-      }
-    });
-    refreshB.setFocusable(false);
-    refreshB.setPreferredSize(new Dimension(24, 24));
-    refreshB.setRequestFocusEnabled(false);
-    refreshB.setToolTipText(Local.getString("Refresh"));
-    refreshB.setMinimumSize(new Dimension(24, 24));
-    refreshB.setMaximumSize(new Dimension(24, 24));
-    refreshB.setEnabled(true);
-    refreshB.setIcon(
+    refreshButton.setBorderPainted(false);
+    refreshButton.addActionListener(this::refreshButton_actionPerformed);
+    refreshButton.setFocusable(false);
+    refreshButton.setPreferredSize(new Dimension(24, 24));
+    refreshButton.setRequestFocusEnabled(false);
+    refreshButton.setToolTipText(Local.getString("Refresh"));
+    refreshButton.setMinimumSize(new Dimension(24, 24));
+    refreshButton.setMaximumSize(new Dimension(24, 24));
+    refreshButton.setEnabled(true);
+    refreshButton.setIcon(
         new ImageIcon(
-            memoranda.ui.AppFrame.class.getResource("/ui/icons/refreshres.png")));
+            Objects.requireNonNull(AppFrame.class.getResource("/ui/icons/refreshres.png"))));
     resPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
     ppRun.setFont(new java.awt.Font("Dialog", 1, 11));
     ppRun.setText(Local.getString("Open resource") + "...");
-    ppRun.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ppRun_actionPerformed(e);
-      }
-    });
+    ppRun.addActionListener(this::ppRun_actionPerformed);
     ppRun.setEnabled(false);
 
     ppRemoveRes.setFont(new java.awt.Font("Dialog", 1, 11));
     ppRemoveRes.setText(Local.getString("Remove resource"));
-    ppRemoveRes.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ppRemoveRes_actionPerformed(e);
-      }
-    });
+    ppRemoveRes.addActionListener(this::ppRemoveRes_actionPerformed);
     ppRemoveRes.setIcon(new ImageIcon(
-        memoranda.ui.AppFrame.class.getResource("/ui/icons/removeresource.png")));
+        Objects.requireNonNull(AppFrame.class.getResource("/ui/icons/removeresource.png"))));
     ppRemoveRes.setEnabled(false);
     ppNewRes.setFont(new java.awt.Font("Dialog", 1, 11));
     ppNewRes.setText(Local.getString("New resource") + "...");
-    ppNewRes.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ppNewRes_actionPerformed(e);
-      }
-    });
+    ppNewRes.addActionListener(this::ppNewRes_actionPerformed);
     ppNewRes.setIcon(new ImageIcon(
-        memoranda.ui.AppFrame.class.getResource("/ui/icons/addresource.png")));
+        Objects.requireNonNull(AppFrame.class.getResource("/ui/icons/addresource.png"))));
 
     ppRefresh.setFont(new java.awt.Font("Dialog", 1, 11));
     ppRefresh.setText(Local.getString("Refresh"));
-    ppRefresh.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ppRefresh_actionPerformed(e);
-      }
-    });
+    ppRefresh.addActionListener(this::ppRefresh_actionPerformed);
     ppRefresh.setIcon(new ImageIcon(
-        memoranda.ui.AppFrame.class.getResource("/ui/icons/refreshres.png")));
+        Objects.requireNonNull(AppFrame.class.getResource("/ui/icons/refreshres.png"))));
 
-    toolBar.add(newResB, null);
-    toolBar.add(removeResB, null);
+    toolBar.add(newResourceButton, null);
+    toolBar.add(removeResourceButton, null);
     toolBar.addSeparator();
-    toolBar.add(refreshB, null);
+    toolBar.add(refreshButton, null);
     this.add(scrollPane, BorderLayout.CENTER);
     scrollPane.getViewport().add(resourcesTable, null);
     this.add(toolBar, BorderLayout.NORTH);
@@ -202,7 +171,7 @@ public class ResourcesPanel extends JPanel {
     });
   }
 
-  void newResB_actionPerformed(ActionEvent e) {
+  void newResourceButton_actionPerformed(ActionEvent e) {
     AddResourceDialog dlg = new AddResourceDialog(App.getFrame(), Local.getString("New resource"));
     Dimension frmSize = App.getFrame().getSize();
     Point loc = App.getFrame().getLocation();
@@ -224,7 +193,6 @@ public class ResourcesPanel extends JPanel {
       if (!checkApp(mt)) {
         return;
       }
-      // if file if projectFile, than copy the file and change url.
       if (dlg.projectFileCB.isSelected()) {
         fpath = copyFileToProjectDir(fpath);
         CurrentProject.getResourcesList().addResource(fpath, false, true);
@@ -242,7 +210,7 @@ public class ResourcesPanel extends JPanel {
     }
   }
 
-  void removeResB_actionPerformed(ActionEvent e) {
+  void removeResourceButton_actionPerformed(ActionEvent e) {
     int[] toRemove = resourcesTable.getSelectedRows();
     String msg = "";
     if (toRemove.length == 1) {
@@ -266,10 +234,10 @@ public class ResourcesPanel extends JPanel {
     if (n != JOptionPane.YES_OPTION) {
       return;
     }
-    for (int i = 0; i < toRemove.length; i++) {
+    for (int j : toRemove) {
       CurrentProject.getResourcesList().removeResource(
           ((Resource) resourcesTable.getModel()
-              .getValueAt(toRemove[i], ResourcesTable._RESOURCE)).getPath());
+              .getValueAt(j, ResourcesTable._RESOURCE)).getPath());
     }
     resourcesTable.tableChanged();
   }
@@ -380,7 +348,7 @@ public class ResourcesPanel extends JPanel {
     public void mouseClicked(MouseEvent e) {
       if ((e.getClickCount() == 2) && (resourcesTable.getSelectedRow() > -1)) {
         String path = (String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 3);
-        if (path.length() > 0) {
+        if (!path.isEmpty()) {
           runApp(path);
         } else {
           runBrowser((String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 0));
@@ -405,13 +373,13 @@ public class ResourcesPanel extends JPanel {
 
   }
 
-  void refreshB_actionPerformed(ActionEvent e) {
+  void refreshButton_actionPerformed(ActionEvent e) {
     resourcesTable.tableChanged();
   }
 
   void ppRun_actionPerformed(ActionEvent e) {
     String path = (String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 3);
-    if (path.length() > 0) {
+    if (!path.isEmpty()) {
       runApp(path);
     } else {
       runBrowser((String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 0));
@@ -419,11 +387,11 @@ public class ResourcesPanel extends JPanel {
   }
 
   void ppRemoveRes_actionPerformed(ActionEvent e) {
-    removeResB_actionPerformed(e);
+    removeResourceButton_actionPerformed(e);
   }
 
   void ppNewRes_actionPerformed(ActionEvent e) {
-    newResB_actionPerformed(e);
+    newResourceButton_actionPerformed(e);
   }
 
   void ppRefresh_actionPerformed(ActionEvent e) {
