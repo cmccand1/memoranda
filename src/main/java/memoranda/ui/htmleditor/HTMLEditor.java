@@ -1228,7 +1228,7 @@ public class HTMLEditor extends JPanel {
     }
 
     if (charattrs
-        .containsAttribute(StyleConstants.Bold, new Boolean(true))) {
+        .containsAttribute(StyleConstants.Bold, Boolean.TRUE)) {
       boldActionB.setBorder(border2);
       bold = true;
     } else if (bold) {
@@ -1237,7 +1237,7 @@ public class HTMLEditor extends JPanel {
     }
     boldActionB.setBorderPainted(bold);
     if (charattrs
-        .containsAttribute(StyleConstants.Italic, new Boolean(true))) {
+        .containsAttribute(StyleConstants.Italic, Boolean.TRUE)) {
       italicActionB.setBorder(border2);
       italic = true;
     } else if (italic) {
@@ -1246,7 +1246,7 @@ public class HTMLEditor extends JPanel {
     }
     italicActionB.setBorderPainted(italic);
     if (charattrs
-        .containsAttribute(StyleConstants.Underline, new Boolean(true))) {
+        .containsAttribute(StyleConstants.Underline, Boolean.TRUE)) {
       underActionB.setBorder(border2);
       under = true;
     } else if (under) {

@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.text.DateFormat;
 
+import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -97,8 +98,8 @@ public class EditorPanel extends JPanel {
 
   public Action insertTimeAction = new AbstractAction(Local
       .getString("Insert current time"), new ImageIcon(
-      memoranda.ui.AppFrame.class
-          .getResource("/ui/icons/time.png"))) {
+      Objects.requireNonNull(AppFrame.class
+          .getResource("/ui/icons/time.png")))) {
     public void actionPerformed(ActionEvent e) {
       insTimeB_actionPerformed(e);
     }
@@ -106,8 +107,8 @@ public class EditorPanel extends JPanel {
 
   public Action insertDateAction = new AbstractAction(Local
       .getString("Insert current date"), new ImageIcon(
-      memoranda.ui.AppFrame.class
-          .getResource("/ui/icons/date.png"))) {
+      Objects.requireNonNull(AppFrame.class
+          .getResource("/ui/icons/date.png")))) {
     public void actionPerformed(ActionEvent e) {
       insDateB_actionPerformed(e);
     }
@@ -120,8 +121,8 @@ public class EditorPanel extends JPanel {
    */
 
   public Action newAction = new AbstractAction(Local.getString("New note"),
-      new ImageIcon(memoranda.ui.AppFrame.class
-          .getResource("/ui/icons/filenew.png"))) {
+      new ImageIcon(Objects.requireNonNull(AppFrame.class
+          .getResource("/ui/icons/filenew.png")))) {
     public void actionPerformed(ActionEvent e) {
       newB_actionPerformed(e);
     }
@@ -129,26 +130,26 @@ public class EditorPanel extends JPanel {
 
   public Action exportAction = new AbstractAction(Local
       .getString("Export note to file"), new ImageIcon(
-      memoranda.ui.AppFrame.class
-          .getResource("/ui/icons/export.png"))) {
+      Objects.requireNonNull(AppFrame.class
+          .getResource("/ui/icons/export.png")))) {
     public void actionPerformed(ActionEvent e) {
-      exportB_actionPerformed(e);
+      exportButton_actionPerformed(e);
     }
   };
 
   public Action importAction = new AbstractAction(Local
       .getString("Insert file"), new ImageIcon(
-      memoranda.ui.AppFrame.class
-          .getResource("/ui/icons/import.png"))) {
+      Objects.requireNonNull(AppFrame.class
+          .getResource("/ui/icons/import.png")))) {
     public void actionPerformed(ActionEvent e) {
-      importB_actionPerformed(e);
+      importButton_actionPerformed(e);
     }
   };
 
   public Action previewAction = new AbstractAction(Local
       .getString("Preview note in browser"), new ImageIcon(
-      memoranda.ui.AppFrame.class
-          .getResource("/ui/icons/preview.png"))) {
+      Objects.requireNonNull(AppFrame.class
+          .getResource("/ui/icons/preview.png")))) {
     public void actionPerformed(ActionEvent e) {
       previewB_actionPerformed(e);
     }
@@ -361,8 +362,8 @@ public class EditorPanel extends JPanel {
 
   public void initCSS() {
     BufferedReader br = new BufferedReader(new InputStreamReader(
-        memoranda.ui.EditorPanel.class
-            .getResourceAsStream("/ui/css/default.css")));
+        Objects.requireNonNull(EditorPanel.class
+            .getResourceAsStream("/ui/css/default.css"))));
     String css = "";
     try {
       String s = br.readLine();
@@ -377,17 +378,17 @@ public class EditorPanel extends JPanel {
     String HEADER_FONT = Configuration.get("HEADER_FONT").toString();
     String MONO_FONT = Configuration.get("MONO_FONT").toString();
     String BASE_FONT_SIZE = Configuration.get("BASE_FONT_SIZE").toString();
-    css = css.replaceAll("%NORMAL_FONT%", NORMAL_FONT.length() > 0 ? "\"" + NORMAL_FONT + "\""
+    css = css.replaceAll("%NORMAL_FONT%", !NORMAL_FONT.isEmpty() ? "\"" + NORMAL_FONT + "\""
         : "serif");
-    css = css.replaceAll("%HEADER_FONT%", HEADER_FONT.length() > 0 ? "\"" + HEADER_FONT + "\""
+    css = css.replaceAll("%HEADER_FONT%", !HEADER_FONT.isEmpty() ? "\"" + HEADER_FONT + "\""
         : "sans-serif");
-    css = css.replaceAll("%MONO_FONT%", MONO_FONT.length() > 0 ? "\"" + MONO_FONT + "\""
+    css = css.replaceAll("%MONO_FONT%", !MONO_FONT.isEmpty() ? "\"" + MONO_FONT + "\""
         : "monospaced");
     css = css.replaceAll("%BASE_FONT_SIZE%",
-        BASE_FONT_SIZE.length() > 0 ? BASE_FONT_SIZE : "16");
+        !BASE_FONT_SIZE.isEmpty() ? BASE_FONT_SIZE : "16");
     editor.setStyleSheet(new StringReader(css));
     String usercss = (String) Configuration.get("USER_CSS");
-    if (usercss.length() > 0) {
+    if (!usercss.isEmpty()) {
       try {
         // DEBUG
         System.out.println("***[DEBUG] User css used: " + usercss);
@@ -411,7 +412,7 @@ public class EditorPanel extends JPanel {
         DateFormat.SHORT, Local.getCurrentLocale()).format(d));
   }
 
-  void exportB_actionPerformed(ActionEvent e) {
+  void exportButton_actionPerformed(ActionEvent e) {
     // Fix until Sun's JVM supports more locales...
     UIManager.put("FileChooser.lookInLabelText", Local
         .getString("Save in:"));
@@ -485,7 +486,7 @@ public class EditorPanel extends JPanel {
     Context.put("EXPORT_NUMENT", dlg.numentChB.isSelected() ? "YES" : "NO");
     Context.put("EXPORT_XHTML", dlg.xhtmlChB.isSelected() ? "YES" : "NO");
     String template = null;
-    if (dlg.usetemplChB.isSelected() && dlg.templF.getText().length() > 0) {
+    if (dlg.usetemplChB.isSelected() && !dlg.templF.getText().isEmpty()) {
       template = dlg.templF.getText();
       Context.put("EXPORT_TEMPLATE", template);
     }
@@ -538,7 +539,7 @@ public class EditorPanel extends JPanel {
         || !titleField.getText().equals(initialTitle);
   }
 
-  void importB_actionPerformed(ActionEvent e) {
+  void importButton_actionPerformed(ActionEvent e) {
     // Fix until Sun's JVM supports more locales...
     UIManager.put("FileChooser.lookInLabelText", Local
         .getString("Look in:"));

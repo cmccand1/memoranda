@@ -745,7 +745,7 @@ public class TaskPanel extends JPanel {
   void toggleShowActiveOnly_actionPerformed(ActionEvent e) {
     Context.put(
         "SHOW_ACTIVE_TASKS_ONLY",
-        new Boolean(ppShowActiveOnlyChB.isSelected()));
+        Boolean.valueOf(ppShowActiveOnlyChB.isSelected()));
     taskTable.tableChanged();
   }
 

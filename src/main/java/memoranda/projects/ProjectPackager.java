@@ -19,8 +19,6 @@ import java.util.zip.ZipOutputStream;
 
 import javax.swing.JOptionPane;
 
-import memoranda.projects.Project;
-import memoranda.projects.ProjectManager;
 import memoranda.date.CalendarDate;
 import memoranda.storage.CurrentStorage;
 import memoranda.ui.App;
@@ -53,7 +51,7 @@ public class ProjectPackager {
       zip = new ZipOutputStream(new FileOutputStream(zipfile));
       File prDir = new File(JN_DOCPATH + prj.getID());
 
-      PackDirectory(prDir.getPath(), prDir, zip);
+      packDirectory(prDir.getPath(), prDir, zip);
       zip.putNextEntry(new ZipEntry("__PROJECT_INFO__"));
       String prInfo =
           prj.getID() + "\n" + prj.getTitle() + "\n" + prj.getStartDate().toString() + "\n";
@@ -135,9 +133,9 @@ public class ProjectPackager {
 
   /**
    * Packs all files in the given directory into the given ZIP stream.
-   * Also recurses down into subdirectories.
+   * Also, recurses down into subdirectories.
    */
-  public static void PackDirectory(String startingDirectory,
+  public static void packDirectory(String startingDirectory,
       File theDirectory,
       ZipOutputStream theZIPStream)
       throws java.io.IOException {
@@ -157,7 +155,7 @@ public class ProjectPackager {
         theZIPStream.closeEntry();
 
         // recurse down
-        PackDirectory(startingDirectory, theFiles[i], theZIPStream);
+        packDirectory(startingDirectory, theFiles[i], theZIPStream);
       } else // regular file
       {
         File f = theFiles[i];

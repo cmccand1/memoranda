@@ -921,9 +921,9 @@ public class AppFrame extends JFrame {
     Context.put(
         "LAST_SELECTED_EXPORT_FILE",
         chooser.getSelectedFile().getPath());
-    Context.put("EXPORT_SPLIT_NOTES", new Boolean(dlg.splitChB.isSelected()).toString());
+    Context.put("EXPORT_SPLIT_NOTES", Boolean.valueOf(dlg.splitChB.isSelected()).toString());
     Context.put("EXPORT_TITLES_AS_HEADERS",
-        new Boolean(dlg.titlesAsHeadersChB.isSelected()).toString());
+        Boolean.valueOf(dlg.titlesAsHeadersChB.isSelected()).toString());
 
     int ei = dlg.encCB.getSelectedIndex();
     enc = null;
@@ -987,8 +987,8 @@ public class AppFrame extends JFrame {
     }
     Context.put("LAST_SELECTED_NOTE_FILE", chooser.getSelectedFile());
     java.io.File f = chooser.getSelectedFile();
-    HashMap<String, String> notesName = new HashMap<String, String>();
-    HashMap<String, String> notesContent = new HashMap<String, String>();
+    HashMap<String, String> notesName = new HashMap();
+    HashMap<String, String> notesContent = new HashMap();
     Builder parser = new Builder();
     String id = "", name = "", content = "";
     try {

@@ -40,7 +40,7 @@ public class Local {
           ex.printStackTrace();
         }
       }
-      if (messages.size() == 0) {
+      if (messages.isEmpty()) {
         try {
           messages.load(
               Local.class.getResourceAsStream(
@@ -53,7 +53,7 @@ public class Local {
       currentLocale = new Locale("en", "US");
       logger.debug("Locales are disabled");
     }
-    if (messages.size() == 0) {
+    if (messages.isEmpty()) {
       messages = null;
     }
 
@@ -76,7 +76,7 @@ public class Local {
     return currentLocale;
   }
 
-  static String monthnames[] =
+  static String[] monthnames =
       {
           "Jan",
           "Feb",
@@ -91,7 +91,7 @@ public class Local {
           "November",
           "December"};
 
-  static String weekdaynames[] =
+  static String[] weekdaynames =
       {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
   public static String getString(String key) {
