@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.util.Calendar;
 
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,12 +13,15 @@ import javax.swing.UIManager;
 
 import memoranda.events.EventsScheduler;
 import memoranda.util.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
 public class App {
+  private static final Logger logger = LoggerFactory.getLogger(App.class);
   // boolean packFrame = false;
 
   static AppFrame frame = null;
@@ -56,15 +60,16 @@ public class App {
     if (fullmode) {
       fullmode = !Configuration.get("START_MINIMIZED").equals("yes");
     }
-    /* DEBUG */
     if (!fullmode) {
-      System.out.println("Minimized mode");
+      logger.debug("Minimized mode");
     }
     if (!Configuration.get("SHOW_SPLASH").equals("no")) {
       showSplash();
+
     }
-    System.out.println(VERSION_INFO);
-    System.out.println(Configuration.get("LOOK_AND_FEEL"));
+    logger.debug("Memoranda version: {}", VERSION_INFO);
+    logger.debug(Configuration.get("LOOK_AND_FEEL").toString());
+
     try {
       if (Configuration.get("LOOK_AND_FEEL").equals("system")) {
         UIManager.setLookAndFeel(
@@ -156,7 +161,7 @@ public class App {
   private void showSplash() {
     splash = new JFrame();
     ImageIcon spl =
-        new ImageIcon(App.class.getResource("/ui/splash.png"));
+        new ImageIcon(Objects.requireNonNull(App.class.getResource("/ui/splash.png")));
     JLabel l = new JLabel();
     l.setSize(400, 300);
     l.setIcon(spl);

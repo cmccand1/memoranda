@@ -38,9 +38,11 @@ import memoranda.util.HTMLFileExport;
 import memoranda.util.HTMLFileImport;
 import memoranda.util.Local;
 import memoranda.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/*$Id: EditorPanel.java,v 1.21 2006/06/28 22:58:31 alexeya Exp $*/
 public class EditorPanel extends JPanel {
+  private static final Logger logger = LoggerFactory.getLogger(EditorPanel.class);
 
   BorderLayout borderLayout1 = new BorderLayout();
 
@@ -390,12 +392,11 @@ public class EditorPanel extends JPanel {
     String usercss = (String) Configuration.get("USER_CSS");
     if (!usercss.isEmpty()) {
       try {
-        // DEBUG
-        System.out.println("***[DEBUG] User css used: " + usercss);
+        logger.debug("User css used: {}", usercss);
         editor.setStyleSheet(new InputStreamReader(
             new java.io.FileInputStream(usercss)));
       } catch (Exception ex) {
-        System.out.println("***[DEBUG] Failed to open: " + usercss);
+        logger.debug("Failed to open: {}", usercss);
         ex.printStackTrace();
       }
     }

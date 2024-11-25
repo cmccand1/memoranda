@@ -105,7 +105,6 @@ public class CurrentProject {
       ResourcesList rl) {
     for (ProjectListener projectListener : projectListeners) {
       projectListener.projectChange(project, nl, tl, rl);
-      /*DEBUGSystem.out.println(projectListeners.get(i));*/
     }
   }
 

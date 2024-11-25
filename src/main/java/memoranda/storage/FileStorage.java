@@ -170,10 +170,6 @@ public class FileStorage implements Storage {
         */
     String filename = getNotePath(note);
     try {
-      /*DEBUG*/
-
-//            Util.debug("Open note: " + filename);
-//        	Util.debug("Note Title: " + note.getTitle());
       doc.setBase(new URL(getNoteURL(note)));
       editorKit.read(
           new InputStreamReader(new FileInputStream(filename), "UTF-8"),
