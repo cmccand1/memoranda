@@ -100,9 +100,9 @@ Q.: Can I disable port listening at all?
 A.: Yes, but it will allow to start more than one instances of Memoranda. Open 
 the "memoranda.properties" file in your Memoranda user directory and add a line: 
 
-	CHECK_IF_ALREADY_STARTED = NO
+	ENABLE_SINGLE_INSTANCE_CHECK= NO
 
-Note that this is a debug/troubleshooting mode and it is not recommended as a
+Note that this is a debug/troubleshooting mode, and it is not recommended as a
 normal everyday way of using Memoranda.
 	
 

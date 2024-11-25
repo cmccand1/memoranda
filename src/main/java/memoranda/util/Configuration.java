@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 /**
  *
  */
-/*$Id: Configuration.java,v 1.5 2004/10/11 08:48:21 alexeya Exp $*/
 public class Configuration {
   private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
@@ -65,8 +64,9 @@ public class Configuration {
   }
 
   public static Object get(String key) {
+    // if no such key found, return empty string
     if ((config.get(key)) == null) {
-      logger.debug("Key '{}' not found in config.", key);
+      logger.debug("Key '{}' not found in config. Returning value as empty string.", key);
       return "";
     }
     return config.get(key);
