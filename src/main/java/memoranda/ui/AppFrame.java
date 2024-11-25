@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -60,8 +61,6 @@ import nu.xom.Elements;
 /**
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
-
-/*$Id: AppFrame.java,v 1.33 2005/07/05 08:17:24 alexeya Exp $*/
 
 public class AppFrame extends JFrame {
 
@@ -255,8 +254,8 @@ public class AppFrame extends JFrame {
 
   //Component initialization
   private void jbInit() throws Exception {
-    this.setIconImage(new ImageIcon(AppFrame.class.getResource(
-        "/ui/icons/jnotes16.png"))
+    this.setIconImage(new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(
+        "/ui/icons/jnotes16.png")))
         .getImage());
     contentPane = (JPanel) this.getContentPane();
     contentPane.setLayout(borderLayout1);
@@ -276,8 +275,8 @@ public class AppFrame extends JFrame {
     jMenuHelp.setText(Local.getString("Help"));
 
     jMenuHelpGuide.setText(Local.getString("Online user's guide"));
-    jMenuHelpGuide.setIcon(new ImageIcon(AppFrame.class.getResource(
-        "/ui/icons/help.png")));
+    jMenuHelpGuide.setIcon(new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(
+        "/ui/icons/help.png"))));
     jMenuHelpGuide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         jMenuHelpGuide_actionPerformed(e);
@@ -285,8 +284,8 @@ public class AppFrame extends JFrame {
     });
 
     jMenuHelpWeb.setText(Local.getString("Memoranda web site"));
-    jMenuHelpWeb.setIcon(new ImageIcon(AppFrame.class.getResource(
-        "/ui/icons/web.png")));
+    jMenuHelpWeb.setIcon(new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(
+        "/ui/icons/web.png"))));
     jMenuHelpWeb.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         jMenuHelpWeb_actionPerformed(e);

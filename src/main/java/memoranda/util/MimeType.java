@@ -6,10 +6,12 @@
  */
 package memoranda.util;
 
+import java.util.Objects;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
+import memoranda.ui.AppFrame;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -17,10 +19,9 @@ import nu.xom.Elements;
 /**
  *
  */
-/*$Id: MimeType.java,v 1.3 2004/01/30 12:17:42 alexeya Exp $*/
 public class MimeType {
 
-  public Element _root = null;
+  public Element _root;
 
   public MimeType(Element root) {
     _root = root;
@@ -61,8 +62,7 @@ public class MimeType {
   }
 
   public String getLabel() {
-    if ((_root.getAttribute("label") != null) && (_root.getAttribute("label").getValue().length()
-        > 0)) {
+    if ((_root.getAttribute("label") != null) && (!_root.getAttribute("label").getValue().isEmpty())) {
       return _root.getAttribute("label").getValue();
     } else {
       return _root.getAttribute("id").getValue();
@@ -131,31 +131,31 @@ public class MimeType {
   }
 
   public ImageIcon getIcon() {
-    String ip = getIconPath();
-    ImageIcon icon = null;
-    if (ip.equals("")) {
-      ip = "/util/icons/mimetypes/" + getMimeTypeId() + ".png";
+    String iconPath = getIconPath();
+    ImageIcon icon;
+    if (iconPath.isEmpty()) {
+      iconPath = "/ui/icons/mimetypes/" + getMimeTypeId() + ".png";
       try {
-        icon = new ImageIcon(memoranda.ui.AppFrame.class.getResource(ip));
+        icon = new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(iconPath)));
       } catch (Exception ex) {
-        ip = "/util/icons/mimetypes/" + getMimeTypeId().split("/")[0] + "/default.png";
+        iconPath = "/ui/icons/mimetypes/" + getMimeTypeId().split("/")[0] + "/default.png";
         try {
-          icon = new ImageIcon(memoranda.ui.AppFrame.class.getResource(ip));
+          icon = new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(iconPath)));
         } catch (Exception ex2) {
-          icon = new ImageIcon(memoranda.ui.AppFrame.class.getResource(
-              "/util/icons/mimetypes/default.png"));
+          icon = new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(
+              "/ui/icons/mimetypes/default.png")));
         }
       }
     } else {
       try {
-        icon = new ImageIcon(ip);
+        icon = new ImageIcon(iconPath);
       } catch (Exception ex) {
-        ip = "/util/icons/mimetypes/" + getMimeTypeId().split("/")[0] + "/default.png";
+        iconPath = "/ui/icons/mimetypes/" + getMimeTypeId().split("/")[0] + "/default.png";
         try {
-          icon = new ImageIcon(memoranda.ui.AppFrame.class.getResource(ip));
+          icon = new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(iconPath)));
         } catch (Exception ex2) {
-          icon = new ImageIcon(memoranda.ui.AppFrame.class.getResource(
-              "/util/icons/mimetypes/default.png"));
+          icon = new ImageIcon(Objects.requireNonNull(AppFrame.class.getResource(
+              "/ui/icons/mimetypes/default.png")));
         }
       }
     }
