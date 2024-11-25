@@ -62,7 +62,8 @@ public class MimeType {
   }
 
   public String getLabel() {
-    if ((_root.getAttribute("label") != null) && (!_root.getAttribute("label").getValue().isEmpty())) {
+    if ((_root.getAttribute("label") != null) && (!_root.getAttribute("label").getValue()
+        .isEmpty())) {
       return _root.getAttribute("label").getValue();
     } else {
       return _root.getAttribute("id").getValue();
@@ -160,5 +161,12 @@ public class MimeType {
       }
     }
     return icon;
+  }
+
+  @Override
+  public String toString() {
+    return "MimeType{" +
+        "_root=" + _root +
+        '}';
   }
 }

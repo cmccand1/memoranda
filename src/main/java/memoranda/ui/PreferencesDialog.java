@@ -15,7 +15,6 @@ import memoranda.util.MimeTypesList;
 
 import java.awt.event.*;
 
-/*$Id: PreferencesDialog.java,v 1.16 2006/06/28 22:58:31 alexeya Exp $*/
 public class PreferencesDialog extends JDialog {
 
   JPanel topPanel = new JPanel(new BorderLayout());

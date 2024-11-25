@@ -19,7 +19,6 @@ import memoranda.projects.ProjectManager;
 import memoranda.ui.ExceptionDialog;
 import memoranda.util.Local;
 
-/*$Id: ProjectsTablePanel.java,v 1.6 2004/04/05 10:05:44 alexeya Exp $*/
 public class ProjectsTablePanel extends JPanel {
 
   BorderLayout borderLayout1 = new BorderLayout();
@@ -198,18 +197,13 @@ public class ProjectsTablePanel extends JPanel {
   }
 
   String getStatusString(int status) {
-    switch (status) {
-      case Project.ACTIVE:
-        return Local.getString("Active");
-      case Project.COMPLETED:
-        return Local.getString("Completed");
-      case Project.FAILED:
-        return Local.getString("Failed");
-      case Project.FROZEN:
-        return Local.getString("Frozen");
-      case Project.SCHEDULED:
-        return Local.getString("Scheduled");
-    }
-    return "";
+    return switch (status) {
+      case Project.ACTIVE -> Local.getString("Active");
+      case Project.COMPLETED -> Local.getString("Completed");
+      case Project.FAILED -> Local.getString("Failed");
+      case Project.FROZEN -> Local.getString("Frozen");
+      case Project.SCHEDULED -> Local.getString("Scheduled");
+      default -> "";
+    };
   }
 }

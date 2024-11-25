@@ -99,7 +99,7 @@ public class Local {
       return key;
     }
     String msg = (String) messages.get(key.trim().toUpperCase());
-    if ((msg != null) && (msg.length() > 0)) {
+    if ((msg != null) && (!msg.isEmpty())) {
       return msg;
     } else {
       return key;
