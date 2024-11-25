@@ -1,3 +1,5 @@
+![Java with Gradle Build](https://github.com/cmccand1/memoranda/actions/workflows/gradle.yml/badge.svg)
+
 Project SER316
 
 This is the initial dump for the SER316 project. It is a slightly modified version of the Memoranda
