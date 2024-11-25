@@ -24,7 +24,6 @@ import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import memoranda.events.Event;
 import memoranda.events.EventsManager;
 import memoranda.events.EventsScheduler;
 import memoranda.history.History;
@@ -37,7 +36,6 @@ import memoranda.ui.ExceptionDialog;
 import memoranda.util.Configuration;
 import memoranda.storage.CurrentStorage;
 import memoranda.util.Local;
-import memoranda.util.Util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -246,7 +244,7 @@ public class EventsPanel extends JPanel {
   }
 
   void editEventB_actionPerformed(ActionEvent e) {
-    EventDialog dlg = new EventDialog(App.getFrame(), Local.getString("Event"));
+    EventDialog dlg = new EventDialog(App.getMainAppFrame(), Local.getString("Event"));
     memoranda.events.Event ev =
         (memoranda.events.Event) eventsTable.getModel().getValueAt(
             eventsTable.getSelectedRow(),
@@ -297,8 +295,8 @@ public class EventsPanel extends JPanel {
 
     }
 
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
         (frmSize.height - dlg.getSize().height) / 2 + loc.y);
     dlg.setVisible(true);
@@ -340,9 +338,9 @@ public class EventsPanel extends JPanel {
 
   public void newEventB_actionPerformed(ActionEvent e, String tasktext, Date startDate,
       Date endDate) {
-    EventDialog dlg = new EventDialog(App.getFrame(), Local.getString("New event"));
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    EventDialog dlg = new EventDialog(App.getMainAppFrame(), Local.getString("New event"));
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     if (tasktext != null) {
       dlg.textField.setText(tasktext);
     }
@@ -442,7 +440,7 @@ public class EventsPanel extends JPanel {
 
     int n =
         JOptionPane.showConfirmDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             msg,
             Local.getString("Remove event"),
             JOptionPane.YES_NO_OPTION);

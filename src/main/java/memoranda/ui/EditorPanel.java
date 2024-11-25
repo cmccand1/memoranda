@@ -452,7 +452,7 @@ public class EditorPanel extends JPanel {
       chooser.setCurrentDirectory(new File(lastSel));
     }
 
-    FileExportDialog dlg = new FileExportDialog(App.getFrame(), Local
+    FileExportDialog dlg = new FileExportDialog(App.getMainAppFrame(), Local
         .getString("Export note"), chooser);
     String enc = (String) Context.get("EXPORT_FILE_ENCODING");
     if (enc != null) {
@@ -472,8 +472,8 @@ public class EditorPanel extends JPanel {
     }
     Dimension dlgSize = new Dimension(550, 475);
     dlg.setSize(dlgSize);
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);
     dlg.setVisible(true);

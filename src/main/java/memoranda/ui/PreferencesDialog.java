@@ -687,7 +687,7 @@ public class PreferencesDialog extends JDialog {
               .toString());
         }
 
-        SwingUtilities.updateComponentTreeUI(App.getFrame());
+        SwingUtilities.updateComponentTreeUI(App.getMainAppFrame());
 
       } catch (Exception e) {
         Configuration.put("LOOK_AND_FEEL", lf);
@@ -724,10 +724,10 @@ public class PreferencesDialog extends JDialog {
     Configuration.put("HEADER_FONT", headerFontCB.getSelectedItem());
     Configuration.put("MONO_FONT", monoFontCB.getSelectedItem());
     Configuration.put("BASE_FONT_SIZE", baseFontSize.getValue());
-    App.getFrame().workPanel.dailyItemsPanel.editorPanel.editor.editor.setAntiAlias(
+    App.getMainAppFrame().workPanel.dailyItemsPanel.editorPanel.editor.editor.setAntiAlias(
         antialiasChB.isSelected());
-    App.getFrame().workPanel.dailyItemsPanel.editorPanel.initCSS();
-    App.getFrame().workPanel.dailyItemsPanel.editorPanel.editor.repaint();
+    App.getMainAppFrame().workPanel.dailyItemsPanel.editorPanel.initCSS();
+    App.getMainAppFrame().workPanel.dailyItemsPanel.editorPanel.editor.repaint();
 
     Configuration.saveConfig();
 

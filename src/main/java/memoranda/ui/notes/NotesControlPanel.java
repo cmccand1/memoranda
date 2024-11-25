@@ -301,7 +301,7 @@ public class NotesControlPanel extends JPanel {
 
     int n =
         JOptionPane.showConfirmDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             msg,
             Local.getString("Clear note"),
             JOptionPane.YES_NO_OPTION);
@@ -351,7 +351,7 @@ public class NotesControlPanel extends JPanel {
     ppSetEnabled();
     notesList.updateUI();
     notesList.clearSelection();
-    ((AppFrame) App.getFrame()).workPanel.dailyItemsPanel.editorPanel.editor.requestFocus();
+    ((AppFrame) App.getMainAppFrame()).workPanel.dailyItemsPanel.editorPanel.editor.requestFocus();
   }
 
   void ppSetEnabled() {

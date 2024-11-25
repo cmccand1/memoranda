@@ -32,7 +32,6 @@ import memoranda.tasks.TaskList;
 import memoranda.util.AgendaGenerator;
 import memoranda.storage.CurrentStorage;
 import memoranda.util.Local;
-import memoranda.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,10 +95,10 @@ public class AgendaPanel extends JPanel {
             CurrentProject.set(ProjectManager.getProject(id));
           } else if (d.startsWith("memoranda:removesticker")) {
             String id = d.split("#")[1];
-            StickerConfirmation stc = new StickerConfirmation(App.getFrame());
-            Dimension frmSize = App.getFrame().getSize();
+            StickerConfirmation stc = new StickerConfirmation(App.getMainAppFrame());
+            Dimension frmSize = App.getMainAppFrame().getSize();
             stc.setSize(new Dimension(300, 180));
-            Point loc = App.getFrame().getLocation();
+            Point loc = App.getMainAppFrame().getLocation();
             stc.setLocation(
                 (frmSize.width - stc.getSize().width) / 2 + loc.x,
                 (frmSize.height - stc.getSize().height) / 2
@@ -111,10 +110,10 @@ public class AgendaPanel extends JPanel {
             }
             refresh(CurrentDate.get());
           } else if (d.startsWith("memoranda:addsticker")) {
-            StickerDialog dlg = new StickerDialog(App.getFrame());
-            Dimension frmSize = App.getFrame().getSize();
+            StickerDialog dlg = new StickerDialog(App.getMainAppFrame());
+            Dimension frmSize = App.getMainAppFrame().getSize();
             dlg.setSize(new Dimension(300, 380));
-            Point loc = App.getFrame().getLocation();
+            Point loc = App.getMainAppFrame().getLocation();
             dlg.setLocation(
                 (frmSize.width - dlg.getSize().width) / 2 + loc.x,
                 (frmSize.height - dlg.getSize().height) / 2
@@ -154,12 +153,12 @@ public class AgendaPanel extends JPanel {
             String backGroundColor = sticker.substring(backcolor, sticker.indexOf(';', backcolor));
             String foreGroundColor = sticker.substring(fontcolor, sticker.indexOf(';', fontcolor));
             sticker = "<html>" + sticker.substring(first + 1, last) + "</html>";
-            StickerExpand dlg = new StickerExpand(App.getFrame(), sticker, backGroundColor,
+            StickerExpand dlg = new StickerExpand(App.getMainAppFrame(), sticker, backGroundColor,
                 foreGroundColor,
                 Local.getString("priority") + ": " + Local.getString(priorities[sP]));
-            Dimension frmSize = App.getFrame().getSize();
+            Dimension frmSize = App.getMainAppFrame().getSize();
             dlg.setSize(new Dimension(300, 200));
-            Point loc = App.getFrame().getLocation();
+            Point loc = App.getMainAppFrame().getLocation();
             dlg.setLocation(
                 (frmSize.width - dlg.getSize().width) / 2 + loc.x,
                 (frmSize.height - dlg.getSize().height) / 2
@@ -181,11 +180,11 @@ public class AgendaPanel extends JPanel {
             int sP = Integer.parseInt(pre_sticker.getAttributeValue("priority"));
             String backGroundColor = sticker.substring(backcolor, sticker.indexOf(';', backcolor));
             String foreGroundColor = sticker.substring(fontcolor, sticker.indexOf(';', fontcolor));
-            StickerDialog dlg = new StickerDialog(App.getFrame(),
+            StickerDialog dlg = new StickerDialog(App.getMainAppFrame(),
                 sticker.substring(first + 1, last), backGroundColor, foreGroundColor, sP, size);
-            Dimension frmSize = App.getFrame().getSize();
+            Dimension frmSize = App.getMainAppFrame().getSize();
             dlg.setSize(new Dimension(300, 380));
-            Point loc = App.getFrame().getLocation();
+            Point loc = App.getMainAppFrame().getLocation();
             dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
                 (frmSize.height - dlg.getSize().height) / 2 + loc.y);
             dlg.setVisible(true);

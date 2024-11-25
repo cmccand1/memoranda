@@ -33,8 +33,6 @@ import memoranda.resources.ResourcesList;
 import memoranda.tasks.*;
 import memoranda.ui.notes.*;
 import memoranda.ui.tasks.*;
-import memoranda.ui.events.*;
-import memoranda.util.*;
 import memoranda.date.CalendarDate;
 import memoranda.date.CurrentDate;
 import memoranda.date.DateListener;
@@ -315,8 +313,8 @@ public class DailyItemsPanel extends JPanel {
 
 
   void currentDateChanged(CalendarDate newdate) {
-    Cursor cur = App.getFrame().getCursor();
-    App.getFrame().setCursor(waitCursor);
+    Cursor cur = App.getMainAppFrame().getCursor();
+    App.getMainAppFrame().setCursor(waitCursor);
     if (!changedByHistory) {
       History.add(new HistoryItem(newdate, CurrentProject.get()));
     }
@@ -350,7 +348,7 @@ public class DailyItemsPanel extends JPanel {
     }
 
     updateIndicators(newdate, CurrentProject.getTaskList());
-    App.getFrame().setCursor(cur);
+    App.getMainAppFrame().setCursor(cur);
   }
 
   void currentNoteChanged(Note note, boolean toSaveCurrentNote) {
@@ -371,8 +369,8 @@ public class DailyItemsPanel extends JPanel {
   void currentProjectChanged(Project newprj, NoteList nl, TaskList tl, ResourcesList rl) {
 //		Util.debug("currentProjectChanged");
 
-    Cursor cur = App.getFrame().getCursor();
-    App.getFrame().setCursor(waitCursor);
+    Cursor cur = App.getMainAppFrame().getCursor();
+    App.getMainAppFrame().setCursor(waitCursor);
     if (!changedByHistory) {
       History.add(new HistoryItem(CurrentDate.get(), newprj));
     }
@@ -392,7 +390,7 @@ public class DailyItemsPanel extends JPanel {
         }*/
 
     updateIndicators(CurrentDate.get(), tl);
-    App.getFrame().setCursor(cur);
+    App.getMainAppFrame().setCursor(cur);
   }
 
   void historyChanged(HistoryItem hi) {

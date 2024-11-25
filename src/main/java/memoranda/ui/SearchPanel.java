@@ -131,10 +131,10 @@ public class SearchPanel extends JPanel {
   Cursor waitCursor = new Cursor(Cursor.WAIT_CURSOR);
 
   void searchB_actionPerformed(ActionEvent e) {
-    Cursor cur = App.getFrame().getCursor();
-    App.getFrame().setCursor(waitCursor);
+    Cursor cur = App.getMainAppFrame().getCursor();
+    App.getMainAppFrame().setCursor(waitCursor);
     doSearch();
-    App.getFrame().setCursor(cur);
+    App.getMainAppFrame().setCursor(cur);
   }
 
   void searchField_caretUpdate(CaretEvent e) {

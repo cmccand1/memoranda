@@ -461,9 +461,9 @@ public class TaskPanel extends JPanel {
         CurrentProject.getTaskList().getTask(
             taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID)
                 .toString());
-    TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("Edit task"));
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    TaskDialog dlg = new TaskDialog(App.getMainAppFrame(), Local.getString("Edit task"));
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
         (frmSize.height - dlg.getSize().height) / 2 + loc.y);
     dlg.todoField.setText(t.getText());
@@ -508,12 +508,12 @@ public class TaskPanel extends JPanel {
   }
 
   void newTaskB_actionPerformed(ActionEvent e) {
-    TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("New task"));
+    TaskDialog dlg = new TaskDialog(App.getMainAppFrame(), Local.getString("New task"));
 
     //XXX String parentTaskId = taskTable.getCurrentRootTask();
 
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.startDate.getModel().setValue(CurrentDate.get().getDate());
     dlg.endDate.getModel().setValue(CurrentDate.get().getDate());
     dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
@@ -544,14 +544,14 @@ public class TaskPanel extends JPanel {
   }
 
   void addSubTask_actionPerformed(ActionEvent e) {
-    TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("New Task"));
+    TaskDialog dlg = new TaskDialog(App.getMainAppFrame(), Local.getString("New Task"));
     String parentTaskId = taskTable.getModel()
         .getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
 
 //        Util.debug("Adding sub task under " + parentTaskId);
 
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     Task parent = CurrentProject.getTaskList().getTask(parentTaskId);
     CalendarDate todayD = CurrentDate.get();
     if (todayD.after(parent.getStartDate())) {
@@ -594,13 +594,13 @@ public class TaskPanel extends JPanel {
   }
 
   void calcTask_actionPerformed(ActionEvent e) {
-    TaskCalcDialog dlg = new TaskCalcDialog(App.getFrame());
+    TaskCalcDialog dlg = new TaskCalcDialog(App.getMainAppFrame());
     dlg.pack();
     Task t = CurrentProject.getTaskList().getTask(
         taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
 
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
 
     dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
         (frmSize.height - dlg.getSize().height) / 2 + loc.y);
@@ -692,7 +692,7 @@ public class TaskPanel extends JPanel {
     }
     int n =
         JOptionPane.showConfirmDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             msg,
             Local.getString("Remove task"),
             JOptionPane.YES_NO_OPTION);

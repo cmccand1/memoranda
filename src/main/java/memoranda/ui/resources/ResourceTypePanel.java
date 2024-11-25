@@ -146,11 +146,11 @@ public class ResourceTypePanel extends JPanel {
 
 
   void newTypeB_actionPerformed(ActionEvent e) {
-    EditTypeDialog dlg = new EditTypeDialog(App.getFrame(), Local.getString("New resource type"));
+    EditTypeDialog dlg = new EditTypeDialog(App.getMainAppFrame(), Local.getString("New resource type"));
     Dimension dlgSize = new Dimension(420, 420);
     dlg.setSize(dlgSize);
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);
     dlg.extField.setText(ext);
@@ -193,7 +193,7 @@ public class ResourceTypePanel extends JPanel {
     MimeType mt = (MimeType) typesList.getSelectedValue();
     int n =
         JOptionPane.showConfirmDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             Local.getString("Delete resource type")
                 + "\n'"
                 + mt.getLabel()
@@ -210,11 +210,11 @@ public class ResourceTypePanel extends JPanel {
   }
 
   void editB_actionPerformed(ActionEvent e) {
-    EditTypeDialog dlg = new EditTypeDialog(App.getFrame(), Local.getString("Edit resource type"));
+    EditTypeDialog dlg = new EditTypeDialog(App.getMainAppFrame(), Local.getString("Edit resource type"));
     Dimension dlgSize = new Dimension(420, 450);
     dlg.setSize(dlgSize);
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);
     MimeType mt = (MimeType) typesList.getSelectedValue();

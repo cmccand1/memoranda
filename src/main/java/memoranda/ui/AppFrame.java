@@ -867,7 +867,7 @@ public class AppFrame extends JFrame {
 
     ProjectExportDialog dlg =
         new ProjectExportDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             Local.getString("Export notes"),
             chooser);
     String enc = (String) Context.get("EXPORT_FILE_ENCODING");
@@ -884,8 +884,8 @@ public class AppFrame extends JFrame {
     }
     Dimension dlgSize = new Dimension(550, 500);
     dlg.setSize(dlgSize);
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation(
         (frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);

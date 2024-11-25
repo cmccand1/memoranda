@@ -449,7 +449,7 @@ public class TaskDialog extends JDialog {
   }
 
   void setNotifB_actionPerformed(ActionEvent e) {
-    ((AppFrame) App.getFrame()).workPanel.dailyItemsPanel.eventsPanel.newEventB_actionPerformed(e,
+    ((AppFrame) App.getMainAppFrame()).workPanel.dailyItemsPanel.eventsPanel.newEventB_actionPerformed(e,
         this.todoField.getText(), (Date) startDate.getModel().getValue(),
         (Date) endDate.getModel().getValue());
   }

@@ -172,9 +172,9 @@ public class ResourcesPanel extends JPanel {
   }
 
   void newResourceButton_actionPerformed(ActionEvent e) {
-    AddResourceDialog dlg = new AddResourceDialog(App.getFrame(), Local.getString("New resource"));
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    AddResourceDialog dlg = new AddResourceDialog(App.getMainAppFrame(), Local.getString("New resource"));
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
         (frmSize.height - dlg.getSize().height) / 2 + loc.y);
     dlg.setVisible(true);
@@ -227,7 +227,7 @@ public class ResourcesPanel extends JPanel {
             + Local.getString("Are you sure?");
     int n =
         JOptionPane.showConfirmDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             msg,
             Local.getString("Remove resource"),
             JOptionPane.YES_NO_OPTION);
@@ -243,12 +243,12 @@ public class ResourcesPanel extends JPanel {
   }
 
   MimeType addResourceType(String fpath) {
-    ResourceTypeDialog dlg = new ResourceTypeDialog(App.getFrame(),
+    ResourceTypeDialog dlg = new ResourceTypeDialog(App.getMainAppFrame(),
         Local.getString("Resource type"));
     Dimension dlgSize = new Dimension(420, 300);
     dlg.setSize(dlgSize);
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);
     dlg.ext = MimeTypesList.getExtension(fpath);
@@ -282,13 +282,13 @@ public class ResourcesPanel extends JPanel {
     }
     SetAppDialog dlg =
         new SetAppDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             Local.getString(Local.getString("Select the application to open files of type") + " '"
                 + mt.getLabel() + "'"));
     Dimension dlgSize = new Dimension(420, 300);
     dlg.setSize(dlgSize);
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);
     dlg.setDirectory(d);

@@ -24,8 +24,6 @@ import memoranda.ui.App;
 import memoranda.ui.AppFrame;
 import memoranda.ui.ExceptionDialog;
 
-import java.util.Random;
-
 /**
  *
  */
@@ -125,7 +123,7 @@ public class Util {
         /*java.io.File lastSel = (java.io.File) Context.get("LAST_SELECTED_RESOURCE_FILE");
         if (lastSel != null)
             chooser.setCurrentDirectory(lastSel);*/
-    if (chooser.showOpenDialog(App.getFrame()) != JFileChooser.APPROVE_OPTION) {
+    if (chooser.showOpenDialog(App.getMainAppFrame()) != JFileChooser.APPROVE_OPTION) {
       return false;
     }
     appList.setBrowserExec(chooser.getSelectedFile().getPath());

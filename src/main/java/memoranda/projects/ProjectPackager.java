@@ -81,7 +81,7 @@ public class ProjectPackager {
       if (ProjectManager.getProject(pId) != null) {
         int n =
             JOptionPane.showConfirmDialog(
-                App.getFrame(),
+                App.getMainAppFrame(),
                 Local.getString("This project is already exists and will be replaced.\nContinue?"),
                 Local.getString("Project is already exists"),
                 JOptionPane.YES_NO_OPTION);

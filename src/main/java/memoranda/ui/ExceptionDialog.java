@@ -37,9 +37,9 @@ public class ExceptionDialog extends JDialog {
   private Frame owner;
 
   public ExceptionDialog(Exception exc, String description, String tip) {
-    super(App.getFrame(), "Problem", true);
+    super(App.getMainAppFrame(), "Problem", true);
     exc.printStackTrace();
-    owner = App.getFrame();
+    owner = App.getMainAppFrame();
     if ((description != null) && (description.length() > 0)) {
       this.description = description;
     } else if (exc.getMessage() != null) {

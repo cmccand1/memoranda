@@ -334,8 +334,8 @@ public class ProjectDialog extends JDialog {
 
     Dimension dlgSize = dlg.getSize();
     //dlg.setSize(dlgSize);
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);
     dlg.setVisible(true);

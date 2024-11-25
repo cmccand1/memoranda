@@ -92,7 +92,7 @@ public class SetAppDialog extends JDialog {
       CANCELLED = false;
       this.dispose();
     } else {
-      JOptionPane.showMessageDialog(App.getFrame(), Local.getString("File not found!"), "",
+      JOptionPane.showMessageDialog(App.getMainAppFrame(), Local.getString("File not found!"), "",
           JOptionPane.ERROR_MESSAGE);
       this.appPanel.applicationField.setText("");
       checkOkEnabled();

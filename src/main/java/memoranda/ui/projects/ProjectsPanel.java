@@ -386,7 +386,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 
     int n =
         JOptionPane.showConfirmDialog(
-            App.getFrame(),
+            App.getMainAppFrame(),
             msg,
             Local.getString("Delete project"),
             JOptionPane.YES_NO_OPTION);
@@ -420,8 +420,8 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
     ProjectDialog dlg =
         new ProjectDialog(null, Local.getString("Project properties"));
     Dimension dlgSize = dlg.getSize();
-    Dimension frmSize = App.getFrame().getSize();
-    Point loc = App.getFrame().getLocation();
+    Dimension frmSize = App.getMainAppFrame().getSize();
+    Point loc = App.getMainAppFrame().getLocation();
     dlg.setLocation(
         (frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);

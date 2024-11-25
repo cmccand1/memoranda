@@ -96,11 +96,7 @@ public class Start {
     // System.out.println(EventsScheduler.isEventScheduled());
 
     // Initialize the application based on the command-line arguments
-    if ((args.length == 0) || (!args[0].equals("-m"))) {
-      app = new App(true);
-    } else {
-      app = new App(false);
-    }
+    app = new App();
   }
 }
 
