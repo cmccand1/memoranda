@@ -29,6 +29,9 @@ import java.util.Collections;
 
 import nu.xom.Element;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  */
@@ -36,6 +39,8 @@ import nu.xom.Element;
 /*$Id: AgendaGenerator.java,v 1.12 2005/06/13 21:25:27 velhonoja Exp $*/
 
 public class AgendaGenerator {
+
+  private static final Logger logger = LoggerFactory.getLogger(AgendaGenerator.class);
 
   static String HEADER =
       "<html><head><title></title>\n"
@@ -94,7 +99,7 @@ public class AgendaGenerator {
       s += "\n</ul>\n";
     }
 
-    //        Util.debug("html for project " + p.getTitle() + " is\n" + s); 
+    // logger.debug("html for project {} is\n{}", p.getTitle(), s);
     return s;
   }
 
@@ -104,11 +109,11 @@ public class AgendaGenerator {
    */
   private static String expandRecursively(Project p, CalendarDate date, TaskList tl, Task t,
       Collection expandedTasks, int level) {
-    Util.debug("Expanding task " + t.getText() + " level " + level);
+    logger.debug("Expanding task {} level {}", t.getText(), level);
 
     Collection st = tl.getActiveSubTasks(t.getID(), date);
 
-    Util.debug("number of subtasks " + st.size());
+    logger.debug("number of subtasks {}", st.size());
 
     String s = "\n<ul>\n";
 
@@ -153,16 +158,16 @@ public class AgendaGenerator {
     //		for(int i = 0; i < level; i ++) {
     //			spacing = spacing + nbsp;
     //		}
-    //		Util.debug("Spacing for task " + t.getText() + " is " + spacing);
+    // logger.debug("Spacing for task {} is {}", t.getText(), spacing);
 
     String subTaskOperation = "";
     if (tl.hasSubTasks(t.getID())) {
-      //			Util.debug("Task " + t.getID() + " has subtasks");
+//      logger.debug("Task {} has subtasks", t.getID());
       if (expandedTasks.contains(t.getID())) {
-        //				Util.debug("Task " + t.getID() + " is in list of expanded tasks");
+        // logger.debug("Task {} is in list of expanded tasks", t.getID());
         subTaskOperation = "<a href=\"memoranda:closesubtasks#" + t.getID() + "\">(-)</a>";
       } else {
-        //				Util.debug("Task " + t.getID() + " is not in list of expanded tasks");
+        // logger.debug("Task {} is not in list of expanded tasks", t.getID());
         subTaskOperation = "<a href=\"memoranda:expandsubtasks#" + t.getID() + "\">(+)</a>";
       }
     }
@@ -256,19 +261,15 @@ public class AgendaGenerator {
   }
 
   static String getPriorityString(int p) {
-    switch (p) {
-      case Task.PRIORITY_NORMAL:
-        return "<font color=\"green\">" + Local.getString("Normal") + "</font>";
-      case Task.PRIORITY_LOW:
-        return "<font color=\"#3333CC\">" + Local.getString("Low") + "</font>";
-      case Task.PRIORITY_LOWEST:
-        return "<font color=\"#666699\">" + Local.getString("Lowest") + "</font>";
-      case Task.PRIORITY_HIGH:
-        return "<font color=\"#FF9900\">" + Local.getString("High") + "</font>";
-      case Task.PRIORITY_HIGHEST:
-        return "<font color=\"red\">" + Local.getString("Highest") + "</font>";
-    }
-    return "";
+    return switch (p) {
+      case Task.PRIORITY_NORMAL -> "<font color=\"green\">" + Local.getString("Normal") + "</font>";
+      case Task.PRIORITY_LOW -> "<font color=\"#3333CC\">" + Local.getString("Low") + "</font>";
+      case Task.PRIORITY_LOWEST ->
+          "<font color=\"#666699\">" + Local.getString("Lowest") + "</font>";
+      case Task.PRIORITY_HIGH -> "<font color=\"#FF9900\">" + Local.getString("High") + "</font>";
+      case Task.PRIORITY_HIGHEST -> "<font color=\"red\">" + Local.getString("Highest") + "</font>";
+      default -> "";
+    };
   }
 
   static String generateProjectInfo(Project p, CalendarDate date, Collection expandedTasks) {
