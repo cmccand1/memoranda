@@ -33,6 +33,9 @@ import memoranda.util.AgendaGenerator;
 import memoranda.storage.CurrentStorage;
 import memoranda.util.Local;
 import memoranda.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import javax.swing.JOptionPane;
 
@@ -40,6 +43,7 @@ import nu.xom.Element;
 
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
 public class AgendaPanel extends JPanel {
+  private static final Logger logger = LoggerFactory.getLogger(AgendaPanel.class);
 
   BorderLayout borderLayout1 = new BorderLayout();
   JButton historyBackB = new JButton();
@@ -314,12 +318,12 @@ public class AgendaPanel extends JPanel {
         if (gotoTask != null) {
           viewer.scrollToReference(gotoTask);
           scrollPane.setViewportView(viewer);
-          Util.debug("Set view port to " + gotoTask);
+          logger.debug("Set view port to {}", gotoTask);
         }
       }
     });
 
-    Util.debug("Summary updated.");
+    logger.debug("Summary updated.");
   }
 
   public void setActive(boolean isa) {

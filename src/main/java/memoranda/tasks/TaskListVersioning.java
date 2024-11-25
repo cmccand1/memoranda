@@ -18,6 +18,8 @@ import nu.xom.DocType;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author ryanho
@@ -26,7 +28,9 @@ import nu.xom.Elements;
  */
 public class TaskListVersioning {
 
-  public static final String[] VERSIONS = new String[]{
+  private static final Logger logger = LoggerFactory.getLogger(TaskListVersioning.class);
+
+  private static final String[] VERSIONS = new String[]{
       "-//Memoranda//DTD Tasklist 1.0//EN",
       "-//Memoranda//DTD Tasklist 1.1d1//EN"
   };
@@ -49,7 +53,7 @@ public class TaskListVersioning {
         return i;
       }
     }
-    Util.debug("Version " + publicId + " not found");
+    logger.debug("Version {} not found", publicId);
     return -1;
   }
 
@@ -57,7 +61,7 @@ public class TaskListVersioning {
     int vid = getIndexOfVersion(publicId);
 
     if (vid == (VERSIONS.length - 1)) {
-      Util.debug("Version " + publicId + " is the latest version, skipping upgrade");
+      logger.debug("Version {} is the latest version, skipping upgrade", publicId);
       return false;
     } else {
       List<Project> projects = ProjectManager.getAllProjects();
@@ -79,10 +83,10 @@ public class TaskListVersioning {
   }
 
   private static void upgrade1_1d1(String[] projectIds) {
-    for (int i = 0; i < projectIds.length; i++) {
-      Util.debug("Upgrading project " + projectIds[i] + " from version 1.0 to version 1.1d1");
+    for (String projectId : projectIds) {
+      logger.debug("Upgrading project {} from version 1.0 to version 1.1d1", projectId);
 
-      String filePath = FileStorage.JN_DOCPATH + projectIds[i] + File.separator + ".tasklist";
+      String filePath = FileStorage.JN_DOCPATH + projectId + File.separator + ".tasklist";
       Document doc = FileStorage.openDocument(filePath);
 
       Element root = doc.getRootElement();

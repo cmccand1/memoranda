@@ -20,6 +20,8 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import nu.xom.converters.*;
 //import org.apache.xerces.dom.*;
 //import nux.xom.xquery.XQueryUtil;
@@ -28,6 +30,8 @@ import nu.xom.Node;
  *
  */
 public class TaskListImpl implements TaskList {
+
+  private static final Logger logger = LoggerFactory.getLogger(TaskListImpl.class);
 
   private Project _project;
   private Document _doc;
@@ -72,8 +76,8 @@ public class TaskListImpl implements TaskList {
   }
 
   /**
-   * All methods to obtain list of tasks are consolidated under getAllSubTasks and getActiveSubTasks.
-   * If a root task is required, just send a null taskId
+   * All methods to obtain list of tasks are consolidated under getAllSubTasks and
+   * getActiveSubTasks. If a root task is required, just send a null taskId
    */
   public Collection getAllSubTasks(String taskId) {
     if ((taskId == null) || (taskId.isEmpty())) {
@@ -93,8 +97,8 @@ public class TaskListImpl implements TaskList {
   }
 
   /**
-   * All methods to obtain list of tasks are consolidated under getAllSubTasks and getActiveSubTasks.
-   * If a root task is required, just send a null taskId
+   * All methods to obtain list of tasks are consolidated under getAllSubTasks and
+   * getActiveSubTasks. If a root task is required, just send a null taskId
    */
   public Collection getActiveSubTasks(String taskId, CalendarDate date) {
     Collection allTasks = getAllSubTasks(taskId);
@@ -129,7 +133,7 @@ public class TaskListImpl implements TaskList {
 
     elements.put(id, el);
 
-    Util.debug("Created task with parent " + parentTaskId);
+    logger.debug("Created task with parent {}", parentTaskId);
 
     return new TaskImpl(el, this);
   }
@@ -158,7 +162,7 @@ public class TaskListImpl implements TaskList {
   }
 
   public Task getTask(String id) {
-    Util.debug("Getting task " + id);
+    logger.debug("Getting task {}", id);
     return new TaskImpl(getTaskElement(id), this);
   }
 
@@ -182,8 +186,8 @@ public class TaskListImpl implements TaskList {
   }
 
   /**
-   * Recursively calculate total effort based on subtasks for every node in the task tree
-   * The values are saved as they are calculated as well
+   * Recursively calculate total effort based on subtasks for every node in the task tree The values
+   * are saved as they are calculated as well
    *
    * @param t
    * @return
@@ -255,10 +259,11 @@ public class TaskListImpl implements TaskList {
    * Looks through the entire sub task tree and calculates progress on all parent task nodes
    *
    * @param t
-   * @return long[] of size 2. First long is expended effort in milliseconds, 2nd long is total effort in milliseconds
+   * @return long[] of size 2. First long is expended effort in milliseconds, 2nd long is total
+   * effort in milliseconds
    */
   public long[] calculateCompletionFromSubTasks(Task t) {
-//        Util.debug("Task " + t.getText());
+    logger.debug("Task {}", t.getText());
 
     long[] res = new long[2];
     long expendedEffort = 0; // milliseconds
@@ -275,9 +280,9 @@ public class TaskListImpl implements TaskList {
       int thisProgress = (int) Math.round((((double) expendedEffort / (double) totalEffort) * 100));
       t.setProgress(thisProgress);
 
-//            Util.debug("Expended Effort: "+ expendedEffort);
-//            Util.debug("Total Effort: "+ totalEffort);
-//            Util.debug("Progress: "+ t.getProgress());
+      logger.debug("Expended Effort: {}", expendedEffort);
+      logger.debug("Total Effort: {}", totalEffort);
+      logger.debug("Progress: {}", t.getProgress());
 
       res[0] = expendedEffort;
       res[1] = totalEffort;
@@ -298,19 +303,18 @@ public class TaskListImpl implements TaskList {
    * private methods below this line
    */
   private Element getTaskElement(String id) {
-               
-		/*Nodes nodes = XQueryUtil.xquery(_doc, "//task[@id='" + id + "']");
-        if (nodes.size() > 0) {
-            Element el = (Element) nodes.get(0);
-            return el;            
-        }
-        else {
-            Util.debug("Task " + id + " cannot be found in project " + _project.getTitle());
-            return null;
-        } */
+
+//    Nodes nodes = XQueryUtil.xquery(_doc, "//task[@id='" + id + "']");
+//    if (nodes.size() > 0) {
+//      Element el = (Element) nodes.get(0);
+//      return el;
+//    } else {
+//      logger.debug("Task {} cannot be found in project {}", id, _project.getTitle());
+//      return null;
+//    }
     Element el = elements.get(id);
     if (el == null) {
-      Util.debug("Task " + id + " cannot be found in project " + _project.getTitle());
+      logger.debug("Task {} cannot be found in project {}", id, _project.getTitle());
     }
     return el;
   }

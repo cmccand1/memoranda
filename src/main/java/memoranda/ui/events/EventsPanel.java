@@ -39,8 +39,14 @@ import memoranda.storage.CurrentStorage;
 import memoranda.util.Local;
 import memoranda.util.Util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
 /*$Id: EventsPanel.java,v 1.25 2005/02/19 10:06:25 rawsushi Exp $*/
 public class EventsPanel extends JPanel {
+  private static final Logger logger = LoggerFactory.getLogger(EventsPanel.class);
 
   BorderLayout borderLayout1 = new BorderLayout();
   JButton historyBackB = new JButton();
@@ -327,7 +333,7 @@ public class EventsPanel extends JPanel {
     Calendar cdate = CurrentDate.get().getCalendar();
     // round down to hour
     cdate.set(Calendar.MINUTE, 0);
-    Util.debug("Default time is " + cdate);
+    logger.debug("Default time is {}", cdate);
 
     newEventB_actionPerformed(e, null, cdate.getTime(), cdate.getTime());
   }

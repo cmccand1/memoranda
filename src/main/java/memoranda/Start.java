@@ -12,11 +12,14 @@ import java.net.Socket;
 import memoranda.ui.*;
 import memoranda.util.Configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  */
-/*$Id: Start.java,v 1.7 2004/11/22 10:02:37 alexeya Exp $*/
 public class Start {
+  private static final Logger logger = LoggerFactory.getLogger(Start.class);
 
   static App app = null;
 
@@ -25,14 +28,14 @@ public class Start {
 
   static {
     String port = Configuration.get("PORT_NUMBER").toString().trim();
-    if (port.length() > 0) {
+    if (!port.isEmpty()) {
       // The Portnumber must be between 1024 (in *nix all Port's < 1024
       // are privileged) and 65535 (the highest Portnumber everywhere)
       int i = Integer.parseInt(port);
       if ((i >= 1024) && (i <= 65535)) {
         DEFAULT_PORT = i;
       }
-      /*DEBUG*/ //System.out.println("Port " + DEFAULT_PORT + " used.");
+      logger.debug("Port {} used.", DEFAULT_PORT);
     }
 
     String check = Configuration.get("CHECK_IF_ALREADY_STARTED").toString().trim();

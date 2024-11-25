@@ -171,23 +171,4 @@ public class Util {
     tempFiles.add(f);
     return f;
   }
-
-  public static void debug(String str) {
-    System.out.println("[DEBUG] " + str);
-  }
-
-  /**
-   * @param e
-   */
-  public static void error(Exception e) {
-    System.out.println("[ERROR] Exception: " + e.getClass().getName());
-    System.out.println("[ERROR] Exception Message: " + e.getMessage());
-
-    String stackTrace = "";
-    StackTraceElement[] ste = e.getStackTrace();
-    for (int i = 0; i < ste.length; i++) {
-      stackTrace = ste[i].toString() + "\n";
-    }
-    System.out.println("[ERROR] Stack Trace: " + stackTrace);
-  }
 }
