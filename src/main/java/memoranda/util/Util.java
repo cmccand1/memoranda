@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 
+import java.util.UUID;
 import javax.swing.JFileChooser;
 
 import memoranda.date.CalendarDate;
@@ -28,23 +29,17 @@ import java.util.Random;
 /**
  *
  */
-/*$Id: Util.java,v 1.13 2007/03/20 08:22:41 alexeya Exp $*/
 public class Util {
 
   static long seed = 0;
 
+  /**
+   * Generates a unique identifier in the form of a UUID string.
+   *
+   * @return a UUID string
+   */
   public static String generateId() {
-    long seed1 = System.currentTimeMillis();
-    while (seed1 == seed) {
-      seed1 = System.currentTimeMillis(); // Make sure we'll don't get the same seed twice
-    }
-    seed = seed1;
-    Random r = new Random(seed);
-    return Integer.toString(r.nextInt(), 16) +
-        "-" + Integer.toString(r.nextInt(65535), 16) +
-        "-" + Integer.toString(r.nextInt(65535), 16) +
-        "-" + Integer.toString(r.nextInt(65535), 16);
-
+    return UUID.randomUUID().toString();
   }
 
   public static String getDateStamp(Calendar cal) {
