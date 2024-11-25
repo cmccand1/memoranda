@@ -17,7 +17,6 @@ import memoranda.util.Configuration;
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
-/*$Id: App.java,v 1.28 2007/03/20 06:21:46 alexeya Exp $*/
 public class App {
   // boolean packFrame = false;
 
@@ -74,7 +73,7 @@ public class App {
         UIManager.setLookAndFeel(
             UIManager.getCrossPlatformLookAndFeelClassName());
       } else if (
-          Configuration.get("LOOK_AND_FEEL").toString().length() > 0) {
+          !Configuration.get("LOOK_AND_FEEL").toString().isEmpty()) {
         UIManager.setLookAndFeel(
             Configuration.get("LOOK_AND_FEEL").toString());
       }
@@ -93,8 +92,6 @@ public class App {
       }
       Configuration.put("FIRST_DAY_OF_WEEK", fdow);
       Configuration.saveConfig();
-      /* DEBUG */
-      System.out.println("[DEBUG] first day of week is set to " + fdow);
     }
 
     EventsScheduler.init();

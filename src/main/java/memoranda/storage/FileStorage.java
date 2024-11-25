@@ -52,10 +52,10 @@ public class FileStorage implements Storage {
           hacking the default location (Util.getEnvDir()) of the memoranda 
           storage dir. Note that memoranda.config file is always placed at fixed 
           location (Util.getEnvDir()) anyway */
-    String mHome = (String) Configuration.get("MEMORANDA_HOME");
-    if (mHome.length() > 0) {
-      JN_DOCPATH = mHome;
-      logger.debug("Memoranda storage path has set to: {}", JN_DOCPATH);
+    String memorandaHomeDir = (String) Configuration.get("MEMORANDA_HOME");
+    if (!memorandaHomeDir.isEmpty()) {
+      JN_DOCPATH = memorandaHomeDir;
+      logger.debug("Memoranda storage path set to: {}", JN_DOCPATH);
     }
   }
 
@@ -251,8 +251,8 @@ public class FileStorage implements Storage {
     String id = prj.getID();
     File f = new File(JN_DOCPATH + id);
     File[] files = f.listFiles();
-    for (int i = 0; i < files.length; i++) {
-      files[i].delete();
+    for (File file : files) {
+      file.delete();
     }
     f.delete();
   }
@@ -389,13 +389,7 @@ public class FileStorage implements Storage {
    * @see Storage#storeResourcesList(memoranda.ResourcesList, memoranda.Project)
    */
   public void storeResourcesList(ResourcesList rl, Project prj) {
-    /*DEBUG*/
-    System.out.println(
-        "[DEBUG] Save resources list: "
-            + JN_DOCPATH
-            + prj.getID()
-            + File.separator
-            + ".resources");
+    logger.debug("Save resources list: {}", JN_DOCPATH + prj.getID() + File.separator + ".resources");
     saveDocument(
         rl.getXMLContent(),
         JN_DOCPATH + prj.getID() + File.separator + ".resources");

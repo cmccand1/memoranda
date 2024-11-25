@@ -39,7 +39,7 @@ public class Start {
     }
 
     String check = Configuration.get("CHECK_IF_ALREADY_STARTED").toString().trim();
-    if (check.length() > 0 && check.equalsIgnoreCase("no")) {
+    if (check.equalsIgnoreCase("no")) {
       checkIfAlreadyStartet = false;
     }
   }
@@ -80,7 +80,6 @@ class SLThread extends Thread {
       new SLThread().start();
 
     } catch (Exception e) {
-      System.err.println("Port: " + Start.DEFAULT_PORT);
       e.printStackTrace();
       new ExceptionDialog(e,
           "Cannot create a socket connection on localhost:" + Start.DEFAULT_PORT,

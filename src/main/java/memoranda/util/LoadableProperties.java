@@ -11,7 +11,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.*;
 
-/*$Id: LoadableProperties.java,v 1.4 2004/01/30 12:17:42 alexeya Exp $*/
 public class LoadableProperties extends Hashtable {
 
   public LoadableProperties() {
@@ -47,8 +46,8 @@ public class LoadableProperties extends Hashtable {
     String aKey;
     Object aValue;
     TreeMap tm = new TreeMap(this);
-    for (Iterator i = tm.keySet().iterator(); i.hasNext(); ) {
-      aKey = (String) i.next();
+    for (Object o : tm.keySet()) {
+      aKey = (String) o;
       aValue = get(aKey);
       out.write(aKey + " = " + aValue);
       out.newLine();
@@ -75,7 +74,7 @@ public class LoadableProperties extends Hashtable {
     if (str == null) {
       return false;
     }
-    if (str.length() > 0) {
+    if (!str.isEmpty()) {
       if (str.startsWith("#") || str.startsWith("!")) {
         return false;
       }
@@ -84,11 +83,7 @@ public class LoadableProperties extends Hashtable {
     }
 
     int index = str.indexOf("=");
-    if (index > 0 && str.length() > index) {
-      return true;
-    } else {
-      return false;
-    }
+    return index > 0;
   }
 
   private String getNextLine(BufferedReader br) {

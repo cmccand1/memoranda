@@ -17,12 +17,14 @@ import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
-/*$Id: ResourcesListImpl.java,v 1.5 2007/03/20 06:21:46 alexeya Exp $*/
 public class ResourcesListImpl implements ResourcesList {
+  private static final Logger logger = LoggerFactory.getLogger(ResourcesListImpl.class);
 
   private Project _project = null;
   private Document _doc = null;
@@ -104,15 +106,15 @@ public class ResourcesListImpl implements ResourcesList {
    * @see ResourcesList#removeResource(java.lang.String)
    */
   public void removeResource(String path) {
-    Elements rs = _root.getChildElements("resource");
-    for (int i = 0; i < rs.size(); i++) {
-      if (rs.get(i).getAttribute("path").getValue().equals(path)) {
+    Elements resource = _root.getChildElements("resource");
+    for (int i = 0; i < resource.size(); i++) {
+      if (resource.get(i).getAttribute("path").getValue().equals(path)) {
         if (getResource(path).isProjectFile()) {
           File f = new File(path);
-          System.out.println("[DEBUG] Removing file " + path);
+          logger.debug("Removing file {}", path);
           f.delete();
         }
-        _root.removeChild(rs.get(i));
+        _root.removeChild(resource.get(i));
       }
     }
   }

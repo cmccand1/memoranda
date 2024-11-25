@@ -11,12 +11,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import memoranda.ui.ExceptionDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 /*$Id: Configuration.java,v 1.5 2004/10/11 08:48:21 alexeya Exp $*/
 public class Configuration {
+  private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
   static LoadableProperties config = new LoadableProperties();
   static String configPath = getConfigPath();
@@ -24,12 +27,11 @@ public class Configuration {
   static {
     try {
       config.load(new FileInputStream(configPath));
-      System.out.println("Loaded from " + configPath);
+      logger.debug("Loaded config from {}", configPath);
     } catch (Exception e) {
       File f = new File(configPath);
       new File(f.getParent()).mkdirs();
-      /*DEBUG*/
-      System.out.println("New configuration created: " + configPath);
+      logger.debug("New configuration created: {}", configPath);
       try {
         config.load(Configuration.class.getResourceAsStream("/util/memoranda.default.properties"));
         saveConfig();
@@ -41,22 +43,22 @@ public class Configuration {
   }
 
   static String getConfigPath() {
-    String p = Util.getEnvDir() + "memoranda.properties";
-    if (new File(p).exists()) {
-      return p;
+    String memorandaPropertiesDir = Util.getEnvDir() + "memoranda.properties";
+    if (new File(memorandaPropertiesDir).exists()) {
+      return memorandaPropertiesDir;
     }
-    String p1 = Util.getEnvDir() + "jnotes2.properties";
-    if (new File(p1).exists()) {
-      /*DEBUG*/
-      System.out.println(p + " not found.\n" + p1 + " used instead.");
-      return p1;
+    String jNotes2PropertiesDir = Util.getEnvDir() + "jnotes2.properties";
+    if (new File(jNotes2PropertiesDir).exists()) {
+      logger.debug("{} not found.\n{} used instead.", memorandaPropertiesDir, jNotes2PropertiesDir);
+      return jNotes2PropertiesDir;
     }
-    return p;
+    return memorandaPropertiesDir;
   }
 
   public static void saveConfig() {
     try {
       config.save(new FileOutputStream(configPath));
+      logger.debug("Saved config to {}", configPath);
     } catch (Exception e) {
       new ExceptionDialog(e, "Failed to save a configuration file:<br>" + configPath, "");
     }
@@ -64,13 +66,12 @@ public class Configuration {
 
   public static Object get(String key) {
     if ((config.get(key)) == null) {
-      /*DEBUG*///System.out.println("Configuration: Key '"+key+"' not found.");
+      logger.debug("Key '{}' not found in config.", key);
       return "";
     }
     return config.get(key);
   }
 
-  @SuppressWarnings("unchecked")
   public static void put(String key, Object value) {
     config.put(key, value);
   }

@@ -13,15 +13,17 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class EventsScheduler {
+  private static final Logger logger = LoggerFactory.getLogger(EventsScheduler.class);
 
   static List<EventTimer> _timers = new ArrayList<>();
   static List<EventNotificationListener> _listeners = new ArrayList<>();
-
   static Timer changeDateTimer = new Timer();
 
   static {
@@ -33,24 +35,21 @@ public class EventsScheduler {
     //changeDateTimer.cancel();
     List<Event> events = (ArrayList<Event>) EventsManager.getActiveEvents();
     _timers = new ArrayList<>();
-    /*DEBUG*/
-    System.out.println("----------");
+
+    logger.debug("----------");
     for (Event event : events) {
-      Event ev = event;
-      Date evTime = ev.getTime();
-      /*DEBUG*/
-      System.out.println((Calendar.getInstance()).getTime());
+      Date evTime = event.getTime();
+      logger.debug("Current time: {}", (Calendar.getInstance()).getTime());
       //  if (evTime.after(new Date())) {
       if (evTime.after((Calendar.getInstance()).getTime())) {
-        EventTimer t = new EventTimer(ev);
-        t.schedule(new NotifyTask(t), ev.getTime());
-        _timers.add(t);
-        /*DEBUG*/
-        System.out.println(ev.getTimeString());
+        EventTimer eventTimer = new EventTimer(event);
+        eventTimer.schedule(new NotifyTask(eventTimer), event.getTime());
+        _timers.add(eventTimer);
+        logger.debug("Event time: {}", event.getTimeString());
       }
     }
-    /*DEBUG*/
-    System.out.println("----------");
+    logger.debug("----------");
+
     Date midnight = getMidnight();
     changeDateTimer.schedule(new TimerTask() {
       public void run() {
