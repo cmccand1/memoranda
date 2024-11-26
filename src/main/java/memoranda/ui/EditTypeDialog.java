@@ -220,7 +220,7 @@ public class EditTypeDialog extends JDialog {
   }
 
   void checkOkEnabled() {
-    okB.setEnabled((extField.getText().length() > 0));
+    okB.setEnabled((!extField.getText().isEmpty()));
   }
 
   void setIconB_actionPerformed(ActionEvent e) {

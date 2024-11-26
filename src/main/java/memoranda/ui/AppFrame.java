@@ -464,6 +464,7 @@ public class AppFrame extends JFrame {
   private void addActionListeners() {
     projectsPanel.AddExpandListener(e -> projectsPanelExpand_actionPerformed());
     // File actions
+    fileMenuNewProject.addActionListener(projectsPanel.newProjectAction);
     fileMenuNewNote.addActionListener(workPanel.dailyItemsPanel.editorPanel.newAction);
     fileMenuExit.addActionListener(e -> doExit());
     fileMenuPackProject.addActionListener(e -> packProject());
@@ -645,27 +646,7 @@ public class AppFrame extends JFrame {
 
   public void packProject() {
     // Fix until Sun's JVM supports more locales...
-    UIManager.put("FileChooser.saveInLabelText", Local
-        .getString("Save in:"));
-    UIManager.put("FileChooser.upFolderToolTipText", Local.getString(
-        "Up One Level"));
-    UIManager.put("FileChooser.newFolderToolTipText", Local.getString(
-        "Create New Folder"));
-    UIManager.put("FileChooser.listViewButtonToolTipText", Local
-        .getString("List"));
-    UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-        .getString("Details"));
-    UIManager.put("FileChooser.fileNameLabelText", Local.getString(
-        "File Name:"));
-    UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString(
-        "Files of Type:"));
-    UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
-    UIManager.put("FileChooser.saveButtonToolTipText", Local.getString(
-        "Save selected file"));
-    UIManager
-        .put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-    UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString(
-        "Cancel"));
+    setFileChooserSaveConfig();
 
     JFileChooser chooser = new JFileChooser();
     chooser.setFileHidingEnabled(false);
@@ -700,29 +681,37 @@ public class AppFrame extends JFrame {
     ProjectPackager.pack(CurrentProject.get(), f);
   }
 
+  private void setFileChooserOpenConfig() {
+    UIManager.put("FileChooser.lookInLabelText", Local.getString("Look in:"));
+    UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
+    UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
+    UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
+    UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
+    UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
+    UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
+    UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
+    UIManager.put("FileChooser.openButtonToolTipText", Local.getString("Open selected file"));
+    UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
+    UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
+  }
+
+  private void setFileChooserSaveConfig() {
+    UIManager.put("FileChooser.saveInLabelText", Local.getString("Save in:"));
+    UIManager.put("FileChooser.upFolderToolTipText", Local.getString("Up One Level"));
+    UIManager.put("FileChooser.newFolderToolTipText", Local.getString("Create New Folder"));
+    UIManager.put("FileChooser.listViewButtonToolTipText", Local.getString("List"));
+    UIManager.put("FileChooser.detailsViewButtonToolTipText", Local.getString("Details"));
+    UIManager.put("FileChooser.fileNameLabelText", Local.getString("File Name:"));
+    UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString("Files of Type:"));
+    UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
+    UIManager.put("FileChooser.saveButtonToolTipText", Local.getString("Save selected file"));
+    UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
+    UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString("Cancel"));
+  }
+
   public void unpackProject() {
     // Fix until Sun's JVM supports more locales...
-    UIManager.put("FileChooser.lookInLabelText", Local
-        .getString("Look in:"));
-    UIManager.put("FileChooser.upFolderToolTipText", Local.getString(
-        "Up One Level"));
-    UIManager.put("FileChooser.newFolderToolTipText", Local.getString(
-        "Create New Folder"));
-    UIManager.put("FileChooser.listViewButtonToolTipText", Local
-        .getString("List"));
-    UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-        .getString("Details"));
-    UIManager.put("FileChooser.fileNameLabelText", Local.getString(
-        "File Name:"));
-    UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString(
-        "Files of Type:"));
-    UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-    UIManager.put("FileChooser.openButtonToolTipText", Local.getString(
-        "Open selected file"));
-    UIManager
-        .put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-    UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString(
-        "Cancel"));
+    setFileChooserOpenConfig();
 
     JFileChooser chooser = new JFileChooser();
     chooser.setFileHidingEnabled(false);
@@ -767,37 +756,7 @@ public class AppFrame extends JFrame {
 
   protected void exportNotes_actionPerformed(ActionEvent e) {
     // Fix until Sun's JVM supports more locales...
-    UIManager.put(
-        "FileChooser.lookInLabelText",
-        Local.getString("Save in:"));
-    UIManager.put(
-        "FileChooser.upFolderToolTipText",
-        Local.getString("Up One Level"));
-    UIManager.put(
-        "FileChooser.newFolderToolTipText",
-        Local.getString("Create New Folder"));
-    UIManager.put(
-        "FileChooser.listViewButtonToolTipText",
-        Local.getString("List"));
-    UIManager.put(
-        "FileChooser.detailsViewButtonToolTipText",
-        Local.getString("Details"));
-    UIManager.put(
-        "FileChooser.fileNameLabelText",
-        Local.getString("File Name:"));
-    UIManager.put(
-        "FileChooser.filesOfTypeLabelText",
-        Local.getString("Files of Type:"));
-    UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
-    UIManager.put(
-        "FileChooser.saveButtonToolTipText",
-        Local.getString("Save selected file"));
-    UIManager.put(
-        "FileChooser.cancelButtonText",
-        Local.getString("Cancel"));
-    UIManager.put(
-        "FileChooser.cancelButtonToolTipText",
-        Local.getString("Cancel"));
+    setFileChooserSaveConfig();
 
     JFileChooser chooser = new JFileChooser();
     chooser.setFileHidingEnabled(false);
@@ -865,26 +824,7 @@ public class AppFrame extends JFrame {
 
   protected void importNotes_actionPerformed(ActionEvent e) {
 
-    UIManager.put("FileChooser.lookInLabelText", Local
-        .getString("Look in:"));
-    UIManager.put("FileChooser.upFolderToolTipText", Local.getString(
-        "Up One Level"));
-    UIManager.put("FileChooser.newFolderToolTipText", Local.getString(
-        "Create New Folder"));
-    UIManager.put("FileChooser.listViewButtonToolTipText", Local
-        .getString("List"));
-    UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-        .getString("Details"));
-    UIManager.put("FileChooser.fileNameLabelText", Local.getString(
-        "File Name:"));
-    UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString(
-        "Files of Type:"));
-    UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-    UIManager.put("FileChooser.openButtonToolTipText", Local.getString(
-        "Open selected file"));
-    UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-    UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString(
-        "Cancel"));
+    setFileChooserOpenConfig();
 
     JFileChooser chooser = new JFileChooser();
     chooser.setFileHidingEnabled(false);
@@ -961,26 +901,7 @@ public class AppFrame extends JFrame {
 
   protected void importOneNote_actionPerformed(ActionEvent e) {
 
-    UIManager.put("FileChooser.lookInLabelText", Local
-        .getString("Look in:"));
-    UIManager.put("FileChooser.upFolderToolTipText", Local.getString(
-        "Up One Level"));
-    UIManager.put("FileChooser.newFolderToolTipText", Local.getString(
-        "Create New Folder"));
-    UIManager.put("FileChooser.listViewButtonToolTipText", Local
-        .getString("List"));
-    UIManager.put("FileChooser.detailsViewButtonToolTipText", Local
-        .getString("Details"));
-    UIManager.put("FileChooser.fileNameLabelText", Local.getString(
-        "File Name:"));
-    UIManager.put("FileChooser.filesOfTypeLabelText", Local.getString(
-        "Files of Type:"));
-    UIManager.put("FileChooser.openButtonText", Local.getString("Open"));
-    UIManager.put("FileChooser.openButtonToolTipText", Local.getString(
-        "Open selected file"));
-    UIManager.put("FileChooser.cancelButtonText", Local.getString("Cancel"));
-    UIManager.put("FileChooser.cancelButtonToolTipText", Local.getString(
-        "Cancel"));
+    setFileChooserOpenConfig();
 
     JFileChooser chooser = new JFileChooser();
     chooser.setFileHidingEnabled(false);
