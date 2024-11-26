@@ -109,6 +109,11 @@ public class HTMLEditor extends JPanel {
       super(name);
       super.putValue(Action.SHORT_DESCRIPTION, name);
     }
+
+    @Override
+    public final HTMLEditorAction clone() throws CloneNotSupportedException {
+      throw new CloneNotSupportedException();
+    }
   }
 
   public Action boldAction =
