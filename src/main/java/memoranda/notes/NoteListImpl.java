@@ -21,12 +21,11 @@ import nu.xom.Elements;
 /**
  *
  */
-/*$Id: NoteListImpl.java,v 1.14 2004/10/28 11:30:15 alexeya Exp $*/
 public class NoteListImpl implements NoteList {
 
-  private Project _project = null;
-  private Document _doc = null;
-  private Element _root = null;
+  private Project _project;
+  private Document _doc;
+  private Element _root;
 
 //    public static final String NS_JNNL = "http://www.openmechanics.org/2003/jnotes-noteslist";
 
@@ -48,25 +47,25 @@ public class NoteListImpl implements NoteList {
   }
 
   public Collection getAllNotes() {
-    Vector v = new Vector();
-    Elements yrs = _root.getChildElements("year");
-    for (int yi = 0; yi < yrs.size(); yi++) {
-      Year y = new Year(yrs.get(yi));
-      Vector ms = y.getMonths();
-      for (int mi = 0; mi < ms.size(); mi++) {
-        Month m = (Month) ms.get(mi);
-        Vector ds = m.getDays();
-        for (int di = 0; di < ds.size(); di++) {
-          Day d = (Day) ds.get(di);
-          Vector ns = d.getNotes();
-          for (int ni = 0; ni < ns.size(); ni++) {
-            NoteElement n = (NoteElement) ns.get(ni);
-            v.add(new NoteImpl(n.getElement(), _project));
+    Vector result = new Vector();
+    Elements years = _root.getChildElements("year");
+    for (int yi = 0; yi < years.size(); yi++) {
+      Year year = new Year(years.get(yi));
+      Vector months = year.getMonths();
+      for (int mi = 0; mi < months.size(); mi++) {
+        Month month = (Month) months.get(mi);
+        Vector days = month.getDays();
+        for (int di = 0; di < days.size(); di++) {
+          Day day = (Day) days.get(di);
+          Vector notes = day.getNotes();
+          for (int ni = 0; ni < notes.size(); ni++) {
+            NoteElement n = (NoteElement) notes.get(ni);
+            result.add(new NoteImpl(n.getElement(), _project));
           }
         }
       }
     }
-    return v;
+    return result;
   }
 
   /**

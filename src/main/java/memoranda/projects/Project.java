@@ -15,7 +15,6 @@ import memoranda.tasks.TaskList;
  *
  */
 
-/*$Id: Project.java,v 1.5 2004/11/22 10:02:37 alexeya Exp $*/
 public interface Project {
 
   public static final int SCHEDULED = 0;
