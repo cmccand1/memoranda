@@ -46,6 +46,7 @@ public class NoteListImpl implements NoteList {
     _project = prj;
   }
 
+  @Override
   public Collection getAllNotes() {
     Vector result = new Vector();
     Elements years = _root.getChildElements("year");
@@ -71,6 +72,7 @@ public class NoteListImpl implements NoteList {
   /**
    * @see NoteList#getMarkedNotes()
    */
+  @Override
   public Collection getMarkedNotes() {
     Vector v = new Vector();
     Elements yrs = _root.getChildElements("year");
@@ -96,6 +98,7 @@ public class NoteListImpl implements NoteList {
     return v;
   }
 
+  @Override
   public Collection getNotesForPeriod(CalendarDate startDate, CalendarDate endDate) {
     Vector v = new Vector();
     Elements yrs = _root.getChildElements("year");
@@ -132,6 +135,7 @@ public class NoteListImpl implements NoteList {
    * @return Note
    */
 
+  @Override
   public Note getNoteForDate(CalendarDate date) {
     Day d = getDay(date);
     if (d == null) {
@@ -147,6 +151,7 @@ public class NoteListImpl implements NoteList {
     //return new NoteImpl(d.getElement(), _project);
   }
 
+  @Override
   public Note createNoteForDate(CalendarDate date) {
     Year y = getYear(date.getYear());
     if (y == null) {
@@ -173,6 +178,7 @@ public class NoteListImpl implements NoteList {
         d.getElement().getParent().removeChild(d.getElement());             
     }
 */
+  @Override
   public void removeNote(CalendarDate date, String id) {
     Day d = getDay(date);
     if (d == null) {
@@ -189,6 +195,7 @@ public class NoteListImpl implements NoteList {
 //		CurrentNote.set(null);
   }
 
+  @Override
   public Note getActiveNote() {
     //return CurrentNote.get(); 
     return getNoteForDate(CurrentDate.get());
@@ -445,6 +452,7 @@ public class NoteListImpl implements NoteList {
   /**
    * @see NoteList#getXMLContent()
    */
+  @Override
   public Document getXMLContent() {
     return _doc;
   }

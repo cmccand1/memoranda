@@ -27,7 +27,7 @@ public class ProjectManager {
 //    public static final String NS_JNPROJECT = "http://www.openmechanics.org/2003/jnotes-projects-file";
 
   public static Document _doc = null;
-  static Element _root = null;
+  static Element _root = null; // project-list
 
   static {
     init();
@@ -47,21 +47,21 @@ public class ProjectManager {
   }
 
   public static Project getProject(String id) {
-    Elements prjs = _root.getChildElements("project");
-    for (int i = 0; i < prjs.size(); i++) {
-      String pid = (prjs.get(i)).getAttribute("id").getValue();
-      if (pid.equals(id)) {
-        return new ProjectImpl( prjs.get(i));
+    Elements allProjectElements = _root.getChildElements("project");
+    for (int i = 0; i < allProjectElements.size(); i++) {
+      String projId = (allProjectElements.get(i)).getAttribute("id").getValue();
+      if (projId.equals(id)) {
+        return new ProjectImpl( allProjectElements.get(i));
       }
     }
     return null;
   }
 
   public static List<Project> getAllProjects() {
-    Elements prjs = _root.getChildElements("project");
+    Elements allProjectElements = _root.getChildElements("project");
     List<Project> projectList = new ArrayList<>();
-    for (int i = 0; i < prjs.size(); i++) {
-      projectList.add(new ProjectImpl(prjs.get(i)));
+    for (int i = 0; i < allProjectElements.size(); i++) {
+      projectList.add(new ProjectImpl(allProjectElements.get(i)));
     }
     return projectList;
   }
@@ -77,23 +77,23 @@ public class ProjectManager {
   }
 
   public static List<Project> getActiveProjects() {
-    Elements prjs = _root.getChildElements("project");
-    List<Project> projectList = new ArrayList<>();
-    for (int i = 0; i < prjs.size(); i++) {
-      Project prj = new ProjectImpl(prjs.get(i));
-      if (prj.getStatus() == Project.ACTIVE) {
-        projectList.add(prj);
+    Elements allProjectElements = _root.getChildElements("project");
+    List<Project> activeProjectsList = new ArrayList<>();
+    for (int i = 0; i < allProjectElements.size(); i++) {
+      Project newProject = new ProjectImpl(allProjectElements.get(i));
+      if (newProject.getStatus() == Project.ACTIVE) {
+        activeProjectsList.add(newProject);
       }
     }
-    return projectList;
+    return activeProjectsList;
   }
 
   public static int getActiveProjectsNumber() {
-    Elements prjs = _root.getChildElements("project");
+    Elements allProjectElements = _root.getChildElements("project");
     int count = 0;
-    for (int i = 0; i < prjs.size(); i++) {
-      Project project = new ProjectImpl(prjs.get(i));
-      if (project.getStatus() == Project.ACTIVE) {
+    for (int i = 0; i < allProjectElements.size(); i++) {
+      Project newProject = new ProjectImpl(allProjectElements.get(i));
+      if (newProject.getStatus() == Project.ACTIVE) {
         count++;
       }
     }
@@ -102,10 +102,10 @@ public class ProjectManager {
 
   public static Project createProject(String id, String title, CalendarDate startDate,
       CalendarDate endDate) {
-    Element el = new Element("project");
-    el.addAttribute(new Attribute("id", id));
-    _root.appendChild(el);
-    Project newProject = new ProjectImpl(el);
+    Element projectElement = new Element("project");
+    projectElement.addAttribute(new Attribute("id", id));
+    _root.appendChild(projectElement);
+    Project newProject = new ProjectImpl(projectElement);
     newProject.setTitle(title);
     newProject.setStartDate(startDate);
     newProject.setEndDate(endDate);
@@ -124,11 +124,11 @@ public class ProjectManager {
     }
     History.removeProjectHistory(projectToRemove);
     CurrentStorage.get().removeProjectStorage(projectToRemove);
-    Elements prjs = _root.getChildElements("project");
-    for (int i = 0; i < prjs.size(); i++) {
-      String pid = (prjs.get(i)).getAttribute("id").getValue();
-      if (pid.equals(id)) {
-        _root.removeChild(prjs.get(i));
+    Elements allProjects = _root.getChildElements("project");
+    for (int i = 0; i < allProjects.size(); i++) {
+      String projId = (allProjects.get(i)).getAttribute("id").getValue();
+      if (projId.equals(id)) {
+        _root.removeChild(allProjects.get(i));
         return;
       }
     }

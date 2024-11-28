@@ -6,6 +6,7 @@
  */
 package memoranda.notes;
 
+import java.util.Objects;
 import memoranda.date.CalendarDate;
 import memoranda.projects.Project;
 import nu.xom.Attribute;
@@ -52,8 +53,8 @@ public class NoteImpl implements Note, Comparable {
    * @see Note#getTitle()
    */
   public String getTitle() {
-    Attribute ta = _el.getAttribute("title");
-    if (ta == null) {
+    Attribute titleAttr = _el.getAttribute("title");
+    if (titleAttr == null) {
       return "";
     }
     return _el.getAttribute("title").getValue();
@@ -63,11 +64,11 @@ public class NoteImpl implements Note, Comparable {
    * @see Note#setTitle(java.lang.String)
    */
   public void setTitle(String s) {
-    Attribute ta = _el.getAttribute("title");
-    if (ta == null) {
+    Attribute titleAttr = _el.getAttribute("title");
+    if (titleAttr == null) {
       _el.addAttribute(new Attribute("title", s));
     } else {
-      ta.setValue(s);
+      titleAttr.setValue(s);
     }
   }
 
@@ -76,8 +77,8 @@ public class NoteImpl implements Note, Comparable {
    */
 
   public String getId() {
-    Attribute id = _el.getAttribute("refid");
-    if (id == null) {
+    Attribute idAttr = _el.getAttribute("refid");
+    if (idAttr == null) {
       return "";
     }
     return _el.getAttribute("refid").getValue();
@@ -88,9 +89,11 @@ public class NoteImpl implements Note, Comparable {
    */
 
   public void setId(String s) {
-    Attribute id = _el.getAttribute("refid");
-    if (id == null) {
+    Attribute idAttr = _el.getAttribute("refid");
+    if (idAttr == null) {
       _el.addAttribute(new Attribute("refid", s));
+    } else {
+      idAttr.setValue(s);
     }
   }
 
@@ -104,22 +107,23 @@ public class NoteImpl implements Note, Comparable {
   /**
    * @see Note#setMark(boolean)
    */
-  public void setMark(boolean mark) {
-    Attribute ma = _el.getAttribute("bookmark");
-    if (ma == null) {
-      if (mark) {
+  public void setMark(boolean isMarked) {
+    Attribute bookmarkAttr = _el.getAttribute("bookmark");
+    if (bookmarkAttr == null) {
+      if (isMarked) {
         _el.addAttribute(new Attribute("bookmark", "yes"));
       }
-      return;
-    } else if (!mark) {
-      _el.removeAttribute(ma);
+    } else if (!isMarked) {
+      _el.removeAttribute(bookmarkAttr);
     }
   }
 
   /*
-   * Comparable interface
+   * Compare two notes by date
    */
+  @Override
   public int compareTo(Object o) {
+    Objects.requireNonNull(o);
     Note note = (Note) o;
     if (getDate().getDate().getTime() > note.getDate().getDate().getTime()) {
       return 1;

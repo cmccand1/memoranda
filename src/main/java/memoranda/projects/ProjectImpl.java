@@ -32,6 +32,7 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#getID()
    */
+  @Override
   public String getID() {
     return _root.getAttribute("id").getValue();
   }
@@ -39,17 +40,19 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#getStartDate()
    */
+  @Override
   public CalendarDate getStartDate() {
-    Attribute d = _root.getAttribute("startDate");
-    if (d == null) {
+    Attribute dateAttr = _root.getAttribute("startDate");
+    if (dateAttr == null) {
       return null;
     }
-    return new CalendarDate(d.getValue());
+    return new CalendarDate(dateAttr.getValue());
   }
 
   /**
    * @see Project#setStartDate(net.sf.memoranda.util.CalendarDate)
    */
+  @Override
   public void setStartDate(CalendarDate date) {
     if (date != null) {
       setAttr("startDate", date.toString());
@@ -59,17 +62,19 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#getEndDate()
    */
+  @Override
   public CalendarDate getEndDate() {
-    Attribute d = _root.getAttribute("endDate");
-    if (d == null) {
+    Attribute dateAttr = _root.getAttribute("endDate");
+    if (dateAttr == null) {
       return null;
     }
-    return new CalendarDate(d.getValue());
+    return new CalendarDate(dateAttr.getValue());
   }
 
   /**
    * @see Project#setEndDate(net.sf.memoranda.util.CalendarDate)
    */
+  @Override
   public void setEndDate(CalendarDate date) {
     if (date != null) {
       setAttr("endDate", date.toString());
@@ -81,23 +86,24 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#getStatus()
    */
+  @Override
   public int getStatus() {
     if (isFrozen()) {
       return Project.FROZEN;
     }
     CalendarDate today = CurrentDate.get();
-    CalendarDate prStart = getStartDate();
-    CalendarDate prEnd = getEndDate();
-    if (prEnd == null) {
-      if (today.before(prStart)) {
+    CalendarDate projectStart = getStartDate();
+    CalendarDate projectEnd = getEndDate();
+    if (projectEnd == null) {
+      if (today.before(projectStart)) {
         return Project.SCHEDULED;
       } else {
         return Project.ACTIVE;
       }
     }
-    if (today.inPeriod(prStart, prEnd)) {
+    if (today.inPeriod(projectStart, projectEnd)) {
       return Project.ACTIVE;
-    } else if (today.after(prEnd)) {
+    } else if (today.after(projectEnd)) {
       //if (getProgress() == 100)
       return Project.COMPLETED;
             /*else
@@ -127,6 +133,7 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#freeze()
    */
+  @Override
   public void freeze() {
     _root.addAttribute(new Attribute("frozen", "yes"));
   }
@@ -134,6 +141,7 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#unfreeze()
    */
+  @Override
   public void unfreeze() {
     if (this.isFrozen()) {
       _root.removeAttribute(new Attribute("frozen", "yes"));
@@ -143,10 +151,11 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#getTitle()
    */
+  @Override
   public String getTitle() {
-    Attribute ta = _root.getAttribute("title");
-    if (ta != null) {
-      return ta.getValue();
+    Attribute titleAttr = _root.getAttribute("title");
+    if (titleAttr != null) {
+      return titleAttr.getValue();
     }
     return "";
   }
@@ -154,23 +163,25 @@ public class ProjectImpl implements Project {
   /**
    * @see Project#setTitle(java.lang.String)
    */
+  @Override
   public void setTitle(String title) {
     setAttr("title", title);
   }
 
   private void setAttr(String name, String value) {
-    Attribute a = _root.getAttribute(name);
-    if (a == null) {
+    Attribute attr = _root.getAttribute(name);
+    if (attr == null) {
       if (value != null) {
         _root.addAttribute(new Attribute(name, value));
       }
     } else if (value != null) {
-      a.setValue(value);
+      attr.setValue(value);
     } else {
-      _root.removeAttribute(a);
+      _root.removeAttribute(attr);
     }
   }
 
+  @Override
   public String getDescription() {
     Element thisElement = _root.getFirstChildElement("description");
     if (thisElement == null) {
@@ -180,36 +191,42 @@ public class ProjectImpl implements Project {
     }
   }
 
+  @Override
   public void setDescription(String s) {
-    Element desc = _root.getFirstChildElement("description");
-    if (desc == null) {
-      desc = new Element("description");
-      desc.appendChild(s);
-      _root.appendChild(desc);
+    Element description = _root.getFirstChildElement("description");
+    if (description == null) {
+      description = new Element("description");
+      description.appendChild(s);
+      _root.appendChild(description);
     } else {
-      desc.removeChildren();
-      desc.appendChild(s);
+      description.removeChildren();
+      description.appendChild(s);
     }
   }
 
   /**
    * @see net.sf.memoranda.Project#getTaskList()
    */
-    public TaskList getTaskList() {
-        return CurrentStorage.get().openTaskList(this);
-    }
+  @Override
+  public TaskList getTaskList() {
+    return CurrentStorage.get().openTaskList(this);
+  }
+
   /**
    * @see net.sf.memoranda.Project#getNoteList()
    */
-    public NoteList getNoteList() {
-        return CurrentStorage.get().openNoteList(this);
-    }
+  @Override
+  public NoteList getNoteList() {
+    return CurrentStorage.get().openNoteList(this);
+  }
+
   /**
    * @see net.sf.memoranda.Project#getResourcesList()
    */
-    public ResourcesList getResourcesList() {
-        return CurrentStorage.get().openResourcesList(this);
-    }
+  @Override
+  public ResourcesList getResourcesList() {
+    return CurrentStorage.get().openResourcesList(this);
+  }
 
   @Override
   public String toString() {
