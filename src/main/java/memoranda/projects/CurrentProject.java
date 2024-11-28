@@ -27,37 +27,34 @@ import memoranda.tasks.TaskList;
  */
 public class CurrentProject {
 
-  private static Project _project = null;
-  private static TaskList _tasklist = null;
-  private static NoteList _notelist = null;
-  private static ResourcesList _resources = null;
+  private static Project _project;
+  private static TaskList _tasklist;
+  private static NoteList _notelist;
+  private static ResourcesList _resources;
   private static List<ProjectListener> projectListeners = new ArrayList<>();
 
 
   static {
-    String prjId = (String) memoranda.util.Context.get("LAST_OPENED_PROJECT_ID");
-    if (prjId == null) {
-      prjId = "__default";
-      memoranda.util.Context.put("LAST_OPENED_PROJECT_ID", prjId);
+    String projectId = (String) Context.get("LAST_OPENED_PROJECT_ID");
+    if (projectId == null) {
+      projectId = "__default";
+      Context.put("LAST_OPENED_PROJECT_ID", projectId);
     }
     //ProjectManager.init();
-    _project = ProjectManager.getProject(prjId);
+    _project = ProjectManager.getProject(projectId);
 
     if (_project == null) {
-      // alexeya: Fixed bug with NullPointer when LAST_OPENED_PROJECT_ID
-      // references to missing project
       _project = ProjectManager.getProject("__default");
       if (_project == null) {
         _project = ProjectManager.getActiveProjects().get(0);
       }
-      memoranda.util.Context.put("LAST_OPENED_PROJECT_ID", _project.getID());
-
+      Context.put("LAST_OPENED_PROJECT_ID", _project.getID());
     }
 
     _tasklist = CurrentStorage.get().openTaskList(_project);
     _notelist = CurrentStorage.get().openNoteList(_project);
     _resources = CurrentStorage.get().openResourcesList(_project);
-    memoranda.ui.AppFrame.addExitListener(e -> save());
+    AppFrame.addExitListener(e -> save());
   }
 
 
@@ -90,7 +87,7 @@ public class CurrentProject {
     _notelist = newnotelist;
     _resources = newresources;
     notifyListenersAfter();
-    memoranda.util.Context.put("LAST_OPENED_PROJECT_ID", project.getID());
+    Context.put("LAST_OPENED_PROJECT_ID", project.getID());
   }
 
   public static void addProjectListener(ProjectListener pl) {

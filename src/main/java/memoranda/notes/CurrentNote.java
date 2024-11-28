@@ -1,12 +1,15 @@
 package memoranda.notes;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 public class CurrentNote {
 
   private static Note currentNote = null;
-  private static Vector noteListeners = new Vector();
+  private static List<NoteListener> noteListeners = new ArrayList<>();
 
   public static Note get() {
     return currentNote;
@@ -31,8 +34,8 @@ public class CurrentNote {
   }
 
   private static void noteChanged(Note note, boolean toSaveCurrentNote) {
-    for (int i = 0; i < noteListeners.size(); i++) {
-      ((NoteListener) noteListeners.get(i)).noteChange(note, toSaveCurrentNote);
+    for (NoteListener noteListener : noteListeners) {
+      (noteListener).noteChange(note, toSaveCurrentNote);
     }
   }
 }

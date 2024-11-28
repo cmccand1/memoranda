@@ -16,18 +16,13 @@ import memoranda.ui.AppFrame;
  * @version 1.0
  */
 
-/*$Id: Context.java,v 1.3 2004/01/30 12:17:42 alexeya Exp $*/
 public class Context {
 
   public static LoadableProperties context = new LoadableProperties();
 
   static {
     CurrentStorage.get().restoreContext();
-    AppFrame.addExitListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        CurrentStorage.get().storeContext();
-      }
-    });
+    AppFrame.addExitListener(e -> CurrentStorage.get().storeContext());
   }
 
   public static Object get(Object key) {

@@ -8,13 +8,12 @@ package memoranda.storage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
-
+import java.util.List;
 /**
  *
  */
-/*$Id: CurrentStorage.java,v 1.3 2004/01/30 12:17:42 alexeya Exp $*/
 public class CurrentStorage {
 
   /**
@@ -22,7 +21,7 @@ public class CurrentStorage {
    */
   private static Storage _storage = new FileStorage();
 
-  private static Vector actionListeners = new Vector();
+  private static List<ActionListener> actionListeners = new ArrayList<>();
 
   public static Storage get() {
     return _storage;
@@ -42,9 +41,8 @@ public class CurrentStorage {
   }
 
   private static void storageChanged() {
-    for (int i = 0; i < actionListeners.size(); i++) {
-      ((ActionListener) actionListeners.get(i)).actionPerformed(
-          new ActionEvent(null, 0, "Current storage changed"));
+    for (ActionListener actionListener : actionListeners) {
+      actionListener.actionPerformed(new ActionEvent(null, 0, "Current storage changed"));
     }
   }
 
