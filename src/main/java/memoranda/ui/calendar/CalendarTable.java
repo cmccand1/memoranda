@@ -4,7 +4,7 @@
  * @author Alex V. Alishevskikh, alex@openmechanics.net Copyright (c) 2003 Memoranda Team.
  * http://memoranda.sf.net
  */
-package memoranda.ui;
+package memoranda.ui.calendar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,24 +26,23 @@ import memoranda.util.Local;
 /**
  *
  */
-/*$Id: JNCalendar.java,v 1.8 2004/11/05 07:38:10 pbielen Exp $*/
-public class JNCalendar extends JTable {
+public class CalendarTable extends JTable {
 
   private CalendarDate _date = null;
   private boolean ignoreChange = false;
   private Vector selectionListeners = new Vector();
   CalendarDate startPeriod = null;
   CalendarDate endPeriod = null;
-  public JNCalendarCellRenderer renderer = new JNCalendarCellRenderer();
+  public CalendarCellRenderer renderer = new CalendarCellRenderer();
 
-  public JNCalendar() {
+  public CalendarTable() {
     this(CurrentDate.get());
   }
 
   /**
    * Constructor for JNCalendar.
    */
-  public JNCalendar(CalendarDate date) {
+  public CalendarTable(CalendarDate date) {
     super();
     /* table properties */
     setCellSelectionEnabled(true);
@@ -98,7 +97,7 @@ public class JNCalendar extends JTable {
     return this.getSelectedColumn();
   }
 
-  public JNCalendar(CalendarDate date, CalendarDate sd, CalendarDate ed) {
+  public CalendarTable(CalendarDate date, CalendarDate sd, CalendarDate ed) {
     this(date);
     setSelectablePeriod(sd, ed);
   }
@@ -107,7 +106,7 @@ public class JNCalendar extends JTable {
     _date = date;
     setCalendarParameters();
     ignoreChange = true;
-    this.setModel(new JNCalendarModel());
+    this.setModel(new CalendarModel());
     ignoreChange = false;
     doSelection();
   }
@@ -193,11 +192,11 @@ public class JNCalendar extends JTable {
   }
 
   /*$Id: JNCalendar.java,v 1.8 2004/11/05 07:38:10 pbielen Exp $*/
-  public class JNCalendarModel extends AbstractTableModel {
+  public class CalendarModel extends AbstractTableModel {
 
     private String[] dayNames = Local.getWeekdayNames();
 
-    public JNCalendarModel() {
+    public CalendarModel() {
       super();
     }
 

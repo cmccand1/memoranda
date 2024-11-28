@@ -33,7 +33,7 @@ import memoranda.projects.ProjectManager;
 import memoranda.date.CalendarDate;
 import memoranda.storage.CurrentStorage;
 import memoranda.ui.App;
-import memoranda.ui.CalendarFrame;
+import memoranda.ui.calendar.CalendarFrame;
 import memoranda.ui.ExceptionDialog;
 import memoranda.util.Local;
 

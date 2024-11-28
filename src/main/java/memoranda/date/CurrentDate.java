@@ -6,17 +6,18 @@
  */
 package memoranda.date;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 /**
  *
  */
-/*$Id: CurrentDate.java,v 1.4 2004/10/06 16:00:12 ivanrise Exp $*/
 public class CurrentDate {
 
   private static CalendarDate _date = new CalendarDate();
-  private static Vector dateListeners = new Vector();
+  private static List<DateListener> dateListeners = new ArrayList<>();
 
   public static CalendarDate get() {
     return _date;
@@ -43,8 +44,8 @@ public class CurrentDate {
   }
 
   private static void dateChanged(CalendarDate date) {
-    for (int i = 0; i < dateListeners.size(); i++) {
-      ((DateListener) dateListeners.get(i)).dateChange(date);
+    for (DateListener dateListener : dateListeners) {
+      dateListener.dateChange(date);
     }
   }
 }

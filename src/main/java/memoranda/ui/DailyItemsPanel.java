@@ -31,6 +31,7 @@ import memoranda.notes.*;
 import memoranda.projects.*;
 import memoranda.resources.ResourcesList;
 import memoranda.tasks.*;
+import memoranda.ui.calendar.CalendarPanel;
 import memoranda.ui.notes.*;
 import memoranda.ui.tasks.*;
 import memoranda.date.CalendarDate;
@@ -79,7 +80,7 @@ public class DailyItemsPanel extends JPanel {
   boolean dateChangedByCalendar = false;
   boolean changedByHistory = false;
   JPanel cmainPanel = new JPanel();
-  public JNCalendarPanel calendar = new JNCalendarPanel();
+  public CalendarPanel calendar = new CalendarPanel();
   JToolBar toggleToolBar = new JToolBar();
   BorderLayout borderLayout5 = new BorderLayout();
   Border border1;
@@ -452,8 +453,8 @@ public class DailyItemsPanel extends JPanel {
   }
 
   public void selectPanel(String pan) {
-    if (calendar.jnCalendar.renderer.getTask() != null) {
-      calendar.jnCalendar.renderer.setTask(null);
+    if (calendar.calendarTable.renderer.getTask() != null) {
+      calendar.calendarTable.renderer.setTask(null);
       //   calendar.jnCalendar.updateUI();
     }
     if (pan.equals("TASKS") && (tasksPanel.taskTable.getSelectedRow() > -1)) {
@@ -464,7 +465,7 @@ public class DailyItemsPanel extends JPanel {
                   .getModel()
                   .getValueAt(tasksPanel.taskTable.getSelectedRow(), TaskTable.TASK_ID)
                   .toString());
-      calendar.jnCalendar.renderer.setTask(t);
+      calendar.calendarTable.renderer.setTask(t);
       //     calendar.jnCalendar.updateUI();
     }
     boolean isAg = pan.equals("AGENDA");
@@ -474,7 +475,7 @@ public class DailyItemsPanel extends JPanel {
     }
     cardLayout1.show(editorsPanel, pan);
     cardLayout2.show(mainTabsPanel, pan + "TAB");
-    calendar.jnCalendar.updateUI();
+    calendar.calendarTable.updateUI();
     CurrentPanel = pan;
   }
 

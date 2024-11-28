@@ -13,10 +13,6 @@ import java.util.Date;
 import memoranda.util.Local;
 import memoranda.util.Util;
 
-/**
- *
- */
-/*$Id: CalendarDate.java,v 1.3 2004/01/30 12:17:41 alexeya Exp $*/
 public class CalendarDate {
 
   private int _year;
@@ -41,11 +37,7 @@ public class CalendarDate {
     cal.set(Calendar.MONTH, _month);
     cal.getTime();
     int dmax = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-    if (day <= dmax) {
-      _day = day;
-    } else {
-      _day = dmax;
-    }
+    _day = Math.min(day, dmax);
 
   }
 
@@ -180,6 +172,4 @@ public class CalendarDate {
   public String getShortDateString() {
     return Local.getDateString(this, DateFormat.SHORT);
   }
-
-
 }

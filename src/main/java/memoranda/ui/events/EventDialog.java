@@ -37,7 +37,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import memoranda.date.CalendarDate;
-import memoranda.ui.CalendarFrame;
+import memoranda.ui.calendar.CalendarFrame;
 import memoranda.ui.ExceptionDialog;
 import memoranda.util.Local;
 
