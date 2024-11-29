@@ -19,12 +19,6 @@ public class CalendarDate {
   private int _month;
   private int _day;
 
-  public static Calendar dateToCalendar(Date date) {
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
-    return cal;
-  }
-
   public CalendarDate() {
     this(Calendar.getInstance());
   }
@@ -38,7 +32,6 @@ public class CalendarDate {
     cal.getTime();
     int dmax = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
     _day = Math.min(day, dmax);
-
   }
 
   public CalendarDate(Calendar cal) {
@@ -73,6 +66,12 @@ public class CalendarDate {
     Calendar cal = Calendar.getInstance();
     cal.roll(Calendar.DATE, true);
     return new CalendarDate(cal);
+  }
+
+  public static Calendar dateToCalendar(Date date) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal;
   }
 
   public static Calendar toCalendar(int day, int month, int year) {
@@ -112,6 +111,7 @@ public class CalendarDate {
     return _year;
   }
 
+  @Override
   public boolean equals(Object object) {
     if (object.getClass().isInstance(CalendarDate.class)) {
       CalendarDate d2 = (CalendarDate) object;
@@ -153,6 +153,7 @@ public class CalendarDate {
     return (after(startDate) && before(endDate)) || equals(startDate) || equals(endDate);
   }
 
+  @Override
   public String toString() {
     return Util.getDateStamp(this);
   }

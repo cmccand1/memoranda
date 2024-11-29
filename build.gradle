@@ -28,6 +28,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.36' // Logging interface
     implementation 'ch.qos.logback:logback-classic:1.4.14' // Logging implementation
     // JUnit 5 dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.0')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.7.0') // Engine to run tests
     // Mockito dependencies
