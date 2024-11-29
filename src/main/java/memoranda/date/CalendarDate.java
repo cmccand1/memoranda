@@ -7,52 +7,56 @@
 package memoranda.date;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import memoranda.util.Local;
 import memoranda.util.Util;
 
 public class CalendarDate {
 
-  private int _year;
-  private int _month;
-  private int _day;
+  private LocalDate date;
 
   /**
    * Creates a new instance of CalendarDate with the current date.
    */
   public CalendarDate() {
-    this(Calendar.getInstance());
+    date = LocalDate.now();
   }
 
   public CalendarDate(int day, int month, int year) {
-    _year = year;
-    _month = month;
-    Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.YEAR, _year);
-    cal.set(Calendar.MONTH, _month);
-    cal.getTime();
-    int dmax = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-    _day = Math.min(day, dmax);
+    date = LocalDate.of(year, month, day);
   }
 
-  public CalendarDate(Calendar cal) {
-    _year = cal.get(Calendar.YEAR);
-    _day = cal.get(Calendar.DAY_OF_MONTH);
-    _month = cal.get(Calendar.MONTH);
+  private CalendarDate(Calendar cal) {
+    date = LocalDate.of(
+        cal.get(Calendar.YEAR),
+        cal.get(Calendar.MONTH) + 1,
+        cal.get(Calendar.DAY_OF_MONTH)
+    );
   }
 
   public CalendarDate(Date date) {
-    this(dateToCalendar(date));
+    this.date = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
   }
 
   public CalendarDate(String date) {
-    int[] d = Util.parseDateStamp(date);
-    _day = d[0];
-    _month = d[1];
-    _year = d[2];
+    int[] dateParts = Util.parseDateStamp(date);
+    this.date = LocalDate.of(
+        dateParts[2],
+        Month.of(dateParts[1]),
+        dateParts[0]
+    );
 
+  }
+
+  private CalendarDate(LocalDate localDate) {
+    date = localDate;
   }
 
   public static CalendarDate today() {
@@ -60,15 +64,11 @@ public class CalendarDate {
   }
 
   public static CalendarDate yesterday() {
-    Calendar cal = Calendar.getInstance();
-    cal.roll(Calendar.DATE, false);
-    return new CalendarDate(cal);
+    return new CalendarDate(LocalDate.now().minusDays(1));
   }
 
   public static CalendarDate tomorrow() {
-    Calendar cal = Calendar.getInstance();
-    cal.roll(Calendar.DATE, true);
-    return new CalendarDate(cal);
+    return new CalendarDate(LocalDate.now().plusDays(1));
   }
 
   public static Calendar dateToCalendar(Date date) {
@@ -87,31 +87,31 @@ public class CalendarDate {
   }
 
   public static Date toDate(int day, int month, int year) {
-    Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.YEAR, year);
-    cal.set(Calendar.MONTH, month);
-    cal.set(Calendar.DAY_OF_MONTH, day);
-    return cal.getTime();
+    return Date.from(toCalendar(day, month, year).toInstant());
   }
 
   public Calendar getCalendar() {
-    return toCalendar(_day, _month, _year);
+    return toCalendar(date.getDayOfMonth(), date.getMonthValue(), date.getYear());
   }
 
   public Date getDate() {
-    return toDate(_day, _month, _year);
+    return toDate(date.getDayOfMonth(), date.getMonthValue(), date.getYear());
   }
 
   public int getDay() {
-    return _day;
+    return date.getDayOfMonth();
   }
 
   public int getMonth() {
-    return _month;
+    return date.getMonthValue();
+  }
+
+  public int getLengthOfMonth() {
+    return date.lengthOfMonth();
   }
 
   public int getYear() {
-    return _year;
+    return date.getYear();
   }
 
   @Override
@@ -133,23 +133,21 @@ public class CalendarDate {
     if (date == null) {
       return false;
     }
-    return date._day == this._day &&
-        date._month == this._month &&
-        date._year == this._year;
+    return this.date.equals(date.date);
   }
 
   public boolean before(CalendarDate date) {
     if (date == null) {
       return true;
     }
-    return this.getCalendar().before(date.getCalendar());
+    return this.date.isBefore(date.date);
   }
 
   public boolean after(CalendarDate date) {
     if (date == null) {
       return true;
     }
-    return this.getCalendar().after(date.getCalendar());
+    return this.date.isAfter(date.date);
   }
 
   public boolean inPeriod(CalendarDate startDate, CalendarDate endDate) {
@@ -162,18 +160,26 @@ public class CalendarDate {
   }
 
   public String getFullDateString() {
-    return Local.getDateString(this, DateFormat.FULL);
+//    return Local.getDateString(this, DateFormat.FULL);
+    DateTimeFormatter fullDateStringFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
+    return date.format(fullDateStringFormatter);
   }
 
   public String getMediumDateString() {
-    return Local.getDateString(this, DateFormat.MEDIUM);
+//    return Local.getDateString(this, DateFormat.MEDIUM);
+    DateTimeFormatter mediumDateStringFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+    return date.format(mediumDateStringFormatter);
   }
 
   public String getLongDateString() {
-    return Local.getDateString(this, DateFormat.LONG);
+//    return Local.getDateString(this, DateFormat.LONG);
+    DateTimeFormatter longDateStringFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+    return date.format(longDateStringFormatter);
   }
 
   public String getShortDateString() {
-    return Local.getDateString(this, DateFormat.SHORT);
+//    return Local.getDateString(this, DateFormat.SHORT);
+    DateTimeFormatter shortDateStringFormatter = DateTimeFormatter.ofPattern("M/d/yy");
+    return date.format(shortDateStringFormatter);
   }
 }

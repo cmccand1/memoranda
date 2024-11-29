@@ -55,6 +55,7 @@ public class CalendarTable extends JTable {
     final ListSelectionModel rowSM = getSelectionModel();
     final ListSelectionModel colSM = getColumnModel().getSelectionModel();
     ListSelectionListener lsl = new ListSelectionListener() {
+      @Override
       public void valueChanged(ListSelectionEvent e) {
         //Ignore extra messages.
         if (e.getValueIsAdjusting()) {
@@ -131,19 +132,25 @@ public class CalendarTable extends JTable {
     }
   }
 
+  @Override
   public TableCellRenderer getCellRenderer(int row, int column) {
-    Object d = this.getModel().getValueAt(row, column);
+    Object day = this.getModel().getValueAt(row, column);
     /*
      * if (d != null) return new JNCalendarCellRenderer( new
      * CalendarDate(new Integer(d.toString()).intValue(), _date.getMonth(),
      * _date.getYear()));
      */
-    if (d != null) {
-      renderer.setDate(
-          new CalendarDate(
-              new Integer(d.toString()).intValue(),
-              _date.getMonth(),
-              _date.getYear()));
+    if (day != null) {
+      int dayValue = Integer.parseInt(day.toString());
+      if (dayValue > 0 && dayValue <= _date.getLengthOfMonth()) {
+        renderer.setDate(
+            new CalendarDate(
+                dayValue,
+                _date.getMonth(),
+                _date.getYear()));
+      } else {
+        renderer.setDate(null);
+      }
     } else {
       renderer.setDate(null);
     }
@@ -188,7 +195,8 @@ public class CalendarTable extends JTable {
     if (firstDay == -1) {
       firstDay = 6;
     }
-    daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+//    daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+    daysInMonth = _date.getLengthOfMonth();
   }
 
   /*$Id: JNCalendar.java,v 1.8 2004/11/05 07:38:10 pbielen Exp $*/
@@ -200,29 +208,29 @@ public class CalendarTable extends JTable {
       super();
     }
 
+    @Override
     public int getColumnCount() {
       return 7;
     }
 
+    @Override
     public Object getValueAt(int row, int col) {
-      //int pos = (row * 7 + col) - firstDay + 1;
       int pos = (row * 7 + (col + 1)) - firstDay;
       if ((pos > 0) && (pos <= daysInMonth)) {
-        return new Integer(pos);
+        return pos;
       } else {
         return null;
       }
-
     }
 
+    @Override
     public int getRowCount() {
       return 6;
     }
 
+    @Override
     public String getColumnName(int col) {
       return dayNames[col];
     }
-
   }
-
 }

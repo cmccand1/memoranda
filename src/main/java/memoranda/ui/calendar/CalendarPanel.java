@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Vector;
@@ -23,8 +22,6 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import memoranda.projects.CurrentProject;
 import memoranda.notes.NoteList;
@@ -47,7 +44,7 @@ public class CalendarPanel extends JPanel {
   private final int MIN_YEAR = 1980;
   private final int MAX_YEAR = 2999;
 
-  CalendarDate _date = CurrentDate.get();
+  CalendarDate _calendarPanelDate = CurrentDate.get();
   JToolBar navigationBar = new JToolBar();
   JPanel mntyPanel = new JPanel(new BorderLayout());
   JPanel navbPanel = new JPanel(new BorderLayout());
@@ -227,12 +224,12 @@ public class CalendarPanel extends JPanel {
   }
 
   public void set(CalendarDate date) {
-    _date = date;
+    _calendarPanelDate = date;
     refreshView();
   }
 
   public CalendarDate get() {
-    return _date;
+    return _calendarPanelDate;
   }
 
   public void addSelectionListener(ActionListener al) {
@@ -250,18 +247,18 @@ public class CalendarPanel extends JPanel {
     if (ignoreChange) {
       return;
     }
-    if (_date.equals(dt)) {
+    if (_calendarPanelDate.equals(dt)) {
       return;
     }
-    _date = new CalendarDate(d, _date.getMonth(), _date.getYear());
+    _calendarPanelDate = new CalendarDate(d, _calendarPanelDate.getMonth(), _calendarPanelDate.getYear());
     notifyListeners();
   }
 
   private void refreshView() {
     ignoreChange = true;
-    calendarTable.set(_date);
-    monthsCB.setSelectedIndex(new Integer(_date.getMonth()));
-    yearSpin.setValue(new Integer(_date.getYear()));
+    calendarTable.set(_calendarPanelDate);
+    monthsCB.setSelectedIndex(_calendarPanelDate.getMonth());
+    yearSpin.setValue(_calendarPanelDate.getYear());
     ignoreChange = false;
   }
 
@@ -269,8 +266,9 @@ public class CalendarPanel extends JPanel {
     if (ignoreChange) {
       return;
     }
-    _date = new CalendarDate(_date.getDay(), monthsCB.getSelectedIndex(), _date.getYear());
-    calendarTable.set(_date);
+    System.out.println("selected index: " + monthsCB.getSelectedIndex());
+    _calendarPanelDate = new CalendarDate(_calendarPanelDate.getDay(), monthsCB.getSelectedIndex(), _calendarPanelDate.getYear());
+    calendarTable.set(_calendarPanelDate);
     notifyListeners();
   }
 
@@ -278,32 +276,26 @@ public class CalendarPanel extends JPanel {
     if (ignoreChange) {
       return;
     }
-    _date = new CalendarDate(_date.getDay(), _date.getMonth(),
-        ((Integer) yearSpin.getValue()).intValue());
-    calendarTable.set(_date);
+    _calendarPanelDate = new CalendarDate(_calendarPanelDate.getDay(), _calendarPanelDate.getMonth(),
+        ((Integer) yearSpin.getValue()));
+    calendarTable.set(_calendarPanelDate);
     notifyListeners();
   }
 
   void dayBackButton_actionPerformed(ActionEvent e) {
-    Calendar cal = _date.getCalendar();
-    cal.add(Calendar.DATE, -1);
-    cal.getTime();
-    _date = new CalendarDate(cal);
+    _calendarPanelDate = _calendarPanelDate.yesterday();
     refreshView();
     notifyListeners();
   }
 
   void todayButton_actionPerformed(ActionEvent e) {
-    _date = CalendarDate.today();
+    _calendarPanelDate = CalendarDate.today();
     refreshView();
     notifyListeners();
   }
 
   void dayForwardButton_actionPerformed(ActionEvent e) {
-    Calendar cal = _date.getCalendar();
-    cal.add(Calendar.DATE, 1);
-    cal.getTime();
-    _date = new CalendarDate(cal);
+    _calendarPanelDate = _calendarPanelDate.tomorrow();
     refreshView();
     notifyListeners();
   }
