@@ -115,8 +115,7 @@ public class CalendarDate {
   public boolean equals(Object object) {
     if (object.getClass().isInstance(CalendarDate.class)) {
       CalendarDate d2 = (CalendarDate) object;
-      return ((d2.getDay() == getDay()) && (d2.getMonth() == getMonth()) && (d2.getYear()
-          == getYear()));
+      return this.equals(d2);
     } else if (object.getClass().isInstance(Calendar.class)) {
       Calendar cal = (Calendar) object;
       return this.equals(new CalendarDate(cal));

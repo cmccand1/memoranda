@@ -3,9 +3,11 @@ package memoranda.date;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
+import java.util.GregorianCalendar;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -162,27 +164,37 @@ class CalendarDateTest {
     assertEquals(2021, calendarDate.getYear());
   }
 
-  @Test
-  void equalsReturnsTrueIfTheDatesAreEqual() {
-    CalendarDate calendarDate1 = new CalendarDate(1, 1, 2021);
-    CalendarDate calendarDate2 = new CalendarDate(1, 1, 2021);
-    assertTrue(calendarDate1.equals(calendarDate2));
+  public static Stream<Arguments> equalsTestArgs() {
+    return Stream.of(
+        // boundary values
+        Arguments.of(new CalendarDate(1, 1, 2021), new CalendarDate(1, 1, 2021), true), // same date
+        Arguments.of(new CalendarDate(1, 1, 2021), new CalendarDate(1, 2, 2021), false),
+        // different day
+        Arguments.of(new CalendarDate(1, 1, 2021), new CalendarDate(2, 1, 2021), false),
+        // different month
+        Arguments.of(new CalendarDate(1, 1, 2021), new CalendarDate(1, 1, 2022), false),
+        // different year
+        // larger values
+        Arguments.of(new CalendarDate(22, 2, 2021), new CalendarDate(22, 2, 2021), true),
+        Arguments.of(new CalendarDate(1, 3, 2028), new CalendarDate(1, 3, 2028), true),
+        // smaller values
+        Arguments.of(new CalendarDate(31, 12, 2019), new CalendarDate(31, 12, 2019), true),
+        Arguments.of(new CalendarDate(1, 1, 2020), new CalendarDate(1, 1, 2020), true)
+    );
   }
 
-  @Test
-  void equalsReturnsFalseIfTheDatesAreNotEqual() {
-    CalendarDate calendarDate1 = new CalendarDate(1, 1, 2021);
-    CalendarDate calendarDate2 = new CalendarDate(1, 2, 2021);
-    assertFalse(calendarDate1.equals(calendarDate2));
+  @ParameterizedTest
+  @MethodSource("equalsTestArgs")
+  void equalsTest(CalendarDate calendarDate1, CalendarDate calendarDate2, boolean expected) {
+    assertEquals(expected, calendarDate1.equals(calendarDate2));
   }
-
-  // test that equals obeys the contract
 
   @Test
   void equalsIsReflexive() {
     CalendarDate calendarDate = new CalendarDate(1, 1, 2021);
     assertTrue(calendarDate.equals(calendarDate));
   }
+
   @Test
   void equalsIsSymmetric() {
     CalendarDate calendarDate1 = new CalendarDate(1, 1, 2021);
@@ -281,26 +293,79 @@ class CalendarDateTest {
 
   @Test
   void testToString() {
-    throw new RuntimeException("Test not implemented");
+    CalendarDate calendarDate = new CalendarDate(13, 1, 2021);
+    assertEquals("13/1/2021", calendarDate.toString());
   }
 
   @Test
   void getFullDateString() {
-    throw new RuntimeException("Test not implemented");
+    CalendarDate calendarDate = new CalendarDate(13, 1, 2021);
+    String actualDateString = calendarDate.getFullDateString();
+    System.out.println("Full Date String: " + actualDateString);
+
+    // local date starts the month at 1
+    LocalDate date = LocalDate.of(2021, 2, 13);
+    // Define a custom DateTimeFormatter
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
+    // Format the date
+    String expectedDateStrings = date.format(formatter);
+    // Print the formatted date
+    System.out.println("Formatted date: " + expectedDateStrings);
+
+    assertEquals(expectedDateStrings, actualDateString);
   }
 
   @Test
   void getMediumDateString() {
-    throw new RuntimeException("Test not implemented");
+    CalendarDate calendarDate = new CalendarDate(13, 1, 2021);
+    String actualDateString = calendarDate.getMediumDateString();
+    System.out.println("Medium Date String: " + actualDateString);
+
+    // local date starts the month at 1
+    LocalDate date = LocalDate.of(2021, 2, 13);
+    // Define a custom DateTimeFormatter
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+    // Format the date
+    String expectedDateString = date.format(formatter);
+    // Print the formatted date
+    System.out.println("Formatted date: " + expectedDateString);
+
+    assertEquals(expectedDateString, actualDateString);
   }
 
   @Test
   void getLongDateString() {
-    throw new RuntimeException("Test not implemented");
+    CalendarDate calendarDate = new CalendarDate(13, 1, 2021);
+    String actualDateString = calendarDate.getLongDateString();
+    System.out.println("Long Date String: " + actualDateString);
+
+    // local date starts the month at 1
+    LocalDate date = LocalDate.of(2021, 2, 13);
+    // Define a custom DateTimeFormatter
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+    // Format the date
+    String expectedDateString = date.format(formatter);
+    // Print the formatted date
+    System.out.println("Formatted date: " + expectedDateString);
+
+    assertEquals(expectedDateString, actualDateString);
   }
 
   @Test
   void getShortDateString() {
-    throw new RuntimeException("Test not implemented");
+    CalendarDate calendarDate = new CalendarDate(13, 1, 2021);
+    String actualDateString = calendarDate.getShortDateString();
+    System.out.println("Short Date String: " + actualDateString);
+
+    // local date starts the month at 1
+    LocalDate date = LocalDate.of(2021, 2, 13);
+    // Define a custom DateTimeFormatter
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
+    // Format the date
+    String expectedDateString = date.format(formatter);
+    // Print the formatted date
+    System.out.println("Formatted date: " + expectedDateString);
+
+    assertEquals(expectedDateString, actualDateString);
   }
 }
