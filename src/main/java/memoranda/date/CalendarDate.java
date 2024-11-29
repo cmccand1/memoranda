@@ -133,8 +133,9 @@ public class CalendarDate {
     if (date == null) {
       return false;
     }
-    return ((date.getDay() == getDay()) && (date.getMonth() == getMonth()) && (date.getYear()
-        == getYear()));
+    return date._day == this._day &&
+        date._month == this._month &&
+        date._year == this._year;
   }
 
   public boolean before(CalendarDate date) {
