@@ -31,6 +31,15 @@ class CalendarDateTest {
   }
 
   @Test
+  void testCalendarDateConstructor() {
+    calendarDate = new CalendarDate();
+    assertNotNull(calendarDate);
+    assertEquals(LocalDate.now().getDayOfMonth(), calendarDate.getDay());
+    assertEquals(LocalDate.now().getMonthValue(), calendarDate.getMonth());
+    assertEquals(LocalDate.now().getYear(), calendarDate.getYear());
+  }
+
+  @Test
   void testCalendarDateConstructorWithIntegers() {
     calendarDate = new CalendarDate(1, 1, 2021);
     assertEquals(1, calendarDate.getDay());

@@ -19,6 +19,9 @@ public class CalendarDate {
   private int _month;
   private int _day;
 
+  /**
+   * Creates a new instance of CalendarDate with the current date.
+   */
   public CalendarDate() {
     this(Calendar.getInstance());
   }
