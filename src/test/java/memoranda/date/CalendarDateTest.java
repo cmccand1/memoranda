@@ -221,6 +221,7 @@ class CalendarDateTest {
 
   public static Stream<Arguments> beforeTestArgs() {
     return Stream.of(
+        Arguments.of(null, true),
         // boundary values
         Arguments.of(new CalendarDate(1, 2, 2021), true), // next day
         Arguments.of(new CalendarDate(1, 1, 2021), false), // same day
@@ -243,6 +244,7 @@ class CalendarDateTest {
 
   public static Stream<Arguments> afterTestArgs() {
     return Stream.of(
+        Arguments.of(null, true),
         // boundary values
         Arguments.of(new CalendarDate(1, 2, 2021), false), // next day
         Arguments.of(new CalendarDate(1, 1, 2021), false), // same day
