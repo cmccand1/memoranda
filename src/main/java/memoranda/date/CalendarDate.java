@@ -14,10 +14,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import memoranda.util.Local;
 import memoranda.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CalendarDate {
+
+  private static final Logger logger = LoggerFactory.getLogger(CalendarDate.class);
 
   private final LocalDate date;
 
@@ -54,7 +57,6 @@ public class CalendarDate {
         Month.of(dateParts[1]),
         dateParts[0]
     );
-
   }
 
   private CalendarDate(LocalDate localDate) {
@@ -62,16 +64,25 @@ public class CalendarDate {
     date = localDate;
   }
 
+  public CalendarDate(CalendarDate calendarDate) {
+    Objects.requireNonNull(calendarDate);
+    date = LocalDate.of(
+        calendarDate.getYear(),
+        calendarDate.getMonth(),
+        calendarDate.getDay()
+    );
+  }
+
   public static CalendarDate today() {
     return new CalendarDate();
   }
 
-  public static CalendarDate yesterday() {
-    return new CalendarDate(LocalDate.now().minusDays(1));
+  public CalendarDate yesterday() {
+    return new CalendarDate(date.minusDays(1));
   }
 
-  public static CalendarDate tomorrow() {
-    return new CalendarDate(LocalDate.now().plusDays(1));
+  public CalendarDate tomorrow() {
+    return new CalendarDate(date.plusDays(1));
   }
 
   public static Calendar dateToCalendar(Date date) {
@@ -114,6 +125,10 @@ public class CalendarDate {
     return date.lengthOfMonth();
   }
 
+  public int getFirstDayOfMonth() {
+    return date.withDayOfMonth(1).getDayOfWeek().getValue();
+  }
+
   public int getYear() {
     return date.getYear();
   }
@@ -122,14 +137,12 @@ public class CalendarDate {
   public boolean equals(Object object) {
     if (this == object) {
       return true;
-    } else if (object == null) {
-      return false;
     } else if (object instanceof CalendarDate calendarDate) {
-      return compareDates(calendarDate);
+      return areDatesEqual(calendarDate);
     } else if (object instanceof Calendar cal) {
-      return compareDates(new CalendarDate(cal));
+      return areDatesEqual(new CalendarDate(cal));
     } else if (object instanceof Date date) {
-      return compareDates(new CalendarDate(date));
+      return areDatesEqual(new CalendarDate(date));
     }
     return false;
   }
@@ -139,8 +152,12 @@ public class CalendarDate {
     return date.hashCode();
   }
 
-  private boolean compareDates(CalendarDate date) {
+  private boolean areDatesEqual(CalendarDate date) {
     return this.date.equals(date.date);
+  }
+
+  public boolean dayOf(String dayOfWeek) {
+    return date.getDayOfWeek().toString().equalsIgnoreCase(dayOfWeek);
   }
 
   public boolean before(CalendarDate date) {
@@ -158,7 +175,8 @@ public class CalendarDate {
   }
 
   public boolean inPeriod(CalendarDate startDate, CalendarDate endDate) {
-    return (after(startDate) && before(endDate)) || compareDates(startDate) || compareDates(endDate);
+    return (after(startDate) && before(endDate)) || equals(startDate) || equals(
+        endDate);
   }
 
   @Override

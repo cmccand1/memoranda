@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
-import java.util.GregorianCalendar;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -115,8 +114,9 @@ class CalendarDateTest {
   }
 
   @Test
-  void yesterdayReturnsACalendarDateRepresentingYesterdaysDate() {
-    CalendarDate yesterday = CalendarDate.yesterday();
+  void yesterdayReturnsACalendarDateRepresentingTheDayBefore() {
+    CalendarDate today = CalendarDate.today();
+    CalendarDate yesterday = today.yesterday();
     assertNotNull(yesterday);
     assertEquals(LocalDate.now().minusDays(1).getDayOfMonth(), yesterday.getDay());
     assertEquals(LocalDate.now().minusDays(1).getMonthValue(), yesterday.getMonth());
@@ -124,8 +124,9 @@ class CalendarDateTest {
   }
 
   @Test
-  void tomorrowReturnsACalendarDateRepresentingTomorrowsDate() {
-    CalendarDate tomorrow = CalendarDate.tomorrow();
+  void tomorrowReturnsACalendarDateRepresentingTheDayBeforeADate() {
+    CalendarDate today = CalendarDate.today();
+    CalendarDate tomorrow = today.tomorrow();
     assertNotNull(tomorrow);
     assertEquals(LocalDate.now().plusDays(1).getDayOfMonth(), tomorrow.getDay());
     assertEquals(LocalDate.now().plusDays(1).getMonthValue(), tomorrow.getMonth());
@@ -379,5 +380,12 @@ class CalendarDateTest {
     System.out.println("Formatted date: " + expectedDateString);
 
     assertEquals(expectedDateString, actualDateString);
+  }
+
+  @Test
+  void dayOf() {
+    CalendarDate calendarDate = new CalendarDate(1, 12, 2024);
+    assertTrue(calendarDate.dayOf("sunday"));
+    assertFalse(calendarDate.dayOf("MONDAY"));
   }
 }

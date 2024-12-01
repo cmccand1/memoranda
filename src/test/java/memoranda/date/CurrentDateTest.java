@@ -39,17 +39,23 @@ class CurrentDateTest {
     CalendarDate newDate = new CalendarDate(1, 1, 2000);
     assertNotEquals(newDate, currentDate);
     CurrentDate.set(newDate);
-    System.out.println(currentDate);
-    System.out.println(newDate);
     assertEquals(newDate, CurrentDate.get());
   }
 
   @Test
   void resetSetsTheCurrentDateToTheCurrentDate() {
+    CurrentDate.reset(); // Annoying but necessary due to singleton nature of CurrentDate
     CalendarDate currentDate = CurrentDate.get();
+    assertEquals(LocalDate.now().getDayOfMonth(), currentDate.getDay());
+    assertEquals(LocalDate.now().getMonthValue(), currentDate.getMonth());
+    assertEquals(LocalDate.now().getYear(), currentDate.getYear());
+
     CurrentDate.set(new CalendarDate(1, 1, 2000));
-    assertNotEquals(currentDate, CurrentDate.get());
+    assertEquals(new CalendarDate(1, 1, 2000), CurrentDate.get());
+
     CurrentDate.reset();
-    assertEquals(null, CurrentDate.get());
+    assertEquals(LocalDate.now().getDayOfMonth(), CurrentDate.get().getDay());
+    assertEquals(LocalDate.now().getMonthValue(), CurrentDate.get().getMonth());
+    assertEquals(LocalDate.now().getYear(), CurrentDate.get().getYear());
   }
 }
