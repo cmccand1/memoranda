@@ -8,7 +8,10 @@ package memoranda.ui.calendar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JTable;
@@ -30,7 +33,7 @@ public class CalendarTable extends JTable {
 
   private CalendarDate _date = null;
   private boolean ignoreChange = false;
-  private Vector selectionListeners = new Vector();
+  private List<ActionListener> selectionListeners = new ArrayList<>();
   CalendarDate startPeriod = null;
   CalendarDate endPeriod = null;
   public CalendarCellRenderer renderer = new CalendarCellRenderer();
@@ -39,51 +42,43 @@ public class CalendarTable extends JTable {
     this(CurrentDate.get());
   }
 
-  /**
-   * Constructor for JNCalendar.
-   */
   public CalendarTable(CalendarDate date) {
     super();
-    /* table properties */
     setCellSelectionEnabled(true);
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     getTableHeader().setReorderingAllowed(false);
     getTableHeader().setResizingAllowed(false);
     set(date);
 
-    /* selection listeners */
     final ListSelectionModel rowSM = getSelectionModel();
     final ListSelectionModel colSM = getColumnModel().getSelectionModel();
-    ListSelectionListener lsl = new ListSelectionListener() {
-      public void valueChanged(ListSelectionEvent e) {
-        //Ignore extra messages.
-        if (e.getValueIsAdjusting()) {
-          return;
-        }
-        if (ignoreChange) {
-          return;
-        }
-        int row = getSelRow();
-        int col = getSelCol();
-        Object val = getModel().getValueAt(row, col);
-        if (val != null) {
-          if (val
-              .toString()
-              .equals(new Integer(_date.getDay()).toString())) {
-            return;
-          }
-          _date =
-              new CalendarDate(
-                  new Integer(val.toString()).intValue(),
-                  _date.getMonth(),
-                  _date.getYear());
-          notifyListeners();
-        } else {
-          //getSelectionModel().clearSelection();
-          doSelection();
-        }
+    ListSelectionListener lsl = e -> {
+      if (e.getValueIsAdjusting()) {
+        return;
       }
-
+      if (ignoreChange) {
+        return;
+      }
+      // get the selected row and column
+      int row = getSelRow();
+      int col = getSelCol();
+      Object val = getModel().getValueAt(row, col);
+      if (val != null) {
+        // do nothing if selecting the same day
+        if ((int) val == _date.getDay()) {
+          return;
+        }
+        _date =
+            new CalendarDate(
+                (int) val,
+                _date.getMonth(),
+                _date.getYear());
+        notifyListeners();
+        doSelection();
+      } else {
+        // do nothing if selecting a day out of month
+//        doSelection();
+      }
     };
     rowSM.addListSelectionListener(lsl);
     colSM.addListSelectionListener(lsl);
@@ -125,26 +120,23 @@ public class CalendarTable extends JTable {
   }
 
   private void notifyListeners() {
-    for (int i = 0; i < selectionListeners.size(); i++) {
-      ((ActionListener) selectionListeners.get(i)).actionPerformed(
+    for (ActionListener selectionListener : selectionListeners) {
+      selectionListener.actionPerformed(
           new ActionEvent(this, 0, "Calendar event"));
     }
   }
 
-  public TableCellRenderer getCellRenderer(int row, int column) {
-    Object d = this.getModel().getValueAt(row, column);
-    /*
-     * if (d != null) return new JNCalendarCellRenderer( new
-     * CalendarDate(new Integer(d.toString()).intValue(), _date.getMonth(),
-     * _date.getYear()));
-     */
-    if (d != null) {
+  @Override
+  public TableCellRenderer getCellRenderer(int row, int col) {
+    Object day = this.getModel().getValueAt(row, col);
+    if (day != null) {
       renderer.setDate(
           new CalendarDate(
-              new Integer(d.toString()).intValue(),
+              (int) day,
               _date.getMonth(),
               _date.getYear()));
     } else {
+      // day out of month
       renderer.setDate(null);
     }
     return renderer;
@@ -171,58 +163,55 @@ public class CalendarTable extends JTable {
   int daysInMonth;
 
   void setCalendarParameters() {
-    int d = 1;
-
-    Calendar cal = _date.getCalendar();
-
-    if (Configuration.get("FIRST_DAY_OF_WEEK").equals("mon")) {
-      cal.setFirstDayOfWeek(Calendar.MONDAY);
-      d = 2;
-    } else {
-      cal.setFirstDayOfWeek(Calendar.SUNDAY);
-    }
-
-    cal.set(Calendar.DAY_OF_MONTH, 1);
-    cal.getTime();
-    firstDay = cal.get(Calendar.DAY_OF_WEEK) - d;
-    if (firstDay == -1) {
-      firstDay = 6;
-    }
-    daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+    firstDay = _date.getFirstDayOfMonth();
+    daysInMonth = _date.getLengthOfMonth();
   }
 
-  /*$Id: JNCalendar.java,v 1.8 2004/11/05 07:38:10 pbielen Exp $*/
+  /**
+   * Inner class CalendarModel is a model for the CalendarTable.
+   */
   public class CalendarModel extends AbstractTableModel {
 
-    private String[] dayNames = Local.getWeekdayNames();
+    private final String[] dayNames = Local.getWeekdayNames();
+    private final int ROWS = 6;
+    private final int COLS = 7;
+
 
     public CalendarModel() {
       super();
     }
 
+    @Override
     public int getColumnCount() {
-      return 7;
+      return COLS;
     }
 
+    /**
+     * Returns the value for the cell at columnIndex and rowIndex. If the day is not in the current
+     * month, returns null.
+     *
+     * @param row the row whose value is to be queried
+     * @param col the column whose value is to be queried
+     * @return
+     */
+    @Override
     public Object getValueAt(int row, int col) {
-      //int pos = (row * 7 + col) - firstDay + 1;
       int pos = (row * 7 + (col + 1)) - firstDay;
-      if ((pos > 0) && (pos <= daysInMonth)) {
-        return new Integer(pos);
+      if ((pos > 0) && (pos <= _date.getLengthOfMonth())) {
+        return pos;
       } else {
         return null;
       }
-
     }
 
+    @Override
     public int getRowCount() {
-      return 6;
+      return ROWS;
     }
 
+    @Override
     public String getColumnName(int col) {
       return dayNames[col];
     }
-
   }
-
 }

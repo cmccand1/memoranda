@@ -9,6 +9,7 @@ package memoranda.date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 
 /**
@@ -24,6 +25,7 @@ public class CurrentDate {
   }
 
   public static void set(CalendarDate date) {
+    Objects.requireNonNull(date);
     if (date.equals(_date)) {
       return;
     }

@@ -8,7 +8,6 @@ package memoranda.ui.calendar;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Calendar;
 
 import java.util.Objects;
 import javax.swing.BorderFactory;
@@ -16,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import javax.swing.table.DefaultTableCellRenderer;
 import memoranda.projects.CurrentProject;
 import memoranda.events.EventsManager;
 import memoranda.tasks.Task;
@@ -26,7 +26,7 @@ import memoranda.ui.AppFrame;
 /**
  *
  */
-public class CalendarCellRenderer extends javax.swing.table.DefaultTableCellRenderer {
+public class CalendarCellRenderer extends DefaultTableCellRenderer {
 
   private static final Color IGNORED_CAL_DATE_COLOR = new Color(0xE0, 0xE0, 0xE0);
   private static final Color OUT_OF_PROJECT_DATE_COLOR = new Color(0xF0, 0xF0, 0xF0);
@@ -38,7 +38,7 @@ public class CalendarCellRenderer extends javax.swing.table.DefaultTableCellRend
 
   private CalendarDate calendarDate = null;
   boolean disabled = false;
-  ImageIcon evIcon = new ImageIcon(
+  ImageIcon eventIcon = new ImageIcon(
       Objects.requireNonNull(AppFrame.class.getResource("/ui/icons/en.png")));
   Task task = null;
 
@@ -63,7 +63,7 @@ public class CalendarCellRenderer extends javax.swing.table.DefaultTableCellRend
         row, column);
     String currentPanel = (App.getMainAppFrame()).workPanel.dailyItemsPanel.getCurrentPanel();
 
-    // Set background color for ignored dates (dates out of the month)
+    // How to render ignored dates
     if (calendarDate == null) {
       dateLabel.setEnabled(false);
       dateLabel.setIcon(null);
@@ -71,49 +71,48 @@ public class CalendarCellRenderer extends javax.swing.table.DefaultTableCellRend
       return dateLabel;
     }
 
-    // Set background color for out of project dates
+    // How to render dates outside the current project period
     if (!isSelected) {
-      if (!isDateInProject(calendarDate)) {
+      if (!isDateInCurrentProjectPeriod(calendarDate)) {
         dateLabel.setBackground(OUT_OF_PROJECT_DATE_COLOR);
         return dateLabel;
       }
     }
 
-    // Enable the labels for the dates in the project period
+    // How to render the dates in the current project period
     dateLabel.setHorizontalTextPosition(2);
     dateLabel.setEnabled(true);
 
-    // Set border color for today
     if (calendarDate.equals(CalendarDate.today())) {
       dateLabel.setBorder(BorderFactory.createLineBorder(TODAY_BORDER_COLOR));
     }
 
-    // Set foreground color for Sunday
-    if (calendarDate.getCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+    // How to render Sundays
+    if (calendarDate.dayOf("Sunday")) {
       dateLabel.setForeground(SUN_FOREGROUND_COLOR);
     } else {
       dateLabel.setForeground(Color.BLACK);
     }
 
     // Set background color for dates with tasks, notes or events
-    if (currentPanel == null) {
-      dateLabel.setBackground(Color.WHITE);
-    } else if (currentPanel.equals("TASKS") && (task != null) &&
-        (calendarDate.inPeriod(task.getStartDate(), task.getEndDate()))) {
-      dateLabel.setBackground(TASK_PANEL_DATE_BG_COLOR);
-    } else if (currentPanel.equals("NOTES") &&
-        CurrentProject.getNoteList().getNoteForDate(calendarDate) != null) {
-      dateLabel.setBackground(NOTES_PANEL_DATE_BG_COLOR);
-    } else if (currentPanel.equals("EVENTS") &&
-        (!(EventsManager.getEventsForDate(calendarDate).isEmpty()))) {
-      dateLabel.setBackground(EVENTS_PANEL_DATE_BG_COLOR);
-    } else if (!isSelected) {
-      dateLabel.setBackground(Color.WHITE);
-    }
+//    if (currentPanel == null) {
+//      dateLabel.setBackground(Color.WHITE);
+//    } else if (currentPanel.equals("TASKS") && (task != null) &&
+//        (calendarDate.inPeriod(task.getStartDate(), task.getEndDate()))) {
+//      dateLabel.setBackground(TASK_PANEL_DATE_BG_COLOR);
+//    } else if (currentPanel.equals("NOTES") &&
+//        CurrentProject.getNoteList().getNoteForDate(calendarDate) != null) {
+//      dateLabel.setBackground(NOTES_PANEL_DATE_BG_COLOR);
+//    } else if (currentPanel.equals("EVENTS") &&
+//        (!(EventsManager.getEventsForDate(calendarDate).isEmpty()))) {
+//      dateLabel.setBackground(EVENTS_PANEL_DATE_BG_COLOR);
+//    } else if (!isSelected) {
+//      dateLabel.setBackground(Color.WHITE);
+//    }
 
     // always display NREvents
     if (EventsManager.isNREventsForDate(calendarDate)) {
-      dateLabel.setIcon(evIcon);
+      dateLabel.setIcon(eventIcon);
     } else {
       dateLabel.setIcon(null);
     }
@@ -131,10 +130,7 @@ public class CalendarCellRenderer extends javax.swing.table.DefaultTableCellRend
    * @param date
    * @return
    */
-  private boolean isDateInProject(CalendarDate date) {
-    CalendarDate currentProjectStartDate = CurrentProject.get().getStartDate();
-    CalendarDate currentProjectEndDate = CurrentProject.get().getEndDate();
-    return ((date.after(currentProjectStartDate)) && (date.before(currentProjectEndDate))
-        || (date.equals(currentProjectStartDate)) || (date.equals(currentProjectEndDate)));
+  private boolean isDateInCurrentProjectPeriod(CalendarDate date) {
+    return date.inPeriod(CurrentProject.get().getStartDate(), CurrentProject.get().getEndDate());
   }
 }

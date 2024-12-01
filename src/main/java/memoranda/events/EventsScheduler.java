@@ -67,12 +67,12 @@ public class EventsScheduler {
     }
   }
 
-  public static Vector getScheduledEvents() {
-    Vector v = new Vector();
+  public static List<Event> getScheduledEvents() {
+    List<Event> scheduleEvents = new ArrayList<>();
     for (EventTimer timer : _timers) {
-      v.add(timer.getEvent());
+      scheduleEvents.add(timer.getEvent());
     }
-    return v;
+    return scheduleEvents;
   }
 
   public static Event getFirstScheduledEvent() {
