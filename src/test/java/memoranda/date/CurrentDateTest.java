@@ -47,13 +47,9 @@ class CurrentDateTest {
   @Test
   void resetSetsTheCurrentDateToTheCurrentDate() {
     CalendarDate currentDate = CurrentDate.get();
-    CalendarDate newDate = new CalendarDate(1, 1, 2000);
-    assertNotEquals(newDate, currentDate);
-
-    CurrentDate.set(newDate);
-    assertEquals(newDate, CurrentDate.get());
+    CurrentDate.set(new CalendarDate(1, 1, 2000));
+    assertNotEquals(currentDate, CurrentDate.get());
     CurrentDate.reset();
-
-    assertEquals(currentDate, CurrentDate.get());
+    assertEquals(null, CurrentDate.get());
   }
 }

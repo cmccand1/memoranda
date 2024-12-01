@@ -6,7 +6,6 @@
  */
 package memoranda.date;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
@@ -20,7 +19,7 @@ import memoranda.util.Util;
 
 public class CalendarDate {
 
-  private LocalDate date;
+  private final LocalDate date;
 
   /**
    * Creates a new instance of CalendarDate with the current date.
@@ -34,6 +33,7 @@ public class CalendarDate {
   }
 
   private CalendarDate(Calendar cal) {
+    Objects.requireNonNull(cal);
     date = LocalDate.of(
         cal.get(Calendar.YEAR),
         cal.get(Calendar.MONTH) + 1,
@@ -42,10 +42,12 @@ public class CalendarDate {
   }
 
   public CalendarDate(Date date) {
+    Objects.requireNonNull(date);
     this.date = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
   }
 
   public CalendarDate(String date) {
+    Objects.requireNonNull(date);
     int[] dateParts = Util.parseDateStamp(date);
     this.date = LocalDate.of(
         dateParts[2],
@@ -56,6 +58,7 @@ public class CalendarDate {
   }
 
   private CalendarDate(LocalDate localDate) {
+    Objects.requireNonNull(localDate);
     date = localDate;
   }
 
@@ -72,6 +75,7 @@ public class CalendarDate {
   }
 
   public static Calendar dateToCalendar(Date date) {
+    Objects.requireNonNull(date);
     Calendar cal = Calendar.getInstance();
     cal.setTime(date);
     return cal;
@@ -116,23 +120,26 @@ public class CalendarDate {
 
   @Override
   public boolean equals(Object object) {
-    if (object.getClass().isInstance(CalendarDate.class)) {
-      CalendarDate d2 = (CalendarDate) object;
-      return this.equals(d2);
-    } else if (object.getClass().isInstance(Calendar.class)) {
-      Calendar cal = (Calendar) object;
-      return this.equals(new CalendarDate(cal));
-    } else if (object.getClass().isInstance(Date.class)) {
-      Date d = (Date) object;
-      return this.equals(new CalendarDate(d));
+    if (this == object) {
+      return true;
+    } else if (object == null) {
+      return false;
+    } else if (object instanceof CalendarDate calendarDate) {
+      return compareDates(calendarDate);
+    } else if (object instanceof Calendar cal) {
+      return compareDates(new CalendarDate(cal));
+    } else if (object instanceof Date date) {
+      return compareDates(new CalendarDate(date));
     }
-    return super.equals(object);
+    return false;
   }
 
-  public boolean equals(CalendarDate date) {
-    if (date == null) {
-      return false;
-    }
+  @Override
+  public int hashCode() {
+    return date.hashCode();
+  }
+
+  private boolean compareDates(CalendarDate date) {
     return this.date.equals(date.date);
   }
 
@@ -151,7 +158,7 @@ public class CalendarDate {
   }
 
   public boolean inPeriod(CalendarDate startDate, CalendarDate endDate) {
-    return (after(startDate) && before(endDate)) || equals(startDate) || equals(endDate);
+    return (after(startDate) && before(endDate)) || compareDates(startDate) || compareDates(endDate);
   }
 
   @Override
@@ -160,25 +167,21 @@ public class CalendarDate {
   }
 
   public String getFullDateString() {
-//    return Local.getDateString(this, DateFormat.FULL);
     DateTimeFormatter fullDateStringFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
     return date.format(fullDateStringFormatter);
   }
 
   public String getMediumDateString() {
-//    return Local.getDateString(this, DateFormat.MEDIUM);
     DateTimeFormatter mediumDateStringFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
     return date.format(mediumDateStringFormatter);
   }
 
   public String getLongDateString() {
-//    return Local.getDateString(this, DateFormat.LONG);
     DateTimeFormatter longDateStringFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
     return date.format(longDateStringFormatter);
   }
 
   public String getShortDateString() {
-//    return Local.getDateString(this, DateFormat.SHORT);
     DateTimeFormatter shortDateStringFormatter = DateTimeFormatter.ofPattern("M/d/yy");
     return date.format(shortDateStringFormatter);
   }

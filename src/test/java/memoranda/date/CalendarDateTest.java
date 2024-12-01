@@ -49,7 +49,7 @@ class CalendarDateTest {
 
   @Test
   void testCalendarDateConstructorWithDate() {
-    CalendarDate calendarDate = new CalendarDate(new Date(2024-1900, Calendar.NOVEMBER, 29));
+    CalendarDate calendarDate = new CalendarDate(new Date(LocalDate.now().getYear()-1900, LocalDate.now().getMonthValue() - 1, LocalDate.now().getDayOfMonth()));
     assertNotNull(calendarDate);
     assertEquals(LocalDate.now().getDayOfMonth(), calendarDate.getDay());
     assertEquals(LocalDate.now().getMonthValue(), calendarDate.getMonth());
