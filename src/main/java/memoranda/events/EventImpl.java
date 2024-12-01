@@ -35,14 +35,14 @@ public class EventImpl implements Event, Comparable {
    * @see Event#getHour()
    */
   public int getHour() {
-    return new Integer(_elem.getAttribute("hour").getValue()).intValue();
+    return Integer.parseInt(_elem.getAttribute("hour").getValue());
   }
 
   /**
    * @see Event#getMinute()
    */
   public int getMinute() {
-    return new Integer(_elem.getAttribute("min").getValue()).intValue();
+    return Integer.parseInt(_elem.getAttribute("min").getValue());
   }
 
   public String getTimeString() {
@@ -99,7 +99,7 @@ public class EventImpl implements Event, Comparable {
   public int getPeriod() {
     Attribute a = _elem.getAttribute("period");
     if (a != null) {
-      return new Integer(a.getValue()).intValue();
+      return Integer.parseInt(a.getValue());
     }
     return 0;
   }
@@ -121,7 +121,7 @@ public class EventImpl implements Event, Comparable {
   public int getRepeat() {
     Attribute a = _elem.getAttribute("repeat-type");
     if (a != null) {
-      return new Integer(a.getValue()).intValue();
+      return Integer.parseInt(a.getValue());
     }
     return 0;
   }

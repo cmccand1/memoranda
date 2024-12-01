@@ -251,7 +251,7 @@ public class NoteListImpl implements NoteList {
     }
 
     public int getValue() {
-      return new Integer(yearElement.getAttribute("year").getValue()).intValue();
+      return Integer.parseInt(yearElement.getAttribute("year").getValue());
     }
 
     public Month getMonth(int m) {
@@ -297,7 +297,7 @@ public class NoteListImpl implements NoteList {
     }
 
     public int getValue() {
-      return new Integer(mElement.getAttribute("month").getValue()).intValue();
+      return Integer.parseInt(mElement.getAttribute("month").getValue());
     }
 
     public Day getDay(int d) {
@@ -376,7 +376,7 @@ public class NoteListImpl implements NoteList {
     }
 
     public int getValue() {
-      return new Integer(dEl.getAttribute("day").getValue()).intValue();
+      return Integer.parseInt(dEl.getAttribute("day").getValue());
     }
 
         /*public Note getNote() {

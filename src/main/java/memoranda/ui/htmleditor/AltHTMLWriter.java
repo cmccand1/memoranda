@@ -1059,40 +1059,40 @@ public class AltHTMLWriter extends AbstractWriter {
           if (weightValue != null) {
             int fweight;
             try {
-              fweight = new Integer(weightValue).intValue();
+              fweight = Integer.parseInt(weightValue);
             } catch (Exception ex) {
               fweight = -1;
             }
-            if ((weightValue.toLowerCase().equals("bold")) || (fweight > 400)) {
+            if ((weightValue.equalsIgnoreCase("bold")) || (fweight > 400)) {
               to.addAttribute(HTML.Tag.B, SimpleAttributeSet.EMPTY);
             }
           }
         } else if (key == CSS.Attribute.FONT_STYLE) {
           String s = from.getAttribute(key).toString();
-          if (s.indexOf("italic") >= 0) {
+          if (s.contains("italic")) {
             to.addAttribute(HTML.Tag.I, SimpleAttributeSet.EMPTY);
           }
         } else if (key == CSS.Attribute.TEXT_DECORATION) {
           String decor = from.getAttribute(key).toString();
-          if (decor.indexOf("underline") >= 0) {
+          if (decor.contains("underline")) {
             to.addAttribute(HTML.Tag.U, SimpleAttributeSet.EMPTY);
           }
-          if (decor.indexOf("line-through") >= 0) {
+          if (decor.contains("line-through")) {
             to.addAttribute(HTML.Tag.STRIKE, SimpleAttributeSet.EMPTY);
           }
         } else if (key == CSS.Attribute.VERTICAL_ALIGN) {
           String vAlign = from.getAttribute(key).toString();
-          if (vAlign.indexOf("sup") >= 0) {
+          if (vAlign.contains("sup")) {
             to.addAttribute(HTML.Tag.SUP, SimpleAttributeSet.EMPTY);
           }
-          if (vAlign.indexOf("sub") >= 0) {
+          if (vAlign.contains("sub")) {
             to.addAttribute(HTML.Tag.SUB, SimpleAttributeSet.EMPTY);
           }
         } else if (key == CSS.Attribute.TEXT_ALIGN) {
           to.addAttribute(HTML.Attribute.ALIGN, from.getAttribute(key).toString());
         } else {
-          // default is to store in a HTML style attribute
-          if (value.length() > 0) {
+          // default is to store in an HTML style attribute
+          if (!value.isEmpty()) {
             value = value + "; ";
           }
           value = value + key + ": " + from.getAttribute(key);
@@ -1101,7 +1101,7 @@ public class AltHTMLWriter extends AbstractWriter {
         to.addAttribute(key, from.getAttribute(key));
       }
     }
-    if (value.length() > 0) {
+    if (!value.isEmpty()) {
       to.addAttribute(HTML.Attribute.STYLE, value);
     }
   }
@@ -1145,7 +1145,7 @@ public class AltHTMLWriter extends AbstractWriter {
         to.addAttribute(key, from.getAttribute(key));
       }
     }
-    if (value.length() > 0) {
+    if (!value.isEmpty()) {
       to.addAttribute(HTML.Attribute.STYLE, value);
     }
   }
@@ -1318,7 +1318,7 @@ public class AltHTMLWriter extends AbstractWriter {
     }
 
     public boolean isSelectedIndex(int index) {
-      return ((index < minIndex) || (index > maxIndex)) ? false : value.get(index);
+      return (index >= minIndex) && (index <= maxIndex) && value.get(index);
     }
 
     public boolean isSelectionEmpty() {
@@ -1342,7 +1342,7 @@ public class AltHTMLWriter extends AbstractWriter {
      * @since 1.4
      */
     public ListSelectionListener[] getListSelectionListeners() {
-      return (ListSelectionListener[]) listenerList.getListeners(ListSelectionListener.class);
+      return listenerList.getListeners(ListSelectionListener.class);
     }
 
     /**
@@ -1457,7 +1457,7 @@ public class AltHTMLWriter extends AbstractWriter {
             /* Performance note: This method is called from inside a loop in
                changeSelection() but we will only iterate in the loops
                above on the basis of one iteration per deselected cell - in total.
-               Ie. the next time this method is called the work of the previous
+               I.e. the next time this method is called the work of the previous
                deselection will not be repeated.
             
                We also don't need to worry about the case when the min and max

@@ -272,7 +272,7 @@ public class TaskImpl implements Task, Comparable {
    * @see Task#getProgress()
    */
   public int getProgress() {
-    return new Integer(_element.getAttribute("progress").getValue()).intValue();
+    return Integer.parseInt(_element.getAttribute("progress").getValue());
   }
 
   /**
@@ -292,7 +292,7 @@ public class TaskImpl implements Task, Comparable {
     if (pa == null) {
       return Task.PRIORITY_NORMAL;
     }
-    return new Integer(pa.getValue()).intValue();
+    return Integer.parseInt(pa.getValue());
   }
 
   /**

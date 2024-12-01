@@ -62,7 +62,8 @@ public class App {
   public App() {
     super();
 
-    boolean startFullscreen = Configuration.get("START_MINIMIZED").toString().equalsIgnoreCase("no");
+    boolean startFullscreen = Configuration.get("START_MINIMIZED").toString()
+        .equalsIgnoreCase("no");
     logger.debug("Memoranda version: {}", VERSION_INFO);
 
     // show the splash screen
@@ -134,9 +135,7 @@ public class App {
     /* Used to maximize the screen if the JVM Version if 1.4 or higher */
     /* --------------------------------------------------------------- */
     double JVMVer =
-        Double
-            .valueOf(System.getProperty("java.version").substring(0, 3))
-            .doubleValue();
+        Double.parseDouble(System.getProperty("java.version").substring(0, 3));
 
     mainAppFrame.pack();
     if (JVMVer >= 1.4) {
