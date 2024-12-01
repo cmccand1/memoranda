@@ -12,7 +12,15 @@ application {
 
 spotbugs {
     toolVersion = "4.8.6"
-    ignoreFailures = true // Don't fail the build if SpotBugs finds issues
+    reportsDir = file("$buildDir/reports/spotbugs")
+    ignoreFailures = true // Can be overridden later
+}
+
+spotbugsMain {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
 }
 
 // Repositories and dependencies for code go here
@@ -41,3 +49,32 @@ test {
         events "passed", "skipped", "failed"
     }
 }
+
+// Custom task to fail build on high-severity issues
+tasks.register("failOnHighSeverityIssues") {
+    group = "verification"
+    description = "Fails the build if SpotBugs finds high-severity issues."
+    dependsOn tasks.spotbugsMain // Ensure SpotBugs runs first
+    doLast {
+        def reportFile = file("$buildDir/reports/spotbugs/main.xml")
+        if (!reportFile.exists()) {
+            println "SpotBugs report not found, skipping severity check."
+            return
+        }
+
+        // Parse the SpotBugs XML report
+        def parser = new XmlSlurper().parse(reportFile)
+        def highSeverityCount = parser.'**'.findAll { node ->
+            node.name() == 'BugInstance' && node.@priority.toInteger() == 1
+        }.size()
+
+        if (highSeverityCount > 0) {
+            throw new GradleException("SpotBugs found $highSeverityCount high-severity issues.")
+        } else {
+            println "No high-severity SpotBugs issues found."
+        }
+    }
+}
+
+// Ensure the custom task runs after SpotBugs
+tasks.check.dependsOn "failOnHighSeverityIssues"
