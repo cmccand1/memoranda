@@ -18,7 +18,7 @@ import memoranda.ui.AppFrame;
 
 public class Context {
 
-  public static LoadableProperties context = new LoadableProperties();
+  public static final LoadableProperties context = new LoadableProperties();
 
   static {
     CurrentStorage.get().restoreContext();

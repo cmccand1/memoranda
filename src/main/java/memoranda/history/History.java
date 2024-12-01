@@ -148,8 +148,8 @@ public class History {
     }
   }
 
-  public static HistoryBackAction historyBackAction = new HistoryBackAction();
-  public static HistoryForwardAction historyForwardAction = new HistoryForwardAction();
+  public static final HistoryBackAction historyBackAction = new HistoryBackAction();
+  public static final HistoryForwardAction historyForwardAction = new HistoryForwardAction();
 
   static class HistoryBackAction extends AbstractAction {
 
