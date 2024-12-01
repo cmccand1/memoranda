@@ -57,12 +57,11 @@ class CalendarDateTest {
 
   @Test
   void testCalendarDateConstructorWithCalendar() {
-//    CalendarDate calendarDate = new CalendarDate(new GregorianCalendar(LocalDate.now().getYear(), Calendar.NOVEMBER, LocalDate.now()
-//        .getDayOfMonth()));
-//    assertNotNull(calendarDate);
-//    assertEquals(LocalDate.now().getDayOfMonth(), calendarDate.getDay());
-//    assertEquals(LocalDate.now().getMonthValue(), calendarDate.getMonth());
-//    assertEquals(LocalDate.now().getYear(), calendarDate.getYear());
+    CalendarDate calendarDate = new CalendarDate(Calendar.getInstance());
+    assertNotNull(calendarDate);
+    assertEquals(LocalDate.now().getDayOfMonth(), calendarDate.getDay());
+    assertEquals(LocalDate.now().getMonthValue(), calendarDate.getMonth());
+    assertEquals(LocalDate.now().getYear(), calendarDate.getYear());
   }
 
   @Test
