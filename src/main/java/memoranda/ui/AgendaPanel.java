@@ -204,20 +204,20 @@ public class AgendaPanel extends JPanel {
             /*  Falta agregar el exportar sticker mientras tanto..*/
             final JFrame parent = new JFrame();
             String name = JOptionPane.showInputDialog(parent,
-                Local.getString("Ingrese nombre de archivo a exportar"), null);
+                Local.getString("Enter the name of the file to export"), null);
             new ExportSticker(name).export("txt");
             //JOptionPane.showMessageDialog(null,name);
           } else if (d.startsWith("memoranda:exportstickersh")) {
             /*  Falta agregar el exportar sticker mientras tanto..*/
             final JFrame parent = new JFrame();
             String name = JOptionPane.showInputDialog(parent,
-                Local.getString("Ingrese nombre de archivo a exportar"), null);
+                Local.getString("Enter the name of the file to export"), null);
             new ExportSticker(name).export("html");
             //JOptionPane.showMessageDialog(null,name);
           } else if (d.startsWith("memoranda:importstickers")) {
             final JFrame parent = new JFrame();
             String name = JOptionPane.showInputDialog(parent,
-                Local.getString("Ingrese nombre de archivo a importar"), null);
+                Local.getString("Enter the name of the file to import"), null);
             new ImportSticker(name).import_file();
           }
         }

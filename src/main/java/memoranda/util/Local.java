@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
 
+import java.util.Objects;
 import memoranda.date.CalendarDate;
 
 import java.io.*;
@@ -95,6 +96,7 @@ public class Local {
       {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
   public static String getString(String key) {
+    Objects.requireNonNull(key);
     if ((messages == null) || (disabled)) {
       return key;
     }

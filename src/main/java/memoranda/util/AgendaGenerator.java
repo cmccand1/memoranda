@@ -27,6 +27,7 @@ import memoranda.date.CalendarDate;
 
 import java.util.Collections;
 
+import memoranda.ui.AppFrame;
 import nu.xom.Element;
 
 import org.slf4j.Logger;
@@ -316,8 +317,7 @@ public class AgendaGenerator {
     for (Event e : eventsForDate) {
       String txt = e.getText();
       String iurl =
-          memoranda.ui
-              .AppFrame
+          AppFrame
               .class
               .getResource("/ui/agenda/spacer.gif")
               .toExternalForm();
@@ -331,8 +331,7 @@ public class AgendaGenerator {
             .getTime()
             .equals(e.getTime()))) {
           iurl =
-              memoranda.ui
-                  .AppFrame
+              AppFrame
                   .class
                   .getResource("/ui/agenda/arrow.gif")
                   .toExternalForm();
@@ -360,24 +359,22 @@ public class AgendaGenerator {
 
   static String generateStickers(CalendarDate date) {
     String iurl =
-        memoranda.ui
-            .AppFrame
+            AppFrame
             .class
             .getResource("/ui/agenda/addsticker.gif")
             .toExternalForm();
     String iurl2 =
-        memoranda.ui
-            .AppFrame
+            AppFrame
             .class
             .getResource("/ui/agenda/removesticker.gif")
             .toExternalForm();
     String s =
         "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:importstickers\"><b>"
-            + Local.getString("Importar anotaci�n")
+            + Local.getString("Import sticker")
             + "</b></a></td><td><a href=\"memoranda:exportstickerst\"><b>" + Local.getString(
-            "Exportar anotaci�n como .txt")
+            "Export sticker as .txt")
             + "</b></a><td><a href=\"memoranda:exportstickersh\"><b>" + Local.getString(
-            "Exportar anotaci�n como .html") + "</b></a></td></tr></table>"
+            "Export sticker as HTML") + "</b></a></td></tr></table>"
             + "<table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:addsticker\"><img align=\"left\" width=\"22\" height=\"22\" src=\""
             + iurl
             + "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"New sticker\"></a></td><td width=\"100%\"><a href=\"memoranda:addsticker\"><b>&nbsp;"

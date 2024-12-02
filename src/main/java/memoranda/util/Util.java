@@ -29,8 +29,6 @@ import memoranda.ui.ExceptionDialog;
  */
 public class Util {
 
-  static long seed = 0;
-
   /**
    * Generates a unique identifier in the form of a UUID string.
    *

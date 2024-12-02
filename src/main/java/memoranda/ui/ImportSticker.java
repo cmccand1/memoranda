@@ -13,13 +13,8 @@ public class ImportSticker {
   }
 
   public boolean import_file() {
-                /*
-                 We are working on this =)
-                  
-                  
-                  */
 
-    JOptionPane.showMessageDialog(null, Local.getString("Aun no podemos importar su documento"));
+    JOptionPane.showMessageDialog(null, Local.getString("Sorry, but Memoranda can't import your document yet!"));
     return true;
   }
 

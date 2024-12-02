@@ -64,12 +64,12 @@ public class ExportSticker {
 
       fwrite.close();
       JOptionPane.showMessageDialog(null,
-          Local.getString("Documento creado con exito en su carpeta Memoranda =D"));
+          Local.getString("Document created successfully in your Memoranda folder =D"));
 
 
     } catch (IOException e) {
       e.printStackTrace();
-      JOptionPane.showMessageDialog(null, Local.getString("NO Logramos crear su documento =(..."));
+      JOptionPane.showMessageDialog(null, Local.getString("We couldn't create the document yet =("));
     }
 
     return result;
@@ -81,7 +81,7 @@ public class ExportSticker {
     String nl = System.getProperty("line.separator");
     for (Iterator i = stickers.keySet().iterator(); i.hasNext(); ) {
       String id = (String) i.next();
-      result += (String) (((Element) stickers.get(id)).getValue()) + nl;
+      result += ((Element) stickers.get(id)).getValue() + nl;
     }
 
     return result;
