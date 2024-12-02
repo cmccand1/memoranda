@@ -48,11 +48,18 @@ class CalendarDateTest {
 
   @Test
   void testCalendarDateConstructorWithDate() {
-    CalendarDate calendarDate = new CalendarDate(new Date(LocalDate.now().getYear()-1900, LocalDate.now().getMonthValue() - 1, LocalDate.now().getDayOfMonth()));
+    // create a Date object with the current date
+    Date date = new Date();
+    calendarDate = new CalendarDate(date);
     assertNotNull(calendarDate);
     assertEquals(LocalDate.now().getDayOfMonth(), calendarDate.getDay());
     assertEquals(LocalDate.now().getMonthValue(), calendarDate.getMonth());
     assertEquals(LocalDate.now().getYear(), calendarDate.getYear());
+//    CalendarDate calendarDate = new CalendarDate(new Date(LocalDate.now().getYear()-1900, LocalDate.now().getMonthValue()-1, LocalDate.now().getDayOfMonth()));
+//    assertNotNull(calendarDate);
+//    assertEquals(LocalDate.now().getDayOfMonth(), calendarDate.getDay());
+//    assertEquals(LocalDate.now().getMonthValue(), calendarDate.getMonth());
+//    assertEquals(LocalDate.now().getYear(), calendarDate.getYear());
   }
 
   @Test
@@ -386,5 +393,22 @@ class CalendarDateTest {
     CalendarDate calendarDate = new CalendarDate(1, 12, 2024);
     assertTrue(calendarDate.dayOf("sunday"));
     assertFalse(calendarDate.dayOf("MONDAY"));
+  }
+
+  public static Stream<Arguments> tostringTestArgs() {
+    return Stream.of(
+        Arguments.of(new CalendarDate(1, 1, 2021), "1/1/2021"),
+        Arguments.of(new CalendarDate(13, 1, 2021), "13/1/2021"),
+        Arguments.of(new CalendarDate(31, 12, 2021), "31/12/2021"),
+        Arguments.of(new CalendarDate(1, 1, 2020), "1/1/2020"),
+        Arguments.of(new CalendarDate(31, 12, 2020), "31/12/2020"),
+        Arguments.of(new CalendarDate(1, 12, 2024), "1/12/2024")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("tostringTestArgs")
+  void toStringCorrectlyFormatsDate(CalendarDate date, String expected) {
+    assertEquals(expected, date.toString());
   }
 }

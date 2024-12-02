@@ -40,17 +40,12 @@ public class Util {
     return UUID.randomUUID().toString();
   }
 
-  public static String getDateStamp(Calendar cal) {
-    return cal.get(Calendar.DAY_OF_MONTH)
-        + "/"
-        + (cal.get(Calendar.MONTH))
-        + "/"
-        + new Integer(cal.get(Calendar.YEAR)).toString();
-
-  }
-
   public static String getDateStamp(CalendarDate date) {
-    return Util.getDateStamp(date.getCalendar());
+    return date.getDay()
+        + "/"
+        + date.getMonth()
+        + "/"
+        + date.getYear();
   }
 
   public static int[] parseDateStamp(String s) {

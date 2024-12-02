@@ -144,6 +144,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
     curProjectTitle.setForeground(new Color(64, 70, 128));
     curProjectTitle.setMaximumSize(new Dimension(32767, 22));
     curProjectTitle.setPreferredSize(new Dimension(32767, 22));
+
     curProjectTitle.setText(CurrentProject.get().getTitle());
     curProjectTitle.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
@@ -425,14 +426,14 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
     dlg.setLocation(
         (frmSize.width - dlgSize.width) / 2 + loc.x,
         (frmSize.height - dlgSize.height) / 2 + loc.y);
-    dlg.prTitleField.setText(prj.getTitle());
+    dlg.projectTitleField.setText(prj.getTitle());
     dlg.startDate.getModel().setValue(
         prj.getStartDate().getCalendar().getTime());
     if (prj.getEndDate() != null) {
       dlg.edButton.setEnabled(true);
-      dlg.endDateChB.setForeground(Color.BLACK);
+      dlg.endDateCheckBox.setForeground(Color.BLACK);
 
-      dlg.endDateChB.setSelected(true);
+      dlg.endDateCheckBox.setSelected(true);
       dlg.endDate.setEnabled(true);
       dlg.endDate.getModel().setValue(
           prj.getEndDate().getCalendar().getTime());
@@ -443,11 +444,11 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
     if (dlg.CANCELLED) {
       return;
     }
-    prj.setTitle(dlg.prTitleField.getText());
+    prj.setTitle(dlg.projectTitleField.getText());
     prj.setStartDate(
         new CalendarDate((Date) dlg.startDate.getModel().getValue()));
 
-    if (dlg.endDateChB.isSelected()) {
+    if (dlg.endDateCheckBox.isSelected()) {
       prj.setEndDate(
           new CalendarDate((Date) dlg.endDate.getModel().getValue()));
     } else {
