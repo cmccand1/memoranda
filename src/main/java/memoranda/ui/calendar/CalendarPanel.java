@@ -270,7 +270,8 @@ public class CalendarPanel extends JPanel {
     if (ignoreChange) {
       return;
     }
-    _calendarPanelDate = new CalendarDate(_calendarPanelDate.getDay(), monthsComboBox.getSelectedIndex() + 1, _calendarPanelDate.getYear()); // +1 because combo box is 0-based
+    // snap to the first day of the month to avoid problems with months of different length
+    _calendarPanelDate = new CalendarDate(1, monthsComboBox.getSelectedIndex() + 1, _calendarPanelDate.getYear()); // +1 because combo box is 0-based
     calendarTable.set(_calendarPanelDate);
     notifyListeners();
   }

@@ -71,12 +71,14 @@ public class CalendarCellRenderer extends DefaultTableCellRenderer {
       return dateLabel;
     }
 
+    if (isSelected) {
+      dateLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+      return dateLabel;
+    }
+
     // How to render dates outside the current project period
-    if (!isSelected) {
-      if (!isDateInCurrentProjectPeriod(calendarDate)) {
-        dateLabel.setBackground(OUT_OF_PROJECT_DATE_COLOR);
-        return dateLabel;
-      }
+    if (!isDateInCurrentProjectPeriod(calendarDate)) {
+      dateLabel.setBackground(OUT_OF_PROJECT_DATE_COLOR);
     }
 
     // How to render the dates in the current project period
@@ -95,20 +97,20 @@ public class CalendarCellRenderer extends DefaultTableCellRenderer {
     }
 
     // Set background color for dates with tasks, notes or events
-//    if (currentPanel == null) {
-//      dateLabel.setBackground(Color.WHITE);
-//    } else if (currentPanel.equals("TASKS") && (task != null) &&
-//        (calendarDate.inPeriod(task.getStartDate(), task.getEndDate()))) {
-//      dateLabel.setBackground(TASK_PANEL_DATE_BG_COLOR);
-//    } else if (currentPanel.equals("NOTES") &&
-//        CurrentProject.getNoteList().getNoteForDate(calendarDate) != null) {
-//      dateLabel.setBackground(NOTES_PANEL_DATE_BG_COLOR);
-//    } else if (currentPanel.equals("EVENTS") &&
-//        (!(EventsManager.getEventsForDate(calendarDate).isEmpty()))) {
-//      dateLabel.setBackground(EVENTS_PANEL_DATE_BG_COLOR);
-//    } else if (!isSelected) {
-//      dateLabel.setBackground(Color.WHITE);
-//    }
+    if (currentPanel == null) {
+      dateLabel.setBackground(Color.WHITE);
+    } else if (currentPanel.equals("TASKS") && (task != null) &&
+        (calendarDate.inPeriod(task.getStartDate(), task.getEndDate()))) {
+      dateLabel.setBackground(TASK_PANEL_DATE_BG_COLOR);
+    } else if (currentPanel.equals("NOTES") &&
+        CurrentProject.getNoteList().getNoteForDate(calendarDate) != null) {
+      dateLabel.setBackground(NOTES_PANEL_DATE_BG_COLOR);
+    } else if (currentPanel.equals("EVENTS") &&
+        (!(EventsManager.getEventsForDate(calendarDate).isEmpty()))) {
+      dateLabel.setBackground(EVENTS_PANEL_DATE_BG_COLOR);
+    } else if (!isSelected) {
+      dateLabel.setBackground(Color.WHITE);
+    }
 
     // always display NREvents
     if (EventsManager.isNREventsForDate(calendarDate)) {
