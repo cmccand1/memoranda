@@ -383,8 +383,8 @@ public class AgendaGenerator {
             + "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"New sticker\"></a></td><td width=\"100%\"><a href=\"memoranda:addsticker\"><b>&nbsp;"
             + Local.getString("Add sticker") + "</b></a></td></tr></table>";
     PriorityQueue pQ = sortStickers();
-    while (!pQ.Vacia()) {
-      Element el = pQ.extraer();
+    while (!pQ.isEmpty()) {
+      Element el = pQ.removeMax();
       String id = el.getAttributeValue("id");
       String txt = el.getValue();
       s +=
@@ -411,7 +411,7 @@ public class AgendaGenerator {
       Element el = (Element) stickers.get(id);
       int j = 2;
       j = Integer.parseInt(el.getAttributeValue("priority"));
-      pQ.insertar(new Pair(el, j));
+      pQ.insert(new Pair(el, j));
     }
     return pQ;
   }

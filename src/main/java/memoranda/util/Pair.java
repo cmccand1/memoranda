@@ -8,8 +8,8 @@ public class Pair {
   private int priority;
 
   public Pair(Element value, int priority) {
-    setElement(value);
-    setPriority(priority);
+    this.element = value;
+    this.priority = priority;
   }
 
   public Element getElement() {
@@ -27,5 +27,4 @@ public class Pair {
   public void setPriority(int priority) {
     this.priority = priority;
   }
-
 }

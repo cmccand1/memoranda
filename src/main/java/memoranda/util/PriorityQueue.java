@@ -1,58 +1,79 @@
 package memoranda.util;
 
+import java.util.Arrays;
 import nu.xom.Element;
 
 public class PriorityQueue {
 
-  /* Cola de Prioridad implementada con Estructura de Datos Heap,
-   * para ordenar las anotaciones por prioridad
-   */
-
-  private Pair[] a;
-  private int n;
+  private Pair[] pq;
+  private int size;
 
   public PriorityQueue(int size) {
-    a = new Pair[size + 2];
-    n = 0;
+    pq = new Pair[size + 2];
+    this.size = 0;
   }
 
-  public void insertar(Pair x) {
-    ++n;
-    a[n] = x;
-    for (int j = n; j > 1 && a[j].getPriority() < a[j / 2].getPriority(); j /= 2) {
-      Pair t = a[j];
-      a[j] = a[j / 2];
-      a[j / 2] = t;
+  public void insert(Pair x) {
+    pq[++size] = x;
+    swim(size);
+  }
+
+  private void swim(int k) {
+    while (k > 1 && less(k/2, k)) {
+      swap(k/2, k);
+      k = k/2;
     }
   }
 
-  public Element extraer() {
-    if (!this.Vacia()) {
-      Element m = a[1].getElement();
-      a[1] = a[n];
-      --n;
-      int j = 1;
-      while (2 * j <= n) {
-        int k = 2 * j;
-        if (k + 1 <= n && a[k + 1].getPriority() < a[k].getPriority()) {
-          k = k + 1;
-        }
-        if (a[j].getPriority() < a[k].getPriority()) {
-          break;
-        }
-        Pair t = a[j];
-        a[j] = a[k];
-        a[k] = t;
-        j = k;
+  private void sink(int k) {
+    while (2 * k <= size) {
+      int j = 2 * k;
+      if (j < size && less(j, j + 1)) {
+        j++;
       }
+      if (!less(k, j)) {
+        break;
+      }
+      swap(k, j);
+      k = j;
+    }
+  }
+
+  public Element removeMax() {
+    if (!isEmpty()) {
+      Element m = pq[1].getElement();
+      swap(1, size--);
+      pq[size + 1] = null;
+      sink(1);
       return m;
     } else {
       return null;
     }
   }
 
-  public boolean Vacia() {
-    return n == 0;
+  private void swap(int j, int k) {
+    Pair temp = pq[j];
+    pq[j] = pq[k];
+    pq[k] = temp;
   }
 
+  private boolean less(int i, int j) {
+    return pq[i].getPriority() < pq[j].getPriority();
+  }
+
+  public int size() {
+    return size;
+  }
+
+  public boolean isEmpty() {
+    return size == 0;
+  }
+
+  @Override
+  public String toString() {
+    return "PriorityQueue{" +
+        "pq=" + Arrays.toString(pq) +
+        ", size=" + size +
+        '}';
+  }
 }
