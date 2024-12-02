@@ -7,6 +7,7 @@
 package memoranda.tasks;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Vector;
 
 import memoranda.date.CalendarDate;
@@ -19,60 +20,65 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
-/*$Id: TaskImpl.java,v 1.15 2005/12/01 08:12:26 alexeya Exp $*/
 public class TaskImpl implements Task, Comparable {
+  private static final Logger logger = LoggerFactory.getLogger(TaskImpl.class);
 
-  private Element _element = null;
-  private TaskList _tl = null;
+  private Element _element;
+  private TaskList _tl;
 
-  /**
-   * Constructor for DefaultTask.
-   */
   public TaskImpl(Element taskElement, TaskList tl) {
     _element = taskElement;
     _tl = tl;
   }
 
+  @Override
   public Element getContent() {
     return _element;
   }
 
+  @Override
   public CalendarDate getStartDate() {
     return new CalendarDate(_element.getAttribute("startDate").getValue());
   }
 
+  @Override
   public void setStartDate(CalendarDate date) {
     setAttr("startDate", date.toString());
   }
 
+  @Override
   public CalendarDate getEndDate() {
-    String ed = _element.getAttribute("endDate").getValue();
-    if (ed != "") {
+    String endDate = _element.getAttribute("endDate").getValue();
+    if (endDate.isEmpty()) {
       return new CalendarDate(_element.getAttribute("endDate").getValue());
     }
-    Task parent = this.getParentTask();
-    if (parent != null) {
-      return parent.getEndDate();
+    Task parentTask = this.getParentTask();
+    if (parentTask != null) {
+      return parentTask.getEndDate();
     }
-    Project pr = this._tl.getProject();
-    if (pr.getEndDate() != null) {
-      return pr.getEndDate();
+    Project project = this._tl.getProject();
+    if (project.getEndDate() != null) {
+      return project.getEndDate();
     }
     return this.getStartDate();
-
   }
 
+  @Override
   public void setEndDate(CalendarDate date) {
     if (date == null) {
       setAttr("endDate", "");
+      return;
     }
     setAttr("endDate", date.toString());
   }
 
+  @Override
   public long getEffort() {
     Attribute attr = _element.getAttribute("effort");
     if (attr == null) {
@@ -86,17 +92,15 @@ public class TaskImpl implements Task, Comparable {
     }
   }
 
+  @Override
   public void setEffort(long effort) {
     setAttr("effort", String.valueOf(effort));
   }
 
-  /*
-   * @see net.sf.memoranda.types.Task#getParentTask()
-   */
+  @Override
   public Task getParentTask() {
     Node parentNode = _element.getParent();
-    if (parentNode instanceof Element) {
-      Element parent = (Element) parentNode;
+    if (parentNode instanceof Element parent) {
       if (parent.getLocalName().equalsIgnoreCase("task")) {
         return new TaskImpl(parent, _tl);
       }
@@ -104,6 +108,7 @@ public class TaskImpl implements Task, Comparable {
     return null;
   }
 
+  @Override
   public String getParentId() {
     Task parent = this.getParentTask();
     if (parent != null) {
@@ -112,6 +117,7 @@ public class TaskImpl implements Task, Comparable {
     return null;
   }
 
+  @Override
   public String getDescription() {
     Element thisElement = _element.getFirstChildElement("description");
     if (thisElement == null) {
@@ -121,6 +127,7 @@ public class TaskImpl implements Task, Comparable {
     }
   }
 
+  @Override
   public void setDescription(String s) {
     Element desc = _element.getFirstChildElement("description");
     if (desc == null) {
@@ -133,9 +140,7 @@ public class TaskImpl implements Task, Comparable {
     }
   }
 
-  /**s
-   * @see Task#getStatus()
-   */
+  @Override
   public int getStatus(CalendarDate date) {
     CalendarDate start = getStartDate();
     CalendarDate end = getEndDate();
@@ -187,51 +192,39 @@ public class TaskImpl implements Task, Comparable {
     return getProgress() == 100;
   }
 
-  /**
-   * @see Task#getID()
-   */
+  @Override
   public String getID() {
     return _element.getAttribute("id").getValue();
   }
 
-  /**
-   * @see Task#getText()
-   */
+  @Override
   public String getText() {
     return _element.getFirstChildElement("text").getValue();
   }
 
+  @Override
   public String toString() {
     return getText();
   }
 
-  /**
-   * @see Task#setText()
-   */
+  @Override
   public void setText(String s) {
     _element.getFirstChildElement("text").removeChildren();
     _element.getFirstChildElement("text").appendChild(s);
   }
 
-  /**
-   * @see Task#freeze()
-   */
+  @Override
   public void freeze() {
     setAttr("frozen", "yes");
   }
 
-  /**
-   * @see Task#unfreeze()
-   */
+  @Override
   public void unfreeze() {
     if (this.isFrozen()) {
       _element.removeAttribute(new Attribute("frozen", "yes"));
     }
   }
 
-  /**
-   * @see Task#getDependsFrom()
-   */
   public Collection getDependsFrom() {
     Vector v = new Vector();
     Elements deps = _element.getChildElements("dependsFrom");
@@ -245,18 +238,12 @@ public class TaskImpl implements Task, Comparable {
     return v;
   }
 
-  /**
-   * @see Task#addDependsFrom(Task)
-   */
   public void addDependsFrom(Task task) {
     Element dep = new Element("dependsFrom");
     dep.addAttribute(new Attribute("idRef", task.getID()));
     _element.appendChild(dep);
   }
 
-  /**
-   * @see Task#removeDependsFrom(Task)
-   */
   public void removeDependsFrom(Task task) {
     Elements deps = _element.getChildElements("dependsFrom");
     for (int i = 0; i < deps.size(); i++) {
@@ -268,25 +255,19 @@ public class TaskImpl implements Task, Comparable {
     }
   }
 
-  /**
-   * @see Task#getProgress()
-   */
+  @Override
   public int getProgress() {
     return Integer.parseInt(_element.getAttribute("progress").getValue());
   }
 
-  /**
-   * @see Task#setProgress(int)
-   */
+  @Override
   public void setProgress(int p) {
     if ((p >= 0) && (p <= 100)) {
       setAttr("progress", new Integer(p).toString());
     }
   }
 
-  /**
-   * @see Task#getPriority()
-   */
+  @Override
   public int getPriority() {
     Attribute pa = _element.getAttribute("priority");
     if (pa == null) {
@@ -295,9 +276,7 @@ public class TaskImpl implements Task, Comparable {
     return Integer.parseInt(pa.getValue());
   }
 
-  /**
-   * @see Task#setPriority(int)
-   */
+  @Override
   public void setPriority(int p) {
     setAttr("priority", String.valueOf(p));
   }
@@ -332,10 +311,7 @@ public class TaskImpl implements Task, Comparable {
     return (100 - getProgress()) / (numOfDays + 1) * (getPriority() + 1);
   }
 
-  /**
-   * @see Task#getRate()
-   */
-
+  @Override
   public long getRate() {
 /*	   Task t = (Task)task;
 	   switch (mode) {
@@ -349,28 +325,6 @@ public class TaskImpl implements Task, Comparable {
     return -1 * calcTaskRate(CurrentDate.get());
   }
 
-  /*
-   * Comparable interface
-   */
-
-  public int compareTo(Object o) {
-    Task task = (Task) o;
-    if (getRate() > task.getRate()) {
-      return 1;
-    } else if (getRate() < task.getRate()) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }
-
-  public boolean equals(Object o) {
-    return ((o instanceof Task) && (((Task) o).getID().equals(this.getID())));
-  }
-
-  /*
-   * @see net.sf.memoranda.types.Task#getSubTasks()
-   */
   public Collection getSubTasks() {
     Elements subTasks = _element.getChildElements("task");
     return convertToTaskObjects(subTasks);
@@ -385,9 +339,7 @@ public class TaskImpl implements Task, Comparable {
     return v;
   }
 
-  /*
-   * @see net.sf.memoranda.types.Task#getSubTask(java.lang.String)
-   */
+  @Override
   public Task getSubTask(String id) {
     Elements subTasks = _element.getChildElements("task");
     for (int i = 0; i < subTasks.size(); i++) {
@@ -398,9 +350,7 @@ public class TaskImpl implements Task, Comparable {
     return null;
   }
 
-  /*
-   * @see net.sf.memoranda.types.Task#hasSubTasks()
-   */
+  @Override
   public boolean hasSubTasks(String id) {
     Elements subTasks = _element.getChildElements("task");
     for (int i = 0; i < subTasks.size(); i++) {
@@ -409,5 +359,33 @@ public class TaskImpl implements Task, Comparable {
       }
     }
     return false;
+  }
+
+  @Override
+  public int compareTo(Object o) {
+    Task task = (Task) o;
+    if (getRate() > task.getRate()) {
+      return 1;
+    } else if (getRate() < task.getRate()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    } else if (o instanceof Task) {
+      return ((Task) o).getID().equals(this.getID());
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    logger.error("Unimplemented method hashCode was called");
+    return 42;
   }
 }
